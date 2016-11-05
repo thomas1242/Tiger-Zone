@@ -1,0 +1,1 @@
+//Put all SFML functions here. Let's keep main clean and not dependent on gui.

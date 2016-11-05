@@ -1,40 +1,51 @@
-//ALL SFML DEPENDENCIES CURRENTLY MOVED TO gui.cpp TO COMPILE NORMALLY.
-//Let's work on keeping all gui stuff in that file and referencing it here as a plugin
-//All calls to gui files preceeded by "sfml: "
-//Please install SFML for when we do implement it.
+//Put all SFML functions here. Let's keep main clean and not dependent on gui.
 
-/*#include <SFML/Graphics.hpp>
-#include "ResourcePath.hpp"*/
-#include <ctime>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <stack>
-#include <main.h>
-#include "board.h"
-#include "deck.h"
-#include "card.h"
-#include "gui.cpp"
+/*Main as it stood:
 
-using namespace std;
+    for (int i = 1; i < 25; i++) {      // used when drawing tiles on the board
+        sf::RectangleShape tile(sf::Vector2f(size, size));
+        tile.setTexture( &tileTextures[ i ] );
+        tiles[i] = tile;
+    }
 
-/*
-sf::Texture tileTextures[25];       // array to hold tile textures
-sf::RectangleShape tiles[25];       // array of textured rectangles a.k.a. tiles
-*/
 
-Deck deck;							// deck of cards
-Board board;						// tiles are currently on the board
+    sf::RenderWindow window(sf::VideoMode(1000, 1200), "SFML window");    // create the main window
+    window.setFramerateLimit(10);
 
-int main(int, char const**)
-{
-	//Temporary exit condition until sfml added back
-	bool exit = 0;
+    if (    !tileTextures[ 1].loadFromFile(resourcePath()  + "1.png")      // load tile textures
+         || !tileTextures[ 2].loadFromFile(resourcePath()  + "2.png")
+         || !tileTextures[ 3].loadFromFile(resourcePath()  + "3.png")
+         || !tileTextures[ 4].loadFromFile(resourcePath()  + "4.png")
+         || !tileTextures[ 5].loadFromFile(resourcePath()  + "5.png")
+         || !tileTextures[ 6].loadFromFile(resourcePath()  + "6.png")
+         || !tileTextures[ 7].loadFromFile(resourcePath()  + "7.png")
+         || !tileTextures[ 8].loadFromFile(resourcePath()  + "8.png")
+         || !tileTextures[ 9].loadFromFile(resourcePath()  + "9.png")
+         || !tileTextures[10].loadFromFile(resourcePath() + "10.png")
+         || !tileTextures[11].loadFromFile(resourcePath() + "11.png")
+         || !tileTextures[12].loadFromFile(resourcePath() + "12.png")
+         || !tileTextures[13].loadFromFile(resourcePath() + "13.png")
+         || !tileTextures[14].loadFromFile(resourcePath() + "14.png")
+         || !tileTextures[15].loadFromFile(resourcePath() + "15.png")
+         || !tileTextures[16].loadFromFile(resourcePath() + "16.png")
+         || !tileTextures[17].loadFromFile(resourcePath() + "17.png")
+         || !tileTextures[18].loadFromFile(resourcePath() + "18.png")
+         || !tileTextures[19].loadFromFile(resourcePath() + "19.png")
+         || !tileTextures[20].loadFromFile(resourcePath() + "20.png")
+         || !tileTextures[21].loadFromFile(resourcePath() + "21.png")
+         || !tileTextures[22].loadFromFile(resourcePath() + "22.png")
+         || !tileTextures[23].loadFromFile(resourcePath() + "23.png")
+         || !tileTextures[24].loadFromFile(resourcePath() + "24.png")
+       )
+    {
+        exit(1);
+    }
 
-	// Start the game loop
-	// sfml: create the main window
-    // sfml: load tile textures
- 	// sfml: Implement for loop to draw tiles
+    for (int i = 1; i < 25; i++) {      // used when drawing tiles on the board
+        sf::RectangleShape tile(sf::Vector2f(size, size));
+        tile.setTexture( &tileTextures[ i ] );
+        tiles[i] = tile;
+    }
 *
     
     // Create a graphical text to display
@@ -143,6 +154,3 @@ int main(int, char const**)
 
     return EXIT_SUCCESS;
 */
-	}
-}
-

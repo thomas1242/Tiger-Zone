@@ -1,7 +1,7 @@
 #include "main.h"
 #include "card.h"
 
-Card::card(int x, char top, char bot, char left, char right) {
+Card::card(int x) {
 	id = x;
 	avail_top = 0;
 	avail_bot = 0;
