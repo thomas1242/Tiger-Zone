@@ -1,3 +1,4 @@
+#include "main.h"
 #include "board.h"
 #include <stdio.h>
 #include <iostream>
@@ -10,14 +11,14 @@ using namespace std;
 
 
 
-Board::Board() {                        // new board initially empty
+Board::Board() {                       // new board initially empty
 	
 }
 
 void Board::printBoard(){
     cout << endl;
-    for(int i = 0; i < 11; i++){
-        for(int j = 0; j < 11; j++){
+    for(int i = 0; i < size*2+1; i++){
+        for(int j = 0; j < size*2+1; j++){
             printf ("%3d ", board[i][j]);
         }
         cout << endl;

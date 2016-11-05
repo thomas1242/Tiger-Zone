@@ -1,74 +1,28 @@
-#include <SFML/Graphics.hpp>
-#include "ResourcePath.hpp"
+/*#include <SFML/Graphics.hpp>
+#include "ResourcePath.hpp"*/
 #include <ctime>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <stack>
-#include <stdlib.h>     /* srand, rand */
+#include <main.h>
 #include "board.h"
+#include "deck.h"
+#include "card.h"
+
 using namespace std;
 
+/*
 sf::Texture tileTextures[25];       // array to hold tile textures
 sf::RectangleShape tiles[25];       // array of textured rectangles a.k.a. tiles
-stack< int > deck;                  // deck of cards
-int cards_in_deck = 0;              // cards currently in the deck
-Board * board;                      // tiles are currently on the board
-Board * possibleMoves;              // possible moves 
-
-static inline string int2Str(int x) {
-    std::stringstream type;
-    type << x;
-    return type.str();
-}
-
-void popCardOffDeck() {                // pop top card off the deck
-    if( deck.size() != 0) {
-        deck.pop();
-        cards_in_deck--;
-    }
-}
-
-void setPossibleMoves() {
-    for(int i = 0; i < 11; i++) {
-        for(int j = 0; j < 11; j++) {
-           
-            // mark adjacent locations as 1
-            if(board->get(i, j) == 0) {                  // if this spot is not taken
-                if(board->get(i, j - 1) != 0) {             // and is adjacent to a taken spot
-                    possibleMoves->set(i, j, 1);
-                }
-                else if(board->get(i, j + 1) != 0) {
-                    possibleMoves->set(i, j, 1);
-                }
-                else if(board->get(i - 1, j) != 0) {
-                    possibleMoves->set(i, j, 1);
-                }
-                else if(board->get(i + 1, j) != 0) {
-                    possibleMoves->set(i, j, 1);
-                }
-           
-            }
-        }
-    }
-}
-
-string getDeckString() {
-    std::ostringstream oss;
-    oss << cards_in_deck;
-    string s = "cards left: " + oss.str();
-    return s;
-}
+*/
+Deck deck;							// deck of cards
+Board board;						// tiles are currently on the board
 
 int main(int, char const**)
 {
 
-    board = new Board();            // 11 x 11 board holds value of piece at each location
-    possibleMoves = new Board();    // 11 x 11 board holds value of piece at each location
-    
-    const double size = (1000 - 12) / 11.0; // 11 x 11 grid of (size*size squares) with 1 pad inbtwn
-    
-    sf::RenderWindow window(sf::VideoMode(1000, 1200), "SFML window");    // create the main window
+/*    sf::RenderWindow window(sf::VideoMode(1000, 1200), "SFML window");    // create the main window
     window.setFramerateLimit(10);
 
     if (    !tileTextures[ 1].loadFromFile(resourcePath()  + "1.png")      // load tile textures
@@ -99,7 +53,7 @@ int main(int, char const**)
     {
         exit(1);
     }
-
+*/
     for (int i = 1; i < 25; i++) {      // used when drawing tiles on the board
         sf::RectangleShape tile(sf::Vector2f(size, size));
         tile.setTexture( &tileTextures[ i ] );
@@ -238,3 +192,4 @@ int main(int, char const**)
 
     return EXIT_SUCCESS;
 }
+
