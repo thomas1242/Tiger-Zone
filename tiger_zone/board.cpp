@@ -11,22 +11,7 @@ using namespace std;
 
 
 Board::Board() {                        // new board initially empty
-    for (int i = 0; i < 11; i++) {
-        for (int j = 0; j < 11; j++) {
-            board[i][j] = 0;
-        }
-    }
-}
-
-int Board::get(int col, int row) {
-    if(row < 0 || row > 10 || col < 0 || col > 10) {
-        return 0;
-    }
-    return board[row][col];
-}
-
-void Board::set(int col, int row, int value) {
-    board[row][col] = value;
+	
 }
 
 void Board::printBoard(){
