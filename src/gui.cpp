@@ -1,3 +1,6 @@
+#include "main.h"
+#include "gui.h"
+
 //Put all SFML functions here. Let's keep main clean and not dependent on gui.
 
 /*Main as it stood:

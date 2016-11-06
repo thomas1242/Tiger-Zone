@@ -11,8 +11,18 @@ using namespace std;
 
 
 
-Board::Board() {                       // new board initially empty
-	
+Board::Board() {                       
+}
+
+
+// Mark available spots for the board
+void markavail(int xcoord, int ycoord) {
+
+}
+
+// Place tile on board at specified location
+int place(int xcoord, intycoord) {
+
 }
 
 void Board::printBoard(){

@@ -5,5 +5,6 @@
 #include <vector>
 #include <stack>
 
-#define size 72						//including first card in size
-const int boardlength = size*2+1;	//global variable for board length;
+#define decksize 72						// Including first card in size
+#define uniquecards 25					// Number of unique cards;
+const int boardlength = decksize*2+1;	// Global variable for board length;

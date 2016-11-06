@@ -7,8 +7,13 @@
 class Board {
 
 public:
-	card* board[size*2+1][size*2+1];
+	card* board[boardlength][boardlength];
     Board();
+    int citycount;
+    int fieldcount;
+    int roadcount;
+    void markavail();
+    void place();
     void printBoard();
     
 private:
