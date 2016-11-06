@@ -1,8 +1,37 @@
+/*
+#include <SFML/Graphics.hpp>
+#include "ResourcePath.hpp"
+*/
 #include "main.h"
 #include "gui.h"
 
 //Put all SFML functions here. Let's keep main clean and not dependent on gui.
 
+void ldtiles() {
+
+}
+
+void displaytext() {
+
+}
+
+void lddeckimages() {
+
+}
+/*
+void checkexit() {
+    // Close window: exit
+    if (event.type == sf::Event::Closed) {
+        window.close();
+    }
+    // Escape pressed: exit
+    else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+        window.close();
+    }
+}
+*/
+
+/*****************************************************************************************************************************************************
 /*Main as it stood:
 
     for (int i = 1; i < 25; i++) {      // used when drawing tiles on the board

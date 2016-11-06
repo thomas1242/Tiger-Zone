@@ -1,3 +1,7 @@
+/*
+#include <SFML/Graphics.hpp>
+#include "ResourcePath.hpp"
+*/
 #include "main.h"
 #ifndef GUI_h
 #define GUI_h

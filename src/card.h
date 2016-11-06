@@ -24,6 +24,7 @@ public:
 	bool isfield;			//determines if tile has field
 	bool dubpoints;			//determines if tile is worth double points
 	bool ismonastery		//determines if tile is monastery
+	char meeplocation;		// t=top, b=bot, l=left, r=right, i=inside
 
 	card(int x);
 	void rotatecw();
