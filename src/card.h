@@ -23,9 +23,11 @@ public:
 	bool isroad;			//determines if tile has road
 	bool isfield;			//determines if tile has field
 	bool dubpoints;			//determines if tile is worth double points
-	bool ismonastery		//determines if tile is monastery
+	bool ismonastery;		//determines if tile is monastery
 	char meeplocation;		// t=top, b=bot, l=left, r=right, i=inside
 
-	card(int x);
+	Card(int x);
 	void rotatecw();
 };
+
+#endif

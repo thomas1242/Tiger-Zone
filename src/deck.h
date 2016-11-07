@@ -1,7 +1,7 @@
 #include "main.h"
 #ifndef Deck_h
 #define Deck_h
-#include <String>
+#include <string>
 
 class Deck {
 
@@ -17,9 +17,11 @@ public:
 
 	static inline string int2Str(int x);
 	void popCardOffDeck();
-	string getDeckString();
+	std::string getDeckString();
 
 private:
 
 
 };
+
+#endif

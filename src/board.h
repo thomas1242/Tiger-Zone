@@ -7,7 +7,7 @@
 class Board {
 
 public:
-	card* board[boardlength][boardlength];
+	Card* board[boardlength][boardlength];
     Board();
     int citycount;
     int fieldcount;

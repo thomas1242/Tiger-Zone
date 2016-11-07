@@ -16,12 +16,32 @@ Board::Board() {
 
 
 // Mark available spots for the board
-void markavail(int xcoord, int ycoord) {
+void Board::markavail(int xcoord, int ycoord, Card* matrix[][boardlength]) {
+	
 
+	if(xcoord > 0) {
+		matrix[xcoord-1][ycoord] = new card(2);
+		//matrix[xcoord-1][ycoord]->top = 'i';
+	}	
+
+	if(xcoord < boardlength) {
+		matrix[xcoord+1][ycoord] = new card(3);
+		//matrix[xcoord+1][ycoord]->top = 'g';
+	}
+	
+	if(ycoord > 0) {
+		matrix[xcoord][ycoord-1] = new card(4);
+		//matrix[xcoord][ycoord-1]->top = 'h';
+	}
+	
+	if(ycoord < boardlength) {
+		matrix[xcoord][ycoord+1] = new card(5);
+		//matrix[xcoord][ycoord+1]->top = 't';
+	}	
 }
 
 // Place tile on board at specified location
-int place(int xcoord, intycoord) {
+int Board::place(int xcoord, int ycoord, Card input) {
 
 }
 

@@ -10,7 +10,7 @@
 #include <sstream>
 #include <string>
 #include <stack>
-#include <main.h>
+#include "main.h"
 #include "board.h"
 #include "deck.h"
 #include "card.h"
@@ -29,6 +29,8 @@ Board board;						// tiles are currently on the board
 int main(int, char const**) {
 
 
+
+
 	//Temporary exit condition until sfml added back
 	bool exit = 0;
 	// Start the game loop
@@ -37,14 +39,14 @@ int main(int, char const**) {
 	// sfml: create the main window
     // sfml: load tile textures
  	// sfml: Implement for loop to draw tiles
-	// Create a graphical text to display
-	// load in the deck images
+	// sfml: Create a graphical text to display
+	// sfml: load in the deck images
 	// Generate deck
-	// Clear screen
-	// draw tiles remaining string
-	// draw the tile on top of the deck
-	// Draw tiles on board
-	// Update the window
+	// sfml: Clear screen
+	// sfml: draw tiles remaining string
+	// sfml: draw the tile on top of the deck
+	// sfml: Draw tiles on board
+	// sfml: Update the window
 	}
 }
 
