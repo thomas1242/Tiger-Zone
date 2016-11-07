@@ -3,6 +3,8 @@
 #define Deck_h
 #include <string>
 
+#define uniquecards 25					// Number of unique cards;
+
 class Deck {
 
 public:

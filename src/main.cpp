@@ -15,7 +15,6 @@
 #include "deck.h"
 #include "card.h"
 #include "gui.cpp"
-
 using namespace std;
 
 /*
