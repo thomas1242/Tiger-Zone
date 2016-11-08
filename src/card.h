@@ -24,7 +24,7 @@ class Card {
         char getBot();
         char getRight();
         char getLeft();
-        char getId();
+        int getId();
     
 };
 
