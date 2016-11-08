@@ -1,18 +1,19 @@
-#include "deck.h"
-#include "card.h"
-#include "board.h"
-#include "player.h"
+#include "game.h"
 #include <iostream>
+
 
 using namespace std;
 
 
 int main() {
     
-    Board  * b = new Board();           
-    Player * p = new Player( b );
+    Game * game = new Game();               // create the game
     
-    p->takeTurn();
+    game->startGame();                      // start the game
     
+    while( game->status() == ON ) {         // while the game is not over
+        game->playTurn();                   // players take turns making moves
+    }
+
     return 0;
 }

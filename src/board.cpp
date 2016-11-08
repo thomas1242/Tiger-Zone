@@ -18,11 +18,8 @@ Board::Board() {                            // board constructor
         }
     }
     
-    
-    Card * centerCard = new Card( 3 );      // center card has id: 3
-    possibleMoves[ROWS/2][COLS/2] = true;   // mark center location available
-    placeCard(ROWS/2, COLS/2, centerCard);  // place center card on the board
-    
+    possibleMoves[ROWS/2][COLS/2] = true;                        // mark center location available
+    placeCard(ROWS/2, COLS/2, new Card( theDeck->drawCard() ));  // place center card on the board
 }
     
 

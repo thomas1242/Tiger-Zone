@@ -18,7 +18,9 @@ class Deck {
         string getDeckString();			// return string with num cards left in deck (for the GUI)
         int drawCard();                 // pop old card off the deck, return new top card's id
         void printDeck();				// for debugging:print count of each card currently in the deck
-        
+        int getSize();
+        bool isEmpty();                     // return # of cards in the deck
+    
     private:
         int numCardsInDeck;			    // total nubmer of cards currently in the deck
         int counts[UNIQUECARDS];	    // count of each card currently in the deck

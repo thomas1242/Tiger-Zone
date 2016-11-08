@@ -9,7 +9,7 @@ using namespace std;
 // Deck constructor
 Deck::Deck() {
     
-    numCardsInDeck = 0;
+    numCardsInDeck = -1;    // -1 beca
     for(int i = 0; i < UNIQUECARDS; i++) {	  // initally 0 cards in the deck
         counts[i] = 0;
     }
@@ -25,11 +25,19 @@ Deck::Deck() {
         counts[ card ]++;
         numCardsInDeck++;
     }
-    
+    deck.push( 3 );         // push center card on top of the deck
+    numCardsInDeck++;
 }
 
 // pop old top card off the deck, return new top card's id to the player who drew the card
 int Deck::drawCard() {
+    
+    if(deck.size() == 0) {
+        numCardsInDeck--;
+        cout << "empty" << endl;
+        return 1;
+    }
+    
     
     deck.pop();                 // pop old card off deck
     numCardsInDeck--;
@@ -61,5 +69,12 @@ void Deck::printDeck() {
     
 }
 
+bool Deck::isEmpty() {
+    return (numCardsInDeck == 0);
+}
+
+int Deck::getSize() {
+    return numCardsInDeck;
+}
 
 

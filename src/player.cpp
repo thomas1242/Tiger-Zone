@@ -15,11 +15,14 @@ Player::Player(Board * b) {
 
 void Player::takeTurn() {
     
+    cout << "cards currently in deck = " << theBoard->getDeck()->getSize() << endl;       // print current card to be played
+
+
     Card * new_card = new Card( theBoard->getDeck()->drawCard() );      // draw new card id from the deck
     theBoard->updatePossibleMoves( new_card );                          // update possible moves
 
     //* DEBUGGING
-    cout << "card drawn = " << new_card->getId() << endl;       // print current card to be played
-    theBoard->printBoard();                                     // print board/avail moves for this card
+    //cout << "card drawn = " << new_card->getId() << endl;       // print current card to be played
+    //theBoard->printBoard();                                     // print board/avail moves for this card
     //*/
 }
