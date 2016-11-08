@@ -1,27 +1,23 @@
-#include "main.h"
-#include "card.h"
-#ifndef Board_h
-#define Board_h
+#ifndef board_h
+#define board_h
 
-#define boardsize decksize*2+1		// variable for board length;
+#include <stdio.h>
+#include "card.h"
+
 
 class Board {
-
-public:
-	Card* matrix[boardlength][boardlength];
-    Board();
-    int citycount;
-    int fieldcount;
-    int roadcount;
-    void markavail();
-    bool checkspace();
-    bool place();
-    void printBoard();
     
-private:
+    public:
+        Board();                // board constructer
+        void printBoard();      // print the state of the board
+    
+    private:
+        Card ** board;   // pointer to an array of Card pointers a.k.a. will point to 2D array of Card objects a.k.a. the board
     
 };
 
 
 
-#endif
+
+
+#endif /* board_hpp */
