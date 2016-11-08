@@ -4,7 +4,7 @@ using namespace std;
 
 
 Card::Card() {
-    id = 'o';            // set id = 'o', this card is an instance of open space on the board
+    id = -1;            // set id = -1, this card is an instance of open space on the board
     top = 'o';          // this card is free space
     bot = 'o';
     left = 'o';
@@ -101,7 +101,7 @@ char Card::getRight() {
 char Card::getLeft() {
     return left;
 }
-char Card::getId() {
+int Card::getId() {
     return id;
 }
 
