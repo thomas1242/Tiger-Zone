@@ -1,11 +1,3 @@
-//
-//  game.cpp
-//  testingTiger
-//
-//  Created by Thomas Palmer on 11/8/16.
-//  Copyright © 2016 blank. All rights reserved.
-//
-
 #include "game.h"
 #include <iostream>
 using namespace std;
