@@ -2,7 +2,7 @@
 
 Welcome!
 
-**get the code:**
+**to get the code:**
 
 > mkdir temp
 
@@ -11,5 +11,11 @@ Welcome!
 > git clone https://github.com/thomas1242/Tiger-Zone
 
 > cd Tiger-Zone
+
+**to compile and run the code:**
+
+> g++ -o program *.cpp
+
+> ./program
 
 
