@@ -1,7 +1,5 @@
 # Tiger-Zone
 
-Welcome!
-
 **to get the code:**
 
 > mkdir temp
