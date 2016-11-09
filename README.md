@@ -2,7 +2,7 @@
 
 Welcome!
 
-**get the code: **
+**get the code:**
 
 > mkdir temp
 
