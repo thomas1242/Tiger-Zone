@@ -8,8 +8,10 @@
 
 **compile and run the code:**
 
-> g++ -o program *.cpp
+> make
 
-> ./program
+> ./tiger
+
+
 
 
