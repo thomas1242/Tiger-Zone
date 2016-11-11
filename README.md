@@ -1,4 +1,4 @@
-# Tiger-Zone: Incorporating GUI into the game in this branch
+# Tiger-Zone: with GUI
 
 
 **get the code:**
