@@ -1,6 +1,6 @@
 # Tiger-Zone
 
-**get to the code:**
+**get the code:**
 
 > git clone https://github.com/thomas1242/Tiger-Zone
 
@@ -11,6 +11,9 @@
 > make
 
 > ./tiger
+
+
+
 
 
 
