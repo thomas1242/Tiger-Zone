@@ -121,10 +121,11 @@ bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
 // Fits directly into the place card function
 
 
+// Kurt - Need to talk about this convention.. Are unmarked spaces null or blank?
 // Mark available spots for the board
 void Board::markavail(int xcoord, int ycoord, Card card) {
 	//Marking space above
-	if(xcoord > 0 && matrix[xcoord-1][ycoord] == 0) {			// Kurt - Need to talk about this convention.. Are unmarked spaces null or blank?
+	if(xcoord > 0 && matrix[xcoord-1][ycoord] == 0) {			
 		//check to see if card is already there, discuss what to do
 		matrix[xcoord-1][ycoord] = new card();
 		matrix[xcoord-1][ycoord]->avail_bot = matrix[xcoord][ycoord]->top;
