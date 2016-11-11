@@ -12,4 +12,4 @@
 
 
 
- ![alt tag](images/gui_imgg.p1ng)
+ ![alt tag](images/gui_imgg.png)
