@@ -32,6 +32,8 @@ void Card::printCard() {
     cout << " "  << bot << " " << endl;
 }
 
+
+// Kurt -probably going to have to change this if he doesn't give us a list of cards
 void Card::assignSides(int id) {
     
     // mark top of card depending on card id

@@ -6,16 +6,21 @@
 #include "deck.h"
 using namespace std;
 
+
+// Kurt - This whole thing needs a rework to take into account that we will see every card at start.
+// Dave said he doesn't know how big deck will be, or how many of each card it has. we would need to make it open ended
+
+
 // Deck constructor
 Deck::Deck() {
     
-    numCardsInDeck = -1;    // -1 beca
-    for(int i = 0; i < UNIQUECARDS; i++) {	  // initally 0 cards in the deck
+    numCardsInDeck = -1;    					// -1 beca (????)
+    for(int i = 0; i < UNIQUECARDS; i++) {	 	// initally 0 cards in the deck
         counts[i] = 0;
     }
-    int maxCounts[] = { 3, 1, 2, 3, 2, 3, 3, 8, 5, 1, 9, 3, 3, 4, 3, 3, 1, 4, 1, 1, 2, 2, 2, 2 };
-    srand (time(NULL));
-    int card;
+    //int maxCounts[] = { 3, 1, 2, 3, 2, 3, 3, 8, 5, 1, 9, 3, 3, 4, 3, 3, 1, 4, 1, 1, 2, 2, 2, 2 };
+    srand(time(NULL));
+    Card card;
     for(int i = 0; i < MAXCARDS; i++) {   // put 71 cards into the deck
         do{
             card = rand() % 24;                                // generate random card

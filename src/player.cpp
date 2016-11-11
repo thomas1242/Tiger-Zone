@@ -16,7 +16,7 @@ Player::Player(Board * b) {
 void Player::takeTurn() {
     
     cout << "# cards in deck: " << theBoard->getDeck()->getSize();      // print current card to be played
-    Card * new_card = new Card( theBoard->getDeck()->drawCard() );      // draw new card id from the deck
+    Card * new_card = new Card( theBoard->getDeck()->drawCard() );		// draw new card id from the deck
     theBoard->updatePossibleMoves( new_card );                          // update possible moves
     cout << " --> draw card: " << new_card->getId() << endl;            // print current card to be played
     
