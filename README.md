@@ -8,7 +8,7 @@
 > cd Tiger-Zone/src
 
 
-**current state:**
+**current gui:**
 
 
- ![alt tag](images/gui_img2.png)
+ ![alt tag](images/gui_imgg.png)
