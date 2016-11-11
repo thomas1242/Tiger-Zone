@@ -11,4 +11,4 @@
 **current state:**
 
 
- ![alt tag](images/gui_img.png)
+ ![alt tag](images/gui_img2.png)
