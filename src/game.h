@@ -19,15 +19,21 @@ class Game {
         Player * player_one;
         Player * player_two;
         bool current_turn;          // true if one's turn, false if two's turn
-        bool isActive;
+        bool isActive;              // is game over
     
     public:
         Game();
         ~Game();
         void playTurn();
+        void playTurn(int i, int j);
         void startGame();
         void endGame();
         bool status();
+        Board * getBoard();
+        int getCurrCardID();
+        void rotateCard();
+        Player * getPlayer();
+
 
     
 };

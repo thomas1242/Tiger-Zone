@@ -1,24 +1,57 @@
+#include <SFML/Graphics.hpp>
+#include "ResourcePath.hpp"
 
 #include "player.h"
 #include "card.h"
 #include "deck.h"
 #include "board.h"
 #include <iostream>
+#include <unistd.h>
 
 Player::Player(Board * b) {
     
     theBoard = b;            // point this players theDeck pointer to the board's deck
     score = 0;              
     meeplesAvailable = 7;   // players start with 7 meeples
+    currCard = NULL;
+    hasCard = false;
     
 }
 
-void Player::takeTurn() {
+void Player::drawCard() {
+    currCard = new Card( theBoard->getDeck()->drawCard() );      // draw new card id from the deck
+    theBoard->updatePossibleMoves( currCard );                          // update possible moves
     
-    cout << "# cards in deck: " << theBoard->getDeck()->getSize();      // print current card to be played
-    Card * new_card = new Card( theBoard->getDeck()->drawCard() );      // draw new card id from the deck
-    theBoard->updatePossibleMoves( new_card );                          // update possible moves
-    cout << " --> draw card: " << new_card->getId() << endl;            // print current card to be played
-    
-     //theBoard->printBoard();                                     // print board/avail moves for this card
+    if( theBoard->isPossibleMove() == false ) {
+        cout << "Cannot place card " << currCard->getId() << ". Discarded." << endl;
+        delete currCard;
+        currCard = NULL;
+    }
+    else {
+        hasCard = true;
+        theBoard->printBoard();
+    }
+}
+
+bool Player::takeTurn(int i, int j) {
+    bool res = false;
+    if( theBoard->checkPossibleMove(i, j) ) {
+        res = theBoard->placeCard(i, j, currCard);
+        hasCard = false;
+    }
+    return res;
+}
+
+int Player::getCardId() {
+    return currCard->getId();
+}
+
+void Player::rotateCard() {
+    currCard->rotate();                             // rotate card
+    theBoard->updatePossibleMoves( currCard );      // update possible moves for this card
+    theBoard->printBoard();
+}
+
+Card * Player::getCard() {
+    return currCard;
 }

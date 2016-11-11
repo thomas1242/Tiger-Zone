@@ -25,14 +25,20 @@ Board::Board() {                            // board constructor
 
 bool Board::placeCard(int i, int j, Card * card) {
     
+    if(i < 0 || j < 0 || i >= ROWS || j >= COLS) {  // for GUI, if user clicks out of bounds
+        return false;
+    }
+    
     // before placing this card on the board, make sure the location is valid
     if( !possibleMoves[i][j] ) {
-       cout << "Cannot place card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
+       cout << "Cannot place card " << card->getId() << " at (" << i << ',' << j << ']' << endl;
        return false;
     }
     
     cout << "Placed card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
+
     board[i][j] = *card;            // replace with new card
+    //printBoard();
     return true;
 }
 
@@ -153,6 +159,28 @@ Deck * Board::getDeck() {   // return pointer to the deck
     return theDeck;
 }
 
+Card Board::getCard(int i, int j) {
+    return board[i][j];
+}
+
+bool Board::checkPossibleMove(int i, int j) {
+    return possibleMoves[i][j];
+}
+
+bool * Board::getPossibleMoves() {
+    return (bool*)possibleMoves;
+}
+
+bool Board::isPossibleMove() {
+    for(int i = 0; i < ROWS; i++) {
+        for(int j = 0; j < COLS; j++) {
+            if(possibleMoves[i][j] == true) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 
 

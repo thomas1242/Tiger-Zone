@@ -38,10 +38,10 @@ int Deck::drawCard() {
         return 1;
     }
     
-    
-    deck.pop();                 // pop old card off deck
     numCardsInDeck--;
     int top = deck.top();       // id of new top card (the card to be placed)
+    deck.pop();
+    cout << "card " << top << " drawn from the deck, " << deck.size() - 1 <<" cards left." << endl;
     return top;                 // return id of top card
     
 }

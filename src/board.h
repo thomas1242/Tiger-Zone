@@ -17,6 +17,11 @@ class Board {
         bool checkIfFits(int i, int j, Card * card );     // check if a given card fits at a given location
         bool placeCard(int i, int j, Card * card);        // place a card onto the board
         Deck * getDeck();
+        bool * getPossibleMoves();
+        bool checkPossibleMove(int i, int j);
+        bool isPossibleMove();
+        Card getCard(int i, int j);
+
     
     private:
         Card ** board;                    // will point to 2D array of Cards a.k.a. the board

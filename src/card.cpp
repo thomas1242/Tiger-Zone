@@ -9,11 +9,13 @@ Card::Card() {
     bot = 'o';
     left = 'o';
     right = 'o';
+    orientation = 0;
 }
 
 Card::Card(int id) {
     this->id = id;          // set this cards id
     assignSides(id);        // set default sides corresponding to this card type
+    orientation = 0;
 }
 
 void Card::rotate() {   // rotate card 90 degrees clockwise
@@ -22,6 +24,7 @@ void Card::rotate() {   // rotate card 90 degrees clockwise
     top = left;
     left = bot;
     bot = temp;
+    orientation = (orientation + 90) % 360; 
 }
 
 void Card::printCard() {
@@ -96,5 +99,8 @@ char Card::getLeft() {
 }
 int Card::getId() {
     return id;
+}
+int Card::getOrient() {
+    return orientation;
 }
 
