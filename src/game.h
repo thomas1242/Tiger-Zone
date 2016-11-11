@@ -31,8 +31,12 @@ class Game {
         bool status();
         Board * getBoard();
         int getCurrCardID();
+        Card * getCurrCard();
         void rotateCard();
-        Player * getPlayer();
+        Player * getCurrPlayer();
+        bool getCurrTurn();
+        int getScore( bool player );
+        int getMeeples( bool player );
 
 
     

@@ -1,10 +1,3 @@
-//
-//  game.cpp
-//  testingTiger
-//
-//  Created by Thomas Palmer on 11/8/16.
-//  Copyright © 2016 blank. All rights reserved.
-//
 
 #include "game.h"
 #include <iostream>
@@ -36,13 +29,12 @@ void Game::startGame() {
 
 void Game::endGame() {
     isActive = OFF;    // start the game
-    this->~Game();      // delete the game
+   // this->~Game();      // delete the game
 }
 
 void Game::playTurn(){
-    if( board->getDeck()->isEmpty() )    // if the deck is empty, game is over
-        endGame();
-    else if( current_turn && player_one->hasCard == false && player_two->hasCard == false) {             // player one makes a move
+    
+    if( current_turn && player_one->hasCard == false && player_two->hasCard == false) {             // player one makes a move
         cout << "player_one to draw card:" << endl;
         player_one->drawCard();
     }
@@ -50,6 +42,7 @@ void Game::playTurn(){
         cout << "player_two to draw card:" << endl;
         player_two->drawCard();          // player two makes a move
     }
+    
 }
 
 void Game::playTurn(int i, int j) {
@@ -62,6 +55,12 @@ void Game::playTurn(int i, int j) {
     else if ( !current_turn && player_two->hasCard == true ) {
         if (player_two->takeTurn(i, j))
             current_turn = !current_turn;        // toggle turn
+    }
+    
+    if( getBoard()->getDeck()->isEmpty() ) {    // if final card was played
+        endGame();
+        cout << "game over!@!@!@@!";
+        return;
     }
     
 }
@@ -88,7 +87,7 @@ void Game::rotateCard() {
     }
 }
 
-Player * Game::getPlayer() {
+Player * Game::getCurrPlayer() {
     if ( current_turn ) {
         return player_one;
     }
@@ -97,3 +96,33 @@ Player * Game::getPlayer() {
     }
 }
 
+Card * Game::getCurrCard() {
+    if ( current_turn ) {
+        return player_one->getCard();
+    }
+    else {
+        return player_two->getCard();
+    }
+}
+
+bool Game::getCurrTurn() {
+    return current_turn;
+}
+
+int Game::getScore( bool player ) {
+    if(player) {
+        return player_one->getScore();
+    }
+    else {
+        return player_two->getScore();
+    }
+}
+
+int Game::getMeeples( bool player ) {
+    if(player) {
+        return player_one->getMeeples();
+    }
+    else {
+        return player_two->getMeeples();
+    }
+}

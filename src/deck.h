@@ -7,7 +7,7 @@
 #include <stack>
 
 #define UNIQUECARDS 24        		// number of unique cards in the deck
-#define MAXCARDS    71        		// max number of cards allowed in the deck
+#define MAXCARDS   72      // cards randomly put in deck, doesn't include center card
 using namespace std;
 
 class Deck {

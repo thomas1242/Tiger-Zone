@@ -17,6 +17,8 @@ class Player {
         bool hasCard;
         int getCardId();    // for GUI
         Card * getCard();
+        int getScore();
+        int getMeeples();
 
     
     private:

@@ -19,6 +19,7 @@ Player::Player(Board * b) {
 }
 
 void Player::drawCard() {
+    
     currCard = new Card( theBoard->getDeck()->drawCard() );      // draw new card id from the deck
     theBoard->updatePossibleMoves( currCard );                          // update possible moves
     
@@ -29,7 +30,7 @@ void Player::drawCard() {
     }
     else {
         hasCard = true;
-        theBoard->printBoard();
+        //theBoard->printBoard();
     }
 }
 
@@ -48,10 +49,16 @@ int Player::getCardId() {
 
 void Player::rotateCard() {
     currCard->rotate();                             // rotate card
-    theBoard->updatePossibleMoves( currCard );      // update possible moves for this card
-    theBoard->printBoard();
 }
 
 Card * Player::getCard() {
     return currCard;
+}
+
+int Player::getScore() {
+    return score;
+}
+
+int Player::getMeeples() {
+    return meeplesAvailable;
 }

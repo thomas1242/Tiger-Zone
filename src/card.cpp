@@ -52,7 +52,7 @@ void Card::assignSides(int id) {
     if(id == 18 || id == 5 || id == 19 || id == 9 || id == 20 || id == 1 || id == 23) {          // card with city right
         right = 'c';
     }
-    else if (id == 15 || id == 22 || id == 14 || id == 0 || id == 3) {                          // card with road right
+    else if (id == 15 || id == 22 || id == 14 || id == 0 || id == 3 || id == 13 || id == 16) {                          // card with road right
         right = 'r';
     }
     else {                                                                                      // card with field right

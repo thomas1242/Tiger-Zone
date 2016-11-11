@@ -18,6 +18,7 @@ Board::Board() {                            // board constructor
         }
     }
     
+    cout << "Put center card on baord" << endl;
     possibleMoves[ROWS/2][COLS/2] = true;                        // mark center location available
     placeCard(ROWS/2, COLS/2, new Card( theDeck->drawCard() ));  // place center card on the board
 }
@@ -33,6 +34,10 @@ bool Board::placeCard(int i, int j, Card * card) {
     if( !possibleMoves[i][j] ) {
        cout << "Cannot place card " << card->getId() << " at (" << i << ',' << j << ']' << endl;
        return false;
+    }
+    
+   while( !checkIfFits(i, j, card) ) {
+        card->rotate();                     // rotate card until it fits at the valid location
     }
     
     cout << "Placed card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
@@ -70,8 +75,19 @@ void Board::updatePossibleMoves(Card * card) { // possible moves based on board 
     for(int i = 0; i < ROWS; i++) {
         for(int j = 0; j < COLS; j++) {
             if( possibleMoves[i][j] == true ) { // if this spot is potentially valid (it's adjacent to another tile)
-                if( !checkIfFits(i, j, card) ) { // check if card fits at this location. if not, this move isn't valid!
-                    possibleMoves[i][j] = false;
+                int n = 1;
+                while(n <= 4) {                          // 0, 90, 180, 270
+                    if(checkIfFits(i, j, card)) {
+                        break;
+                    }
+                    card->rotate();
+                    n++;
+                }
+                if( n > 4) {
+                    possibleMoves[i][j] = false;;
+                }
+                else {
+                    possibleMoves[i][j] = true;
                 }
             }
         }
