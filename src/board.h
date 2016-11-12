@@ -15,7 +15,6 @@ class Board {
     public:
         Board();                           					// board constructor
         void printBoard();                  				// print the state of the board
-        void updatePossibleMoves(Card * card);         		// update valid moves array
         bool checkIfFits(int i, int j, Card * card );    	// check if a given card fits at a given location
         bool placeCard(int i, int j, Card * card);      	// place a card onto the board
         Deck * getDeck();
@@ -23,7 +22,7 @@ class Board {
     private:
         Card ** board;                    // will point to 2D array of Cards a.k.a. the board
         bool possibleMoves[ROWS][COLS];   // 2D array which holds valid moves
-        Deck * theDeck;
+        Deck * theDeck;					  // Should this be in here or main?
     
 };
 

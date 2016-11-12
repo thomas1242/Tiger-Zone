@@ -30,7 +30,7 @@ class Deck {
         int counts[UNIQUECARDS];	    // count of each card currently in the deck
 
         // Kurt - Don't we need this here?
-        int maxCounts[] = { 3, 1, 2, 3, 2, 3, 3, 8, 5, 1, 9, 3, 3, 4, 3, 3, 1, 4, 1, 1, 2, 2, 2, 2 };
+        int maxCounts[UNIQUECARDS] = { 3, 1, 2, 3, 2, 3, 3, 8, 5, 1, 9, 3, 3, 4, 3, 3, 1, 4, 1, 1, 2, 2, 2, 2 };
 
         stack< int > deck;              // stack of card ids
         
