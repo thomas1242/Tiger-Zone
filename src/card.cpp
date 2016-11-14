@@ -6,10 +6,10 @@ using namespace std;
 Card::Card() {
     id = -1;            // set id = -1, this card is an instance of open space on the board
    
-    top = '/0';         // filler cards do not have true tblr values. Sides = null.
-    bot = '/0';
-    left = '/0';
-    right = '/0';
+    top = 'n';         // filler cards do not have true tblr values. Sides = "null".
+    bot = 'n';
+    left = 'n';
+    right = 'n';
 
 	a_top = 'o';		// filler sides are open
 	a_bot = 'o';
@@ -97,10 +97,10 @@ void Card::assignSides(int id) {
         left = 'f';
     }
     
-   	a_top = '/0';		// filler sides do not exist
-	a_bot = '/0';
-	a_left = '/0';
-	a_right = '/0';
+   	a_top = 'n';		// filler sides do not exist
+	a_bot = 'n';
+	a_left = 'n';
+	a_right = 'n';
 }
 
 char Card::getTop() {

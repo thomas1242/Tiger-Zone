@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string>
 #include <stack>
+#include "card.h"
 
 #define UNIQUECARDS 24        		// number of unique cards in the deck
 #define MAXCARDS    71        		// max number of cards allowed in the deck
@@ -28,11 +29,6 @@ class Deck {
     private:
         int numCardsInDeck;			    // total nubmer of cards currently in the deck
         int counts[UNIQUECARDS];	    // count of each card currently in the deck
-
-        // Kurt - Don't we need this here?
-        int maxCounts[UNIQUECARDS] = { 3, 1, 2, 3, 2, 3, 3, 8, 5, 1, 
-        								9, 3, 3, 4, 3, 3, 1, 4, 1, 1, 2, 2, 2, 2 };
-
         stack< int > deck;              // stack of card ids
         
 };

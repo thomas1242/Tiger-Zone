@@ -16,6 +16,7 @@ class Board {
         Board();                           					// board constructor
         void printBoard();                  				// print the state of the board
         bool checkIfFits(int i, int j, Card * card );    	// check if a given card fits at a given location
+        void markavail(int xcoord, int ycoord, Card* card); // Marks available tile
         bool placeCard(int i, int j, Card * card);      	// place a card onto the board
         Deck * getDeck();
     

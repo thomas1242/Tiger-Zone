@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include "deck.h"
+#include "card.h"
 using namespace std;
 
 
@@ -18,16 +19,16 @@ Deck::Deck() {
     for(int i = 0; i < UNIQUECARDS; i++) {	 	// initally 0 cards in the deck
         counts[i] = 0;
     }
-    //int maxCounts[] = { 3, 1, 2, 3, 2, 3, 3, 8, 5, 1, 9, 3, 3, 4, 3, 3, 1, 4, 1, 1, 2, 2, 2, 2 };
+    int maxCounts[] = { 3, 1, 2, 3, 2, 3, 3, 8, 5, 1, 9, 3, 3, 4, 3, 3, 1, 4, 1, 1, 2, 2, 2, 2 };
     srand(time(NULL));
     Card card;
     for(int i = 0; i < MAXCARDS; i++) {   // put 71 cards into the deck
         do{
             card = rand() % 24;                                // generate random card
-        } while ( counts[ card ] >= maxCounts[ card ] );       // only use cards we need
+        } while ( counts[ card.getId() ] >= maxCounts[ card.getId() ] );       // only use cards we need
         
-        deck.push( card );	// put the card in the deck
-        counts[ card ]++;
+        deck.push( card.getId() );	// put the card in the deck
+        counts[ card.getId() ]++;
         numCardsInDeck++;
     }
     deck.push( 3 );         // push center card on top of the deck

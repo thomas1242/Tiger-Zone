@@ -10,6 +10,10 @@ Board::Board() {                            // board constructor
     
     theDeck = new Deck();                   // new board comes with a new deck
     placeCard(MAXCARDS, MAXCARDS, new Card( theDeck->drawCard() ));  // place center card on the board
+    board = new Card * [ROWS];              // board is initially all open space ( cards with id = -1 )
+    for(int i = 0; i < ROWS; ++i) {
+        board[i] = new Card[COLS];
+    }
 }
     
 
@@ -23,7 +27,7 @@ bool Board::placeCard(int i, int j, Card* card) {
     
     cout << "Placed card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
     board[i][j] = *card;            // replace with new card
-    markavail(i, j);
+    markavail(i, j, card);
     return true;
 }
 
@@ -57,35 +61,31 @@ bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
 // Mark available spots for the board
 void Board::markavail(int xcoord, int ycoord, Card* card) {
 	//Marking space above
-	if(xcoord > 0 && matrix[xcoord-1][ycoord] == 0) {			
+	if(xcoord > 0 && board[xcoord-1][ycoord].getTop() == 'o') {			
 		//check to see if card is already there, discuss how to mark terrain
-		matrix[xcoord-1][ycoord] = new card();
-		matrix[xcoord-1][ycoord]->a_bot = card->getTop();
-		matrix[xcoord-1][ycoord]->avail_bot = matrix[xcoord][ycoord]->top;
+		board[xcoord-1][ycoord].a_bot = card->getTop();
+		board[xcoord-1][ycoord].a_bot = board[xcoord][ycoord].getTop();
 	}	
 
 	//Marking space below
-	if(xcoord < boardsize && matrix[xcoord+1][ycoord] == 0) {
+	if(xcoord < COLS && board[xcoord+1][ycoord].getTop() == 'o') {
 		//check to see if card is already there, discuss what to mark terrain
-		matrix[xcoord+1][ycoord] = new card();
-		matrix[xcoord+1][ycoord]->a_top = card->getBot();
-		matrix[xcoord+1][ycoord]->avail_top = matrix[xcoord][ycoord]->bot;
+		board[xcoord+1][ycoord].a_top = card->getBot();
+		board[xcoord+1][ycoord].a_top = board[xcoord][ycoord].getBot();
 	}
 	
 	//Marking space on left
-	if(ycoord > 0 && matrix[xcoord][ycoord-1] == 0) {
+	if(ycoord > 0 && board[xcoord][ycoord-1].getTop() == 'o') {
 		//check to see if card is already there, discuss what to mark terrain
-		matrix[xcoord][ycoord-1] = new card();
-		matrix[xcoord][ycoord-1]->a_right = card->getLeft();
-		matrix[xcoord][ycoord-1]->avail_right = matrix[xcoord][ycoord]->left;
+		board[xcoord][ycoord-1].a_right = card->getLeft();
+		board[xcoord][ycoord-1].a_right = board[xcoord][ycoord].getLeft();
 	}
 	
 	//Marking space on right
-	if(ycoord < boardsize && matrix[xcoord][ycoord+1] == 0) {
+	if(ycoord < ROWS && board[xcoord][ycoord+1].getTop() == 'o') {
 		//check to see if card is already there, discuss what to nark terrain
-		matrix[xcoord][ycoord+1] = new card();
-		matrix[xcoord][ycoord+1]->a_left = card->getRight();
-		matrix[xcoord][ycoord+1]->avail_left = matrix[xcoord][ycoord]->right;
+		board[xcoord][ycoord+1].a_left = card->getRight();
+		board[xcoord][ycoord+1].a_left = board[xcoord][ycoord].getRight();
 	}	
 }
 
