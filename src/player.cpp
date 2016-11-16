@@ -9,13 +9,11 @@
 #include <unistd.h>
 
 Player::Player(Board * b) {
-    
     theBoard = b;            // point this players theDeck pointer to the board's deck
     score = 0;              
     meeplesAvailable = 7;   // players start with 7 meeples
     currCard = NULL;
     hasCard = false;
-    
 }
 
 void Player::drawCard() {
@@ -30,7 +28,7 @@ void Player::drawCard() {
     }
     else {
         hasCard = true;
-        //theBoard->printBoard();
+        theBoard->printBoard();
     }
 }
 

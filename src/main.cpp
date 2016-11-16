@@ -83,7 +83,7 @@ int main() {
         
     }
 
-    const double size = (800 - 60) / 11.0;
+    const double size = (800 - (ROWS + 1)*5 ) / ROWS;
     double offset = (size/2)*0.707;
     
     for (int i = 1; i < 25; i++) {      // used when drawing tiles on the board
@@ -191,16 +191,12 @@ int main() {
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && window.hasFocus()) {
           //  cout << "click at row = " << abs(row) << " col = " << abs(col) << endl;
-            if(abs(row) >= 0 && abs(col) >= 0 && abs(row) < 11 && abs(col) < 11) {  // for GUI, if user clicks on the board
+            if(abs(row) >= 0 && abs(col) >= 0 && abs(row) < ROWS && abs(col) < COLS) {  // for GUI, if user clicks on the board
                 game->playTurn(abs(row), abs(col));
             }
             if(abs(row) >= 13 && abs(row) <= 15 && abs(col) >= 2 && abs(col) <= 4 ) {
                 cout << "ROTATE!!" << endl;
                 game->rotateCard();                                                 // rotate current card
-//                deckTopTile.rotate( 360 - dRot );
-//                dRot = game->getCurrCard()->getOrient();   // set rot
-//                deckTopTile.rotate( game->getCurrCard()->getOrient() );
-//                window.draw( deckTopTile );
             }
         }
 
@@ -246,7 +242,7 @@ int main() {
         text6.setString( turn_string );
         window.draw(text6); //turn
 
-        
+       // should only call this once for efficiency
        // bool * b = game->getBoard()->getPossibleMoves();
         for(int i = 0; i < 11; i++) {
             for(int j = 0; j<11; j++) {
@@ -262,7 +258,6 @@ int main() {
                     circle.setPosition(j * (size + 1) + 35, i * (size + 1) + 35);
                     circle.setOrigin(radius/2, radius/2);
                     tiles[ game->getBoard()->getCard(i, j).getId() + 1 ] .setOrigin((size/2), (size/2));
-
                     window.draw(circle);
                 }
             }

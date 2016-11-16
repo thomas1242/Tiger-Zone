@@ -43,6 +43,11 @@ bool Board::placeCard(int i, int j, Card * card) {
     cout << "Placed card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
 
     board[i][j] = *card;            // replace with new card
+    
+    // rotate option
+    // place meeple()
+    
+    
     //printBoard();
     return true;
 }

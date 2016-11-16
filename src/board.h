@@ -27,11 +27,7 @@ class Board {
         Card ** board;                    // will point to 2D array of Cards a.k.a. the board
         bool possibleMoves[ROWS][COLS];   // 2D array which holds valid moves
         Deck * theDeck;
-    
 };
-
-
-
 
 
 #endif /* board_hpp */
