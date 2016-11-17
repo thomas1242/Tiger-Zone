@@ -32,7 +32,6 @@ class Game {
         bool status();
         Board * getBoard();
         int getCurrCardID();
-        Card * getCurrCard();
         void rotateCard();
         Player * getCurrPlayer();
         bool getCurrTurn();

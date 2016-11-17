@@ -21,7 +21,7 @@ void Player::takeCard() {
 */    
     currCard = theDeck->drawCard();      // draw new card id from the deck
     
-    while(theBoard->isPossibleMoves() == false ) {
+    while(theBoard->isPossibleMove() == false ) {
         cout << "Cannot place card " << currCard->getId() << ". Discarded." << endl;
         delete currCard;					 // Card is discarded
         currCard = NULL;
@@ -51,9 +51,9 @@ void Player::rotateCard() {
     currCard->rotate();                             // rotate card
 }
 
-Card * Player::getCard() {
-    return currCard;
-}
+//Card * Player::getCard() {
+//    return currCard;
+//}
 
 int Player::getScore() {
     return score;

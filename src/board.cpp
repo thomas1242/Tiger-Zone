@@ -6,16 +6,22 @@
 #include <stdlib.h>
 using namespace std;
 
-Board::Board(card) {                        // board constructor
+Board::Board(Card * card) {                        // board constructor
     
     cout << "Put center card on board" << endl;
     possibleMoves[ROWS/2][COLS/2] = true;                        // mark center location available
-    
-    placeCard(ROWS/2, COLS/2, card);        // place center card on the board
+            cout << "MAKING IT HERE" << endl;
+            card->printCard();
+    bool result = placeCard(ROWS/2, COLS/2, card );        // place center card on the board
+                cout << "NOT MAKING IT HERE" << endl;
+
     board = new Card * [ROWS];              // board is initially all open space ( cards with id = -1 )
+
     for(int i = 0; i < ROWS; ++i) {
         board[i] = new Card[COLS];
     }
+        cout << "made it out of board constructor" << endl;
+
 }
     
 
@@ -36,8 +42,9 @@ bool Board::placeCard(int i, int j, Card* card) {
    while( !checkIfFits(i, j, card) ) {
         card->rotate();                     // rotate card until it fits at the valid location
     }
-*/    
+*/            
     else {
+            cout << "11111111" << endl;
         cout << "Placed card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
         board[i][j] = *card;            // replace with new card
         markavail(i, j, card);
@@ -99,7 +106,6 @@ void Board::updatePossibleMoves(Card * card) { // possible moves based on board 
 }
 */
 
->>>>>>> sfmlBranch
 bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
     
     bool result = true;
@@ -167,13 +173,13 @@ void Board::printBoard() {
         for(int n = 0; n < 3; n++) {        	// 3 'rows' per row
             for(int j = 0; j < COLS; j++) {   	// for each col
                 if(n == 0) {
-                    cout << board[i][j].getTop_L() << ' ' << board[i][j].getTop() << ' ' << board[i][j].getTop_R() << ' ';
+                    cout << board[i][j].getT_L() << ' ' << board[i][j].getTop() << ' ' << board[i][j].getT_R() << ' ';
                 }
                 else if (n == 1) {
                     cout << board[i][j].getLeft() << ' ' << board[i][j].getMid() << ' ' << board[i][j].getRight() << ' ';
                 }
                 else if (n == 2) {
-                    cout << board[i][j].getBot_L() << ' ' << board[i][j].getBot() << ' ' << board[i][j].getBot_R() << ' ';
+                    cout << board[i][j].getB_L() << ' ' << board[i][j].getBot() << ' ' << board[i][j].getB_R() << ' ';
                 }
                 cout << ' ';
             }
@@ -196,10 +202,6 @@ void Board::printBoard() {
         cout << endl;
     }
     
-}
-
-Deck * Board::getDeck() {   // return pointer to the deck
-    return theDeck;
 }
 
 Card Board::getCard(int i, int j) {

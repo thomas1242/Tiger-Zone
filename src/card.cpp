@@ -117,12 +117,10 @@ void Card::assignSides(int id) {
 	a_right = 'n';
     
     //temp
-    top_R = 'o';
-    top_L = 'o';
-    mid_R = 'o';
-    mid_L = 'o';
-    bot_R = 'o';
-    bot_L = 'o';
+    T_R = 'o';
+    T_L = 'o';
+    B_R = 'o';
+    B_L = 'o';
     mid = 'o';
 }
 
@@ -146,30 +144,22 @@ int Card::getOrient() {
     return orientation;
 }
 
-char Card::getTop_L(){
-    return top_L;
+char Card::getT_L(){
+    return T_L;
 }
 
-char Card::getTop_R(){
-    return top_R;
+char Card::getT_R(){
+    return T_R;
 }
 
 char Card::getMid(){
     return mid;
 }
 
-char Card::getMid_L(){
-    return mid_L;
+char Card::getB_L(){
+    return B_L;
 }
 
-char Card::getMid_R(){
-    return mid_R;
-}
-
-char Card::getBot_L(){
-    return bot_L;
-}
-
-char Card::getBot_R(){
-    return bot_R;
+char Card::getB_R(){
+    return B_R;
 }

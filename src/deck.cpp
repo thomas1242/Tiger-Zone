@@ -44,12 +44,14 @@ Card* Deck::drawCard() {
 
     if(isEmpty()) {
         cout << "empty" << endl;
-        return null;
+        return NULL;
     }
     
-    Card* top = deck.top();       // id of new top card (the card to be placed)
+    Card * top = deck.top();       // id of new top card (the card to be placed)
+    top->printCard();
     deck.pop();
-    cout << "card " << top << " drawn from the deck, " << numCardsInDeck <<" cards left." << endl;
+
+    cout << "card " << top->getId() << " drawn from the deck, " << numCardsInDeck <<" cards left." << endl;
     return top;                 // return id of top card
     
 }

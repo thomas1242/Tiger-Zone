@@ -4,12 +4,14 @@
 using namespace std;
 
 Game::Game() {
-    
     isActive = OFF;
     deck = new Deck();
-    board = new Board(deck->drawCard());                   // the board
-    player_one = new Player( board );      // player 1 knows about the board
-    player_two = new Player( board );      // player 2 knows about the board
+    Card * tempCard = deck->drawCard();
+    cout << "before temp " << endl;
+    board = new Board( tempCard );                   // the board
+    cout << "after" << endl;
+    player_one = new Player( board, deck );      // player 1 knows about the board
+    player_two = new Player( board, deck );      // player 2 knows about the board
     current_turn = true; // player 1's turn
 }
 
@@ -58,7 +60,7 @@ void Game::giveTurn(int i, int j) {
             current_turn = !current_turn;        // toggle turn
     }
     
-    if( getBoard()->getDeck()->isEmpty() ) {    // if final card was played
+    if( deck->isEmpty() ) {    // if final card was played
         endGame();
         cout << "game over!@!@!@@!";
         return;
@@ -93,15 +95,6 @@ Player * Game::getCurrPlayer() {
     }
     else {
         return player_two;
-    }
-}
-
-Card * Game::getCurrCard() {
-    if ( current_turn ) {
-        return player_one->getCard();
-    }
-    else {
-        return player_two->getCard();
     }
 }
 

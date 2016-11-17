@@ -14,14 +14,14 @@ class Card {
         
         char top, bot, left, right;     	           // l = lake, g = game-trail, j = jungle
         char T_L, T_R, B_L, B_R;                       // corner tiles
-        char mid;                                      
-
-        bool isfiller;		// true only on a filler card (possible move on board)
-        bool isden;         // true if it's a den
-        bool endtrail;      // true if game-trails end at tile
+        char mid;
         int orientation;    // degreees rotated clockwise, initally 0
     
     public:
+        bool isfiller;		// true only on a filler card (possible move on board)
+        bool isden;         // true if it's a den
+        bool endtrail;      // true if game-trails end at tile
+
         char a_top, a_bot, a_left, a_right;	// Available spaces, same convention as tblr. Filler only.
         									// Public so other classes can easily change these
         Card();             // construct null card ( id = 0 ). need this constructor for our board constructor

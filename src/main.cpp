@@ -8,12 +8,13 @@ using namespace std;
 int main() {
     
     Game * game = new Game();               // create the game
+    cout << "past game"  << endl;
     game->startGame();
     int row, col;
     int choice = 0;
     while ( game->status() == ON )  // Start the game loop
     {      
-        game->playTurn();   // draw a card if the player needs    
+        game->giveCard();   // draw a card if the player needs    
 
         if ( game->getCurrTurn() ) { cout << "player 1's turn" << endl; }
         else                       { cout << "player 2's turn" << endl; }
@@ -25,7 +26,7 @@ int main() {
             cin >> row;
             cout << "col? ";
             cin >> col;
-            game->playTurn(row, col);
+            game->giveTurn(row, col);
             
             choice = 0;
         }
