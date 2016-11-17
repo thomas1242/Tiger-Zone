@@ -5,12 +5,13 @@
 #include "board.h"
 #include <iostream>
 
-Player::Player(Board * b) {
+Player::Player(Board board, Deck deck) {
     
-    theBoard = b;            // point this players theDeck pointer to the board's deck
     score = 0;              
     meeplesAvailable = 7;   // players start with 7 meeples
     
+    theBoard = board;
+    theDeck = deck;
 }
 
 void Player::takeTurn() {

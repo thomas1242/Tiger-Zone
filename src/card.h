@@ -11,7 +11,7 @@ class Card {
     
     private:
         int id;                         	// card identifier: what type of tile is this
-        char top, bot, left, right;     	// c = city, r = road, f= field
+        char top, bot, left, right;     	// l = lake, g = game-trail, j= jungle
         bool isfiller;						// true only on a filler card (possible move on board)
         
     public:

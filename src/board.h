@@ -7,8 +7,8 @@
 
 
 // Kurt - These values should not be hardcoded, and should rely on maximum card count
-#define ROWS  MAXCARDS*2+1
-#define COLS  MAXCARDS*2+1
+#define ROWS  11 //MAXCARDS*2+1
+#define COLS  11 //MAXCARDS*2+1
 
 class Board {
     
@@ -22,9 +22,6 @@ class Board {
     
     private:
         Card ** board;                    // will point to 2D array of Cards a.k.a. the board
-        bool possibleMoves[ROWS][COLS];   // 2D array which holds valid moves
-        Deck * theDeck;					  // Should this be in here or main?
-    
 };
 
 

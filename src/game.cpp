@@ -6,8 +6,8 @@ Game::Game() {
     
     isActive = OFF;
     board = new Board();                   // the board
-    player_one = new Player( board );      // player 1 knows about the board
-    player_two = new Player( board );      // player 2 knows about the board
+    player_one = new Player(board, deck);      // player 1 knows about the board
+    player_two = new Player(board, deck);      // player 2 knows about the board
     current_turn = true; // player 1's turn
 }
 
