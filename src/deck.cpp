@@ -4,19 +4,13 @@
 #include <iostream>
 #include <sstream>
 #include "deck.h"
-#include "card.h"
 using namespace std;
-
-
-// Kurt - This whole thing needs a rework to take into account that we will see every card at start.
-// Dave said he doesn't know how big deck will be, or how many of each card it has. we would need to make it open ended
-
 
 // Deck constructor
 Deck::Deck() {
     
-    numCardsInDeck = 0;    					
-    for(int i = 0; i < UNIQUECARDS; i++) {	 	// initally 0 cards in the deck
+    numCardsInDeck = 0;                     
+    for(int i = 0; i < UNIQUECARDS; i++) {      // initally 0 cards in the deck
         counts[i] = 0;
     }
 
@@ -29,7 +23,7 @@ Deck::Deck() {
             id = rand() % 24;                                // generate random card
         } while ( counts[id] >= maxCounts[id] );       // only use cards we need
         
-        deck.push( new Card(id) );	// put the card in the deck
+        deck.push( new Card(id) );  // put the card in the deck
         counts[id]++;
         numCardsInDeck++;
     }
@@ -52,6 +46,16 @@ Card* Deck::drawCard() {
 
     cout << "card " << top->getId() << " drawn from the deck, " << numCardsInDeck <<" cards left." << endl;
     return top;                 // return id of top card
+}
+
+// convert int to string to create score string
+string Deck::getDeckString() {
+    
+    ostringstream oss;
+    oss << numCardsInDeck;
+    string s = "cards left: " + oss.str();
+    return s;
+    
 }
 
 // print number of each type of card currently in the deck

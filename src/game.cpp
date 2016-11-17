@@ -51,10 +51,15 @@ void Game::giveTurn(int i, int j) {
     if( current_turn && player_one->hasCard == true)  {            // player one makes a move
         if(player_one->takeTurn(i, j))
             current_turn = !current_turn;        // toggle turn
+        else
+            cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
+
     }
     else if ( !current_turn && player_two->hasCard == true ) {
         if (player_two->takeTurn(i, j))
             current_turn = !current_turn;        // toggle turn
+          else
+            cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
     }
     
     if( deck->isEmpty() ) {    // if final card was played
@@ -115,4 +120,8 @@ int Game::getMeeples( bool player ) {
     else {
         return player_two->getMeeples();
     }
+}
+
+void Game::printBoard() {
+    board->printBoard();
 }

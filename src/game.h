@@ -37,6 +37,7 @@ class Game {
         bool getCurrTurn();
         int getScore( bool player );
         int getMeeples( bool player );
+        void printBoard();
 
 
     

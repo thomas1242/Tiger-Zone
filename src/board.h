@@ -5,19 +5,18 @@
 #include "card.h"
 #include "deck.h"
 
-
-
 #define ROWS  11 //MAXCARDS*2+1
 #define COLS  11 //MAXCARDS*2+1
 
 class Board {
     
     public:
-        Board(Card* card);                           		// board constructor
-        void printBoard();                  				// print the state of the board
-        bool checkIfFits(int i, int j, Card * card );    	// check if a given card fits at a given location
-        void markavail(int xcoord, int ycoord, Card* card); // Marks available tile
-        bool placeCard(int i, int j, Card* card);      	    // place a card onto the board
+        Board(Card* card);                            // board constructer
+        void printBoard();                  // print the state of the board
+        void updatePossibleMoves(Card * card);         // update valid moves array
+        bool checkIfFits(int i, int j, Card * card );     // check if a given card fits at a given location
+        bool placeCard(int i, int j, Card * card);        // place a card onto the board
+        Deck * getDeck();
         bool * getPossibleMoves();
         bool checkPossibleMove(int i, int j);
         bool isPossibleMove();
