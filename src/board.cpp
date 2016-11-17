@@ -48,7 +48,7 @@ bool Board::placeCard(int i, int j, Card * card) {
     // place meeple()
     
     
-    //printBoard();
+    printBoard();
     return true;
 }
 
@@ -133,25 +133,22 @@ bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
 
 
 
-/*            TOP
-    Print LEFT   RIGHT matrix and the id matrix side by side easy debugging
-              BOT
-*/
+/*  TL  TOP  TR
+    ML  MID  MR
+    BL  BOT  BR   */
 void Board::printBoard() {
-    
-    
     cout << "\nTHE BOARD: " << endl;
     for(int i = 0; i < ROWS; i++) {           // for each row
         for(int n = 0; n < 3; n++) {        // 3 'rows' per row
             for(int j = 0; j < COLS; j++) {   // for each col
                 if(n == 0) {
-                    cout << ' ' << board[i][j].getTop() << ' ';
+                    cout << board[i][j].getTop_L() << ' ' << board[i][j].getTop() << ' ' << board[i][j].getTop_R() << ' ';
                 }
                 else if (n == 1) {
-                    cout << board[i][j].getLeft() << ' ' << board[i][j].getRight();
+                    cout << board[i][j].getLeft() << ' ' << board[i][j].getMid() << ' ' << board[i][j].getRight() << ' ';
                 }
                 else if (n == 2) {
-                    cout << ' ' << board[i][j].getBot() << ' ';
+                    cout << board[i][j].getBot_L() << ' ' << board[i][j].getBot() << ' ' << board[i][j].getBot_R() << ' ';
                 }
                 cout << ' ';
             }
@@ -162,6 +159,7 @@ void Board::printBoard() {
             }
            cout << endl;
         }
+        cout << endl;
     }
     
     // print possibleMoves array underneath the board!

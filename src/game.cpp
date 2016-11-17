@@ -62,7 +62,6 @@ void Game::playTurn(int i, int j) {
         cout << "game over!@!@!@@!";
         return;
     }
-    
 }
 
 Board * Game::getBoard() {

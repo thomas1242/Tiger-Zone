@@ -1,6 +1,3 @@
-#include <SFML/Graphics.hpp>
-#include "ResourcePath.hpp"
-
 #include "player.h"
 #include "card.h"
 #include "deck.h"

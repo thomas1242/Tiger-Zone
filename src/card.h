@@ -12,8 +12,9 @@ class Card {
     private:
         int id;                         // card identifier: what type of tile is this
         char top, bot, left, right;     // c = city, r = road, f= field
+        char top_L, top_R, mid_L, mid_R, bot_L, bot_R;
+        char mid;
         int orientation;    // degreees rotated clockwise, initally 0
-        
     
     public:
         Card();             // construct null card ( id = 0 ). need this constructor for our board constructor
@@ -26,6 +27,15 @@ class Card {
         char getBot();
         char getRight();
         char getLeft();
+        char getTop_L();
+        char getTop_R();
+        char getMid_L();
+        char getMid_R();
+        char getBot_L();
+        char getBot_R();
+    char getMid();
+
+
         int getId();
         int getOrient( );
     
