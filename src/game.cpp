@@ -77,7 +77,7 @@ int Game::getCurrCardID() {
     }
     else return -1;
 }
-
+ 
 void Game::rotateCard() {
     if ( current_turn ) {
         player_one->rotateCard();
