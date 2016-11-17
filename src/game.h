@@ -20,15 +20,25 @@ class Game {
         Board * board;
         Deck * deck; 
         bool current_turn;          // true if one's turn, false if two's turn
-        bool isActive;
+        bool isActive;              // is game over
     
     public:
         Game();
         ~Game();   
         void playTurn();
+        void playTurn(int i, int j);
         void startGame();
         void endGame();
         bool status();
+        Board * getBoard();
+        int getCurrCardID();
+        Card * getCurrCard();
+        void rotateCard();
+        Player * getCurrPlayer();
+        bool getCurrTurn();
+        int getScore( bool player );
+        int getMeeples( bool player );
+
 
     
 };

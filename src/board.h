@@ -19,13 +19,20 @@ class Board {
         void markavail(int xcoord, int ycoord, Card* card); // Marks available tile
         bool placeCard(int i, int j, Card * card);      	// place a card onto the board
         Deck * getDeck();
+        bool * getPossibleMoves();
+        bool checkPossibleMove(int i, int j);
+        bool isPossibleMove();
+        Card getCard(int i, int j);
+
     
     private:
         Card ** board;                    // will point to 2D array of Cards a.k.a. the board
+<<<<<<< HEAD
+=======
+        bool possibleMoves[ROWS][COLS];   // 2D array which holds valid moves
+        Deck * theDeck;
+>>>>>>> sfmlBranch
 };
-
-
-
 
 
 #endif /* board_hpp */

@@ -14,4 +14,3 @@ main.o: main.cpp
 
 clean:
 	rm tiger $(OBJECTS) 
-

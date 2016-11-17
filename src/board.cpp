@@ -14,23 +14,99 @@ Board::Board() {                            // board constructor
     for(int i = 0; i < ROWS; ++i) {
         board[i] = new Card[COLS];
     }
+<<<<<<< HEAD
+=======
+    
+    cout << "Put center card on baord" << endl;
+    possibleMoves[ROWS/2][COLS/2] = true;                        // mark center location available
+    placeCard(ROWS/2, COLS/2, new Card( theDeck->drawCard() ));  // place center card on the board
+>>>>>>> sfmlBranch
 }
     
 
 bool Board::placeCard(int i, int j, Card* card) {
     
+    if(i < 0 || j < 0 || i >= ROWS || j >= COLS) {  // for GUI, if user clicks out of bounds
+        return false;
+    }
+    
     // before placing this card on the board, make sure the location is valid
     if( !possibleMoves[i][j] ) {
-       cout << "Cannot place card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
+       cout << "Cannot place card " << card->getId() << " at (" << i << ',' << j << ']' << endl;
        return false;
     }
     
+   while( !checkIfFits(i, j, card) ) {
+        card->rotate();                     // rotate card until it fits at the valid location
+    }
+    
     cout << "Placed card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
+
     board[i][j] = *card;            // replace with new card
+<<<<<<< HEAD
     markavail(i, j, card);
     return true;
 }
 
+=======
+    
+    // rotate option
+    // place meeple()
+    
+    
+    printBoard();
+    return true;
+}
+
+
+void Board::updatePossibleMoves(Card * card) { // possible moves based on board state and current card
+    
+    for(int i = 0; i < ROWS; i++) {     
+        for(int j = 0; j < COLS; j++) {
+            if(board[i][j].getId() == -1) {                                  // if this spot is not taken (open space)
+                if(i - 1 > 0 && board[i - 1][j].getId() != -1) {             // and is adjacent to a taken spot
+                    possibleMoves[i][j] = true;
+                }
+                else if(i + 1 < ROWS && board[i + 1][j].getId() != -1) {
+                    possibleMoves[i][j] = true;
+                }
+                else if(j - 1 > 0 && board[i][j - 1].getId() != -1) {
+                    possibleMoves[i][j] = true;
+                }
+                else if(j + 1 < COLS && board[i][j + 1].getId() != -1) {
+                    possibleMoves[i][j] = true;
+                }
+            }
+            else {
+                possibleMoves[i][j] = false;
+            }
+        }
+    }
+    
+    for(int i = 0; i < ROWS; i++) {
+        for(int j = 0; j < COLS; j++) {
+            if( possibleMoves[i][j] == true ) { // if this spot is potentially valid (it's adjacent to another tile)
+                int n = 1;
+                while(n <= 4) {                          // 0, 90, 180, 270
+                    if(checkIfFits(i, j, card)) {
+                        break;
+                    }
+                    card->rotate();
+                    n++;
+                }
+                if( n > 4) {
+                    possibleMoves[i][j] = false;;
+                }
+                else {
+                    possibleMoves[i][j] = true;
+                }
+            }
+        }
+    }
+
+}
+
+>>>>>>> sfmlBranch
 bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
     
     bool result = true;
@@ -90,23 +166,22 @@ void Board::markavail(int xcoord, int ycoord, Card* card) {
 }
 
 
-/*            TOP
-    Print LEFT   RIGHT matrix and the id matrix side by side easy debugging
-              BOT
-*/
+/*  TL  TOP  TR
+    ML  MID  MR
+    BL  BOT  BR   */
 void Board::printBoard() {
     cout << "\nTHE BOARD: " << endl;
     for(int i = 0; i < ROWS; i++) {           	// for each row
         for(int n = 0; n < 3; n++) {        	// 3 'rows' per row
             for(int j = 0; j < COLS; j++) {   	// for each col
                 if(n == 0) {
-                    cout << ' ' << board[i][j].getTop() << ' ';
+                    cout << board[i][j].getTop_L() << ' ' << board[i][j].getTop() << ' ' << board[i][j].getTop_R() << ' ';
                 }
                 else if (n == 1) {
-                    cout << board[i][j].getLeft() << ' ' << board[i][j].getRight();
+                    cout << board[i][j].getLeft() << ' ' << board[i][j].getMid() << ' ' << board[i][j].getRight() << ' ';
                 }
                 else if (n == 2) {
-                    cout << ' ' << board[i][j].getBot() << ' ';
+                    cout << board[i][j].getBot_L() << ' ' << board[i][j].getBot() << ' ' << board[i][j].getBot_R() << ' ';
                 }
                 cout << ' ';
             }
@@ -117,6 +192,7 @@ void Board::printBoard() {
             }
            cout << endl;
         }
+        cout << endl;
     }
     
     // print possibleMoves array underneath the board!
@@ -135,6 +211,28 @@ Deck * Board::getDeck() {   // return pointer to the deck
     return theDeck;
 }
 
+Card Board::getCard(int i, int j) {
+    return board[i][j];
+}
+
+bool Board::checkPossibleMove(int i, int j) {
+    return possibleMoves[i][j];
+}
+
+bool * Board::getPossibleMoves() {
+    return (bool*)possibleMoves;
+}
+
+bool Board::isPossibleMove() {
+    for(int i = 0; i < ROWS; i++) {
+        for(int j = 0; j < COLS; j++) {
+            if(possibleMoves[i][j] == true) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 
 

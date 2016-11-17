@@ -5,6 +5,7 @@ using namespace std;
 
 Card::Card() {
     id = -1;            // set id = -1, this card is an instance of open space on the board
+<<<<<<< HEAD
    
     top = 'n';         // filler cards do not have true tblr values. Sides = "null".
     bot = 'n';
@@ -17,12 +18,30 @@ Card::Card() {
 	a_right = 'o';
 
     isfiller = true;	// Card initialized without id is a filler card
+=======
+    top = 'o';          // this card is free space
+    bot = 'o';
+    left = 'o';
+    right = 'o';
+    top_R = 'o';
+    top_L = 'o';
+    mid_R = 'o';
+    mid_L = 'o';
+    bot_R = 'o';
+    bot_L = 'o';
+    mid = 'o';
+    orientation = 0;
+>>>>>>> sfmlBranch
 }
 
 Card::Card(int id) {
     this->id = id;          // set this cards id
     assignSides(id);        // set default sides corresponding to this card type
+<<<<<<< HEAD
     isfiller = false;		// Card initialized with id is a real card
+=======
+    orientation = 0;
+>>>>>>> sfmlBranch
 }
 
 void Card::rotate() {   // rotate card 90 degrees clockwise
@@ -31,6 +50,7 @@ void Card::rotate() {   // rotate card 90 degrees clockwise
     top = left;
     left = bot;
     bot = temp;
+    orientation = (orientation + 90) % 360; 
 }
 
 void Card::printCard() {
@@ -63,9 +83,14 @@ void Card::assignSides(int id) {
     	|| id == 9 || id == 20 || id == 1 || id == 23) {        	// card with lake right
         right = 'l';
     }
+<<<<<<< HEAD
     else if (id == 15 || id == 22 || 
     			id == 14 || id == 0 || id == 3) {                   // card with g-t right
         right = 'g';
+=======
+    else if (id == 15 || id == 22 || id == 14 || id == 0 || id == 3 || id == 13 || id == 16) {                          // card with road right
+        right = 'r';
+>>>>>>> sfmlBranch
     }
     else {                                                          // card with jungle right
         right = 'j';
@@ -97,10 +122,23 @@ void Card::assignSides(int id) {
         left = 'j';
     }
     
+<<<<<<< HEAD
    	a_top = 'n';		// filler sides do not exist
 	a_bot = 'n';
 	a_left = 'n';
 	a_right = 'n';
+=======
+    
+    //temp
+    top_R = 'o';
+    top_L = 'o';
+    mid_R = 'o';
+    mid_L = 'o';
+    bot_R = 'o';
+    bot_L = 'o';
+    mid = '0';
+    
+>>>>>>> sfmlBranch
 }
 
 char Card::getTop() {
@@ -115,7 +153,38 @@ char Card::getRight() {
 char Card::getLeft() {
     return left;
 }
+
 int Card::getId() {
     return id;
 }
+int Card::getOrient() {
+    return orientation;
+}
 
+char Card::getTop_L(){
+    return top_L;
+}
+
+char Card::getTop_R(){
+    return top_R;
+}
+
+char Card::getMid(){
+    return mid;
+}
+
+char Card::getMid_L(){
+    return mid_L;
+}
+
+char Card::getMid_R(){
+    return mid_R;
+}
+
+char Card::getBot_L(){
+    return bot_L;
+}
+
+char Card::getBot_R(){
+    return bot_R;
+}

@@ -19,9 +19,15 @@ Deck::Deck() {
     for(int i = 0; i < UNIQUECARDS; i++) {	 	// initally 0 cards in the deck
         counts[i] = 0;
     }
+<<<<<<< HEAD
     int maxCounts[] = { 3, 1, 2, 3, 2, 3, 3, 8, 5, 1, 9, 3, 3, 4, 3, 3, 1, 4, 1, 1, 2, 2, 2, 2 };
     srand(time(NULL));
     Card card;
+=======
+    int maxCounts[] = { 3, 1, 2, 3, 2, 3, 3, 8, 5, 1, 9, 3, 3, 4, 3, 3, 1, 4, 1, 2, 2, 2, 2, 2 };
+    srand (time(NULL));
+    int card;
+>>>>>>> sfmlBranch
     for(int i = 0; i < MAXCARDS; i++) {   // put 71 cards into the deck
         do{
             card = rand() % 24;                                // generate random card
@@ -38,16 +44,16 @@ Deck::Deck() {
 // pop old top card off the deck, return new top card's id to the player who drew the card
 int Deck::drawCard() {
     
-    if(deck.size() == 0) {
-        numCardsInDeck--;
+    numCardsInDeck--;
+
+    if(numCardsInDeck == 0) {
         cout << "empty" << endl;
         return 1;
     }
     
-    
-    deck.pop();                 // pop old card off deck
-    numCardsInDeck--;
     int top = deck.top();       // id of new top card (the card to be placed)
+    deck.pop();
+    cout << "card " << top << " drawn from the deck, " << numCardsInDeck <<" cards left." << endl;
     return top;                 // return id of top card
     
 }
