@@ -48,12 +48,10 @@ Card* Deck::drawCard() {
     }
     
     Card * top = deck.top();       // id of new top card (the card to be placed)
-    top->printCard();
     deck.pop();
 
     cout << "card " << top->getId() << " drawn from the deck, " << numCardsInDeck <<" cards left." << endl;
     return top;                 // return id of top card
-    
 }
 
 // print number of each type of card currently in the deck

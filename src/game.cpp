@@ -6,12 +6,9 @@ using namespace std;
 Game::Game() {
     isActive = OFF;
     deck = new Deck();
-    Card * tempCard = deck->drawCard();
-    cout << "before temp " << endl;
-    board = new Board( tempCard );                   // the board
-    cout << "after" << endl;
-    player_one = new Player( board, deck );      // player 1 knows about the board
-    player_two = new Player( board, deck );      // player 2 knows about the board
+    board = new Board( deck->drawCard() );       // the board
+    player_one = new Player( board, deck );      // player 1 knows the board and deck
+    player_two = new Player( board, deck );      // player 2 knows the board and deck
     current_turn = true; // player 1's turn
 }
 
@@ -62,7 +59,7 @@ void Game::giveTurn(int i, int j) {
     
     if( deck->isEmpty() ) {    // if final card was played
         endGame();
-        cout << "game over!@!@!@@!";
+        cout << "DECK EMPTY -> GAME OVER!";
         return;
     }
 }

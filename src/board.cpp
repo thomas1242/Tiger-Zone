@@ -8,20 +8,15 @@ using namespace std;
 
 Board::Board(Card * card) {                        // board constructor
     
-    cout << "Put center card on board" << endl;
-    possibleMoves[ROWS/2][COLS/2] = true;                        // mark center location available
-            cout << "MAKING IT HERE" << endl;
-            card->printCard();
-    bool result = placeCard(ROWS/2, COLS/2, card );        // place center card on the board
-                cout << "NOT MAKING IT HERE" << endl;
-
     board = new Card * [ROWS];              // board is initially all open space ( cards with id = -1 )
 
     for(int i = 0; i < ROWS; ++i) {
         board[i] = new Card[COLS];
     }
-        cout << "made it out of board constructor" << endl;
 
+    cout << "Put center card on new board" << endl;
+    possibleMoves[ROWS/2][COLS/2] = true;                        // mark center location available
+    bool result = placeCard(ROWS/2, COLS/2, card );        // place center card on the board
 }
     
 
@@ -44,7 +39,6 @@ bool Board::placeCard(int i, int j, Card* card) {
     }
 */            
     else {
-            cout << "11111111" << endl;
         cout << "Placed card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
         board[i][j] = *card;            // replace with new card
         markavail(i, j, card);
