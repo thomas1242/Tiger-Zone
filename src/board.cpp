@@ -6,21 +6,16 @@
 #include <stdlib.h>
 using namespace std;
 
-Board::Board() {                            // board constructor
+Board::Board(card) {                        // board constructor
     
-    theDeck = new Deck();                   // new board comes with a new deck
-    placeCard(MAXCARDS, MAXCARDS, new Card( theDeck->drawCard() ));  // place center card on the board
+    cout << "Put center card on board" << endl;
+    possibleMoves[ROWS/2][COLS/2] = true;                        // mark center location available
+    
+    placeCard(ROWS/2, COLS/2, card);        // place center card on the board
     board = new Card * [ROWS];              // board is initially all open space ( cards with id = -1 )
     for(int i = 0; i < ROWS; ++i) {
         board[i] = new Card[COLS];
     }
-<<<<<<< HEAD
-=======
-    
-    cout << "Put center card on baord" << endl;
-    possibleMoves[ROWS/2][COLS/2] = true;                        // mark center location available
-    placeCard(ROWS/2, COLS/2, new Card( theDeck->drawCard() ));  // place center card on the board
->>>>>>> sfmlBranch
 }
     
 
@@ -31,34 +26,31 @@ bool Board::placeCard(int i, int j, Card* card) {
     }
     
     // before placing this card on the board, make sure the location is valid
-    if( !possibleMoves[i][j] ) {
+    if( !(board[i][j].isfiller) ) {
        cout << "Cannot place card " << card->getId() << " at (" << i << ',' << j << ']' << endl;
        return false;
     }
-    
+
+// Match it with avail side
+/*    
    while( !checkIfFits(i, j, card) ) {
         card->rotate();                     // rotate card until it fits at the valid location
     }
-    
-    cout << "Placed card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
-
-    board[i][j] = *card;            // replace with new card
-<<<<<<< HEAD
-    markavail(i, j, card);
-    return true;
+*/    
+    else {
+        cout << "Placed card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
+        board[i][j] = *card;            // replace with new card
+        markavail(i, j, card);
+        
+        printBoard();
+        return true;
+    }
 }
-
-=======
     
-    // rotate option
-    // place meeple()
-    
-    
-    printBoard();
-    return true;
-}
 
+// bool place meeple()
 
+/*
 void Board::updatePossibleMoves(Card * card) { // possible moves based on board state and current card
     
     for(int i = 0; i < ROWS; i++) {     
@@ -105,6 +97,7 @@ void Board::updatePossibleMoves(Card * card) { // possible moves based on board 
     }
 
 }
+*/
 
 >>>>>>> sfmlBranch
 bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
@@ -133,35 +126,34 @@ bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
     return result;
 }
 
-// Kurt - Need to talk about this convention.. Are unmarked spaces null or blank?
 // Mark available spots for the board
-void Board::markavail(int xcoord, int ycoord, Card* card) {
+void Board::markavail(int i, int j, Card* card) {
 	//Marking space above
-	if(xcoord > 0 && board[xcoord-1][ycoord].getTop() == 'o') {			
+	if(i > 0 && board[i-1][j].isfiller) {			
 		//check to see if card is already there, discuss how to mark terrain
-		board[xcoord-1][ycoord].a_bot = card->getTop();
-		board[xcoord-1][ycoord].a_bot = board[xcoord][ycoord].getTop();
+		board[i-1][j].a_bot = card->getTop();
+        possibleMoves[i-1][j] = true;
 	}	
 
 	//Marking space below
-	if(xcoord < COLS && board[xcoord+1][ycoord].getTop() == 'o') {
+	if(i < ROWS-1 && board[i+1][j].isfiller) {
 		//check to see if card is already there, discuss what to mark terrain
-		board[xcoord+1][ycoord].a_top = card->getBot();
-		board[xcoord+1][ycoord].a_top = board[xcoord][ycoord].getBot();
+		board[i+1][j].a_top = card->getBot();
+        possibleMoves[i+1][j] = true;
 	}
 	
 	//Marking space on left
-	if(ycoord > 0 && board[xcoord][ycoord-1].getTop() == 'o') {
+	if(j > 0 && board[i][j-1].isfiller) {
 		//check to see if card is already there, discuss what to mark terrain
-		board[xcoord][ycoord-1].a_right = card->getLeft();
-		board[xcoord][ycoord-1].a_right = board[xcoord][ycoord].getLeft();
+		board[i][j-1].a_right = card->getLeft();
+        possibleMoves[i][j-1] = true;
 	}
 	
 	//Marking space on right
-	if(ycoord < ROWS && board[xcoord][ycoord+1].getTop() == 'o') {
+	if(j < COLS-1 && board[i][j+1].isfiller) {
 		//check to see if card is already there, discuss what to nark terrain
-		board[xcoord][ycoord+1].a_left = card->getRight();
-		board[xcoord][ycoord+1].a_left = board[xcoord][ycoord].getRight();
+		board[i][j+1].a_left = card->getRight();
+        possibleMoves[i][j+1] = true;
 	}	
 }
 
@@ -194,7 +186,7 @@ void Board::printBoard() {
         }
         cout << endl;
     }
-    
+  
     // print possibleMoves array underneath the board!
     cout << "\nPOSSIBLE MOVES: " << endl;
     for(int i = 0; i < ROWS; i++) {
@@ -203,7 +195,6 @@ void Board::printBoard() {
         }
         cout << endl;
     }
-
     
 }
 

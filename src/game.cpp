@@ -6,9 +6,10 @@ using namespace std;
 Game::Game() {
     
     isActive = OFF;
-    board = new Board();                   // the board
-    player_one = new Player(board, deck);      // player 1 knows about the board
-    player_two = new Player(board, deck);      // player 2 knows about the board
+    deck = new Deck();
+    board = new Board(deck->drawCard());                   // the board
+    player_one = new Player( board );      // player 1 knows about the board
+    player_two = new Player( board );      // player 2 knows about the board
     current_turn = true; // player 1's turn
 }
 
@@ -32,20 +33,20 @@ void Game::endGame() {
    // this->~Game();      // delete the game
 }
 
-void Game::playTurn(){
+void Game::giveCard() {
     
     if( current_turn && player_one->hasCard == false && player_two->hasCard == false) {             // player one makes a move
         cout << "player_one to draw card:" << endl;
-        player_one->drawCard();
+        player_one->takeCard();
     }
     else if ( !current_turn && player_one->hasCard == false && player_two->hasCard == false) {
         cout << "player_two to draw card:" << endl;
-        player_two->drawCard();          // player two makes a move
+        player_two->takeCard();          // player two makes a move
     }
     
 }
 
-void Game::playTurn(int i, int j) {
+void Game::giveTurn(int i, int j) {
 
     
     if( current_turn && player_one->hasCard == true)  {            // player one makes a move

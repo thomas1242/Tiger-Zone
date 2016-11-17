@@ -15,18 +15,18 @@
 class Game {
     
     private:
+        Board * board;
+        Deck * deck;
         Player * player_one;
         Player * player_two;
-        Board * board;
-        Deck * deck; 
         bool current_turn;          // true if one's turn, false if two's turn
         bool isActive;              // is game over
     
     public:
         Game();
-        ~Game();   
-        void playTurn();
-        void playTurn(int i, int j);
+        ~Game();
+        void giveCard();
+        void giveTurn(int i, int j);
         void startGame();
         void endGame();
         bool status();

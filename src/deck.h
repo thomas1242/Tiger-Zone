@@ -1,3 +1,4 @@
+
 #ifndef deck_h
 #define deck_h
 
@@ -20,7 +21,7 @@ class Deck {
         Deck();							// Deck constructor
         ~Deck();
         string getDeckString();			// return string with num cards left in deck (for the GUI)
-        int drawCard();                 // pop old card off the deck, return new top card's id, increment count id
+        Card* drawCard();                 // pop old card off the deck, return new top card's id, increment count id
         void printDeck();				// for debugging:print count of each card currently in the deck
         int getSize();
         bool isEmpty();                 // return # of cards in the deck (??? Kurt - do you want int?)
@@ -28,7 +29,7 @@ class Deck {
     private:
         int numCardsInDeck;			    // total nubmer of cards currently in the deck
         int counts[UNIQUECARDS];	    // count of each card currently in the deck
-        stack< int > deck;              // stack of card ids
+        stack<Card*> deck;              // stack of card ids
         
 };
 

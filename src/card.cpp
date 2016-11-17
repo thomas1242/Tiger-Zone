@@ -5,12 +5,17 @@ using namespace std;
 
 Card::Card() {
     id = -1;            // set id = -1, this card is an instance of open space on the board
-<<<<<<< HEAD
    
     top = 'n';         // filler cards do not have true tblr values. Sides = "null".
     bot = 'n';
     left = 'n';
     right = 'n';
+    T_R = 'n';
+    T_L = 'n';
+    B_R = 'n';
+    B_L = 'n';
+    mid = 'n';
+
 
 	a_top = 'o';		// filler sides are open
 	a_bot = 'o';
@@ -18,30 +23,16 @@ Card::Card() {
 	a_right = 'o';
 
     isfiller = true;	// Card initialized without id is a filler card
-=======
-    top = 'o';          // this card is free space
-    bot = 'o';
-    left = 'o';
-    right = 'o';
-    top_R = 'o';
-    top_L = 'o';
-    mid_R = 'o';
-    mid_L = 'o';
-    bot_R = 'o';
-    bot_L = 'o';
-    mid = 'o';
     orientation = 0;
->>>>>>> sfmlBranch
+    isden = 0;
+    endtrail = 0;
 }
 
-Card::Card(int id) {
-    this->id = id;          // set this cards id
+Card::Card(int inputid) {
+    id = inputid;           // set this cards id
     assignSides(id);        // set default sides corresponding to this card type
-<<<<<<< HEAD
     isfiller = false;		// Card initialized with id is a real card
-=======
     orientation = 0;
->>>>>>> sfmlBranch
 }
 
 void Card::rotate() {   // rotate card 90 degrees clockwise
@@ -71,7 +62,7 @@ void Card::assignSides(int id) {
     	id == 23 || id == 10 || id == 13) {          				// card with jungle top
         top = 'j';
     }
-    else if (id == 7 || id == 16) {                  				// card with g-t top
+    else if (id == 7 || id == 16) {                  				// card with game-trail top
         top = 'g';
     }
     else {                                           				// card with lake top
@@ -83,14 +74,11 @@ void Card::assignSides(int id) {
     	|| id == 9 || id == 20 || id == 1 || id == 23) {        	// card with lake right
         right = 'l';
     }
-<<<<<<< HEAD
-    else if (id == 15 || id == 22 || 
-    			id == 14 || id == 0 || id == 3) {                   // card with g-t right
+
+    else if (id == 15 || id == 22 || id == 14 || id == 0 
+                || id == 3 || id == 13 || id == 16) {               // card with game-trail right
         right = 'g';
-=======
-    else if (id == 15 || id == 22 || id == 14 || id == 0 || id == 3 || id == 13 || id == 16) {                          // card with road right
-        right = 'r';
->>>>>>> sfmlBranch
+
     }
     else {                                                          // card with jungle right
         right = 'j';
@@ -104,7 +92,7 @@ void Card::assignSides(int id) {
              || id == 23 || id == 4 || id == 8 || id == 3) {        // card with jungle bot
         bot = 'j';
     }
-    else {                                                          // card with g-t bot
+    else {                                                          // card with game-trail bot
         bot = 'g';
     }
     
@@ -114,20 +102,19 @@ void Card::assignSides(int id) {
     	|| id == 22 || id == 1 || id == 23 || id == 4) {          	// card with lake left
         left = 'l';
     }
+
     else if (id == 11 || id == 0 || id == 3 || id == 10 
-    			|| id == 13 || id == 16) {    						// card with g-t left
+    			|| id == 13 || id == 16) {    						// card with game-trail left
         left = 'g';
     }
     else {                                                          // card with jungle left
         left = 'j';
     }
     
-<<<<<<< HEAD
    	a_top = 'n';		// filler sides do not exist
 	a_bot = 'n';
 	a_left = 'n';
 	a_right = 'n';
-=======
     
     //temp
     top_R = 'o';
@@ -136,9 +123,7 @@ void Card::assignSides(int id) {
     mid_L = 'o';
     bot_R = 'o';
     bot_L = 'o';
-    mid = '0';
-    
->>>>>>> sfmlBranch
+    mid = 'o';
 }
 
 char Card::getTop() {

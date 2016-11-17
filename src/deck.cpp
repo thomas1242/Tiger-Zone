@@ -15,56 +15,42 @@ using namespace std;
 // Deck constructor
 Deck::Deck() {
     
-    numCardsInDeck = -1;    					// -1 beca (????)
+    numCardsInDeck = 0;    					
     for(int i = 0; i < UNIQUECARDS; i++) {	 	// initally 0 cards in the deck
         counts[i] = 0;
     }
-<<<<<<< HEAD
-    int maxCounts[] = { 3, 1, 2, 3, 2, 3, 3, 8, 5, 1, 9, 3, 3, 4, 3, 3, 1, 4, 1, 1, 2, 2, 2, 2 };
-    srand(time(NULL));
-    Card card;
-=======
+
     int maxCounts[] = { 3, 1, 2, 3, 2, 3, 3, 8, 5, 1, 9, 3, 3, 4, 3, 3, 1, 4, 1, 2, 2, 2, 2, 2 };
     srand (time(NULL));
-    int card;
->>>>>>> sfmlBranch
+    int id;
+
     for(int i = 0; i < MAXCARDS; i++) {   // put 71 cards into the deck
         do{
-            card = rand() % 24;                                // generate random card
-        } while ( counts[ card.getId() ] >= maxCounts[ card.getId() ] );       // only use cards we need
+            id = rand() % 24;                                // generate random card
+        } while ( counts[id] >= maxCounts[id] );       // only use cards we need
         
-        deck.push( card.getId() );	// put the card in the deck
-        counts[ card.getId() ]++;
+        deck.push( new Card(id) );	// put the card in the deck
+        counts[id]++;
         numCardsInDeck++;
     }
-    deck.push( 3 );         // push center card on top of the deck
+    deck.push( new Card(3) );         // push center card on top of the deck
     numCardsInDeck++;
 }
 
 // pop old top card off the deck, return new top card's id to the player who drew the card
-int Deck::drawCard() {
+Card* Deck::drawCard() {
     
     numCardsInDeck--;
 
-    if(numCardsInDeck == 0) {
+    if(isEmpty()) {
         cout << "empty" << endl;
-        return 1;
+        return null;
     }
     
-    int top = deck.top();       // id of new top card (the card to be placed)
+    Card* top = deck.top();       // id of new top card (the card to be placed)
     deck.pop();
     cout << "card " << top << " drawn from the deck, " << numCardsInDeck <<" cards left." << endl;
     return top;                 // return id of top card
-    
-}
-
-// convert int to string to create score string
-string Deck::getDeckString() {
-    
-    ostringstream oss;
-    oss << numCardsInDeck;
-    string s = "cards left: " + oss.str();
-    return s;
     
 }
 
