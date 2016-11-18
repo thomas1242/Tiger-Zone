@@ -1,0 +1,64 @@
+(scanning in spiral from center of possible moves matrix
+
+start at possiblemoves[size][size]
+
+while(looping possiblemoves[][]) {
+	
+	1temporary_array[4]; // contains a_side values of tile
+	2temp_array[4];		 // contains side values for current card
+	moves list validmoves;	 // list of coordinates and orientations for valid moves
+
+	class moves {
+		int icoord;
+		int jcoord;
+		int possibleorientations[4];
+	}
+
+
+	if(possiblemoves == 1) {
+			
+		1temporary_array[1] = tile.a_top
+		1temporary_array[2] = tile.a_right
+		1temporary_array[3] = tile.a_bot
+		1temporary_array[4] = tile.a_left
+
+
+//flags hasjungle, hasgametrail, etc
+
+		if (no tile terrain flags don't match card's terrain flags) {
+			keep looping;
+		}
+
+		else {
+
+			i = 0;
+			valid = 0;
+
+			while (i<4) {
+				2temp_array[1] = card.top
+				2temp_array[2] = card.right
+				2temp_array[3] = card.bot
+				2temp_array[4] = card.left
+
+				if(array2=array1) {
+					valid =1;
+					store coordinates in moves.xcoord
+					store card.orientation in moves.possibleorientations
+				}
+
+				else {
+					rotate;
+				}
+
+				i++;
+			}
+
+			increment validmoves to next moves;
+		}
+}
+
+delete or clear the following:
+
+	1temporary_array[4]; // contains a_side values of tile
+	2temp_array[4];		 // contains side values for current card
+	moves list validmoves;	 // list of coordinates and orientations for valid moves
