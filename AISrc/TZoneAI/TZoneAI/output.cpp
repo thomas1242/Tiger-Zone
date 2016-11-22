@@ -6,4 +6,14 @@
 //  Copyright © 2016 Evan Amstutz. All rights reserved.
 //
 
-#include "output.hpp"
+
+#include <iostream>
+#include <string>
+#include "classes.h"
+using namespace std;
+
+void Output::outputFunc(){
+    if (Input::tournyStart == true) {
+        cout << "JOIN" << tournamentPass;
+    }
+}

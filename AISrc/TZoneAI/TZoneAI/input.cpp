@@ -7,16 +7,16 @@
 //
 
 #include <iostream>
-#include <cstring>
+#include <string>
+#include "classes.h"
 using namespace std;
 
-class Input{
-    
-    
-};
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "test!\n";
-    return 0;
+void Input::takeInput(){
+    tournyStart = false;
+    cin >> inputString;
+    
+    if(inputString == "THIS IS SPARTA!"){
+        tournyStart = true;
+    }
 }

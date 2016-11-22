@@ -27,6 +27,7 @@
 		367ECBC71DE4DEDC0099F94A /* TZoneAI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TZoneAI; sourceTree = BUILT_PRODUCTS_DIR; };
 		367ECBCA1DE4DEDC0099F94A /* input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = input.cpp; sourceTree = "<group>"; };
 		367ECBD11DE4E3FD0099F94A /* output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = output.cpp; sourceTree = "<group>"; };
+		367ECBD71DE504370099F94A /* classes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = classes.h; path = ../classes.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +60,7 @@
 		367ECBC91DE4DEDC0099F94A /* TZoneAI */ = {
 			isa = PBXGroup;
 			children = (
+				367ECBD71DE504370099F94A /* classes.h */,
 				367ECBCA1DE4DEDC0099F94A /* input.cpp */,
 				367ECBD11DE4E3FD0099F94A /* output.cpp */,
 			);
