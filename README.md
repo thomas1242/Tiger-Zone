@@ -4,7 +4,7 @@
 
 
 
-If you use GUI instead of terminal 
+If you want to use GUI instead of terminal 
 
 http://www.sfml-dev.org/tutorials/2.4/
 
