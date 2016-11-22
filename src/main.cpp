@@ -7,7 +7,8 @@ using namespace std;
 
 int main() {
     
-    Game * game = new Game();               // create the game
+    Game * game1 = new Game();               // create the game
+    Game * game2 = new Game();               // create the game
     cout << "past game"  << endl;
     game->startGame();
     int row, col;

@@ -4,7 +4,21 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <list>
 using namespace std;
+
+Coords::Coords(int i, int j) {
+	icoord = i;
+	jcoord = j;
+}
+
+Moves::Moves(int i, int j) {
+    icoord = i;
+    jcoord = j;
+    for (int i = 0; i < 4; i++) {
+        possibleorientations[i] == 0;
+    }
+}
 
 Board::Board(Card * card) {                        // board constructor
     
@@ -27,7 +41,7 @@ bool Board::placeCard(int i, int j, Card* card) {
     }
     
     // before placing this card on the board, make sure the location is valid
-    if( !(board[i][j].isfiller) ) {
+    if( board[i][j].getId() != -1 ) {
        cout << "Cannot place card " << card->getId() << " at (" << i << ',' << j << ']' << endl;
        return false;
     }
@@ -49,7 +63,27 @@ bool Board::placeCard(int i, int j, Card* card) {
 }
     
 
-// bool place meeple()
+void Board::updatePossibleMoves(Card * card) { // possible moves based on board state and current card
+	Moves temp;
+	bool works = false;
+	temp.icoord = markedtile.back().icoord;
+	temp.jcoord = markedtile.back().jcoord;
+	for(int i = 0; i < 4; i++) {
+		if(checkiffits == true) {
+			possibleorientations[i] = 1;
+			works = true;
+		}
+		rotate();
+	}
+
+	if(works == false) {
+		delete temp;
+	}
+
+	else {
+		possiblemoves.push_back(temp);
+	}
+}
 
 /*
 void Board::updatePossibleMoves(Card * card) { // possible moves based on board state and current card
@@ -100,12 +134,18 @@ void Board::updatePossibleMoves(Card * card) { // possible moves based on board 
 }
 */
 
+Moves temp;
+    temp.icoord = i;
+    temp.jcoord = j;
+
+ if(result == false) {
+        delete temp;
+    }
+
 bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
     
     bool result = true;
-    
     // check that the sides match OR are next to open space
-    
     // there is no tile above, tile above matches the top, tile above is open space
     if(i == 0 || card->getTop() == board[i-1][j].getBot() || board[i-1][j].getBot() == 'o') {              // check top side
         result = false;
@@ -122,38 +162,46 @@ bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
     if(j == 0 || card->getLeft() == board[i][j-1].getRight() || board[i][j-1].getRight() == 'o') {         // check left side
         result = false;
     }
-    
+
     return result;
 }
 
 // Mark available spots for the board
 void Board::markavail(int i, int j, Card* card) {
 	//Marking space above
-	if(i > 0 && board[i-1][j].isfiller) {			
-		//check to see if card is already there, discuss how to mark terrain
-		board[i-1][j].a_bot = card->getTop();
-        possibleMoves[i-1][j] = true;
+	if(i > 0) {
+        //check to see if card is already there
+        if(board[i-1][j].getId() == -1) {
+            Coords temp(i-1,j);
+            markedtiles.push_back(temp);
+        }			
 	}	
 
 	//Marking space below
-	if(i < ROWS-1 && board[i+1][j].isfiller) {
-		//check to see if card is already there, discuss what to mark terrain
-		board[i+1][j].a_top = card->getBot();
-        possibleMoves[i+1][j] = true;
+	if(i < ROWS-1) {
+        //check to see if card is already there
+        if(board[i+1][j].getId() == -1) {
+            Coords temp(i+1,j);
+            markedtiles.push_back(temp);
+        }
 	}
 	
 	//Marking space on left
-	if(j > 0 && board[i][j-1].isfiller) {
-		//check to see if card is already there, discuss what to mark terrain
-		board[i][j-1].a_right = card->getLeft();
-        possibleMoves[i][j-1] = true;
+	if(j > 0) {
+        //check to see if card is already there
+        if(board[i][j-1].getId() == -1) {
+            Coords temp(i,j-1);
+            markedtiles.push_back(temp);
+        }
 	}
 	
 	//Marking space on right
-	if(j < COLS-1 && board[i][j+1].isfiller) {
-		//check to see if card is already there, discuss what to nark terrain
-		board[i][j+1].a_left = card->getRight();
-        possibleMoves[i][j+1] = true;
+	if(j < COLS-1) { 
+        //check to see if card is already there
+        if(board[i][j+1].getId() == -1) {
+            Coords temp(i,j+1);
+            markedtiles.push_back(temp);
+        }
 	}	
 }
 
@@ -162,7 +210,7 @@ void Board::markavail(int i, int j, Card* card) {
     ML  MID  MR
     BL  BOT  BR   */
 void Board::printBoard() {
-    cout << "\nTHE BOARD: " << endl;
+  /*  cout << "\nTHE BOARD: " << endl;
     for(int i = 0; i < ROWS; i++) {           	// for each row
         for(int n = 0; n < 3; n++) {        	// 3 'rows' per row
             for(int j = 0; j < COLS; j++) {   	// for each col
@@ -194,38 +242,10 @@ void Board::printBoard() {
             cout << ' ' << possibleMoves[i][j] << "  ";
         }
         cout << endl;
-    }
+    }*/
     
 }
 
 Card Board::getCard(int i, int j) {
     return board[i][j];
 }
-
-bool Board::checkPossibleMove(int i, int j) {
-    return possibleMoves[i][j];
-}
-
-bool * Board::getPossibleMoves() {
-    return (bool*)possibleMoves;
-}
-
-bool Board::isPossibleMove() {
-    for(int i = 0; i < ROWS; i++) {
-        for(int j = 0; j < COLS; j++) {
-            if(possibleMoves[i][j] == true) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-
-
-
-
-
-
-
-

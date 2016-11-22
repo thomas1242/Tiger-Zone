@@ -5,27 +5,21 @@ using namespace std;
 
 Card::Card() {
     id = -1;            // set id = -1, this card is an instance of open space on the board
-   
+    orientation = 0;
+    isden = 0;
+    endtrail = 0;   
+
     top = 'n';         // filler cards do not have true tblr values. Sides = "null".
     bot = 'n';
     left = 'n';
     right = 'n';
+/*
     T_R = 'n';
     T_L = 'n';
     B_R = 'n';
     B_L = 'n';
     mid = 'n';
-
-
-	a_top = 'o';		// filler sides are open
-	a_bot = 'o';
-	a_left = 'o';
-	a_right = 'o';
-
-    isfiller = true;	// Card initialized without id is a filler card
-    orientation = 0;
-    isden = 0;
-    endtrail = 0;
+*/
 }
 
 Card::Card(int inputid) {
@@ -111,17 +105,13 @@ void Card::assignSides(int id) {
         left = 'j';
     }
     
-   	a_top = 'n';		// filler sides do not exist
-	a_bot = 'n';
-	a_left = 'n';
-	a_right = 'n';
-    
-    //temp
+/*
     T_R = 'o';
     T_L = 'o';
     B_R = 'o';
     B_L = 'o';
     mid = 'o';
+*/
 }
 
 char Card::getTop() {
@@ -144,6 +134,7 @@ int Card::getOrient() {
     return orientation;
 }
 
+/*
 char Card::getT_L(){
     return T_L;
 }
@@ -163,3 +154,4 @@ char Card::getB_L(){
 char Card::getB_R(){
     return B_R;
 }
+*/
