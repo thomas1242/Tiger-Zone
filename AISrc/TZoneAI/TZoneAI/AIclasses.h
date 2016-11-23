@@ -10,7 +10,6 @@
 #define Header_h
 #include <string>
 using namespace std;
-
 class Input{
 public:
     int score;          //AI' current score
@@ -22,8 +21,8 @@ public:
     string tile;        //top tile
     string tiles;       //list of shuffled tiles
     
-    Input();
-    ~Input();
+    
+    
     
 private:
     int challenges;     //number of challenges in tournament
@@ -55,5 +54,6 @@ private:
     void outputFunc();      //prints all outputs
     
 };
+
 
 #endif /* Header_h */

@@ -9,11 +9,11 @@
 
 #include <iostream>
 #include <string>
-#include "classes.h"
+#include "AIclasses.h"
 using namespace std;
 
 void Output::outputFunc(){
-    if (Input::tournyStart == true) {
+    if (Input::returnBools() == true) {
         cout << "JOIN" << tournamentPass;
     }
 }
