@@ -8,15 +8,28 @@
 
 #include <iostream>
 #include <string>
-#include "AIclasses.h"
+#include "inout.h"
 using namespace std;
 
 
 void Input::takeInput(){
-    tournyStart = false;
-    cin >> inputString;
     
-    if(inputString == "THIS IS SPARTA!"){
+    getline(cin, message);
+    
+    
+        
+    if(message == "THIS IS SPARTA!"){
         tournyStart = true;
+        message = "";
     }
+    
+    if(message == "HELLO!") {
+        signin = true;
+        message = "";
+    }
+    
+    if (message == "END OF CHALLENGES") {
+        noInput = true;
+    }
+    
 }

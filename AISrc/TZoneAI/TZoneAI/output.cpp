@@ -9,11 +9,16 @@
 
 #include <iostream>
 #include <string>
-#include "AIclasses.h"
+#include "inout.h"
 using namespace std;
 
 void Output::outputFunc(){
-    if (Input::returnBools() == true) {
-        cout << "JOIN" << tournamentPass;
+    if (tournyStart == true) {
+        cout << "JOIN " << tournamentPass << "\n";
+        tournyStart = false;
+    }
+    if (signin == true) {
+        cout << "I AM "<< username << " " << passwordUser << "\n";
+        signin = false;
     }
 }

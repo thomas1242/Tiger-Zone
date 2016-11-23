@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		367ECBCB1DE4DEDC0099F94A /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 367ECBCA1DE4DEDC0099F94A /* input.cpp */; };
 		367ECBD31DE4E3FD0099F94A /* output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 367ECBD11DE4E3FD0099F94A /* output.cpp */; };
+		36F279241DE5CD4D00B27B3B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36F279231DE5CD4D00B27B3B /* main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,7 +28,8 @@
 		367ECBC71DE4DEDC0099F94A /* TZoneAI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TZoneAI; sourceTree = BUILT_PRODUCTS_DIR; };
 		367ECBCA1DE4DEDC0099F94A /* input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = input.cpp; sourceTree = "<group>"; };
 		367ECBD11DE4E3FD0099F94A /* output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = output.cpp; sourceTree = "<group>"; };
-		367ECBDA1DE52D990099F94A /* AIclasses.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AIclasses.h; sourceTree = "<group>"; };
+		367ECBDA1DE52D990099F94A /* inout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = inout.h; sourceTree = "<group>"; };
+		36F279231DE5CD4D00B27B3B /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +64,8 @@
 			children = (
 				367ECBCA1DE4DEDC0099F94A /* input.cpp */,
 				367ECBD11DE4E3FD0099F94A /* output.cpp */,
-				367ECBDA1DE52D990099F94A /* AIclasses.h */,
+				367ECBDA1DE52D990099F94A /* inout.h */,
+				36F279231DE5CD4D00B27B3B /* main.cpp */,
 			);
 			path = TZoneAI;
 			sourceTree = "<group>";
@@ -126,6 +129,7 @@
 			files = (
 				367ECBD31DE4E3FD0099F94A /* output.cpp in Sources */,
 				367ECBCB1DE4DEDC0099F94A /* input.cpp in Sources */,
+				36F279241DE5CD4D00B27B3B /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

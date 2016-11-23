@@ -15,14 +15,14 @@ public:
     int score;          //AI' current score
     int opponentScore;  //oppenent's current score
     
-    static bool tournyStart;   //lets output know to submit tourney passw
+    bool tournyStart = false;   //lets output know to submit tourney passw
     bool signin = false;        //output should sign in
+    bool noInput = false;
     
     string tile;        //top tile
     string tiles;       //list of shuffled tiles
     
-    
-    
+    void takeInput();   //takes in the server input
     
 private:
     int challenges;     //number of challenges in tournament
@@ -33,26 +33,22 @@ private:
     string rid;         //round id
     string timePlan;    //time to plan before game starts
     string timeMove;    //time to make move
-    string inputString; //saves string input
-    
-    void takeInput();   //takes in the server input
-    
+    string message;     //saves input to a string
 };
 
-class Output{
+class Output : public Input{
 public:
     int xcoord;             //x coordinate for tile placement
     int ycoord;             //y coordinate for tile placement
     int orientation;        //either 0, 90, 180, or 270
     int zone;               //where to place tiger in 3x3 grid
     
-private:
-    string tournamentPass = "cats suck";  //password to get in tournament
-    string username;        //AI's username
-    string passwordUser;    //AI's password
-    
     void outputFunc();      //prints all outputs
     
+private:
+    string tournamentPass = "cats suck";  //password to get in tournament
+    string username = "groupH";        //AI's username
+    string passwordUser = "c++ sucks";    //AI's password
 };
 
 
