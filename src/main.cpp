@@ -10,14 +10,14 @@ int main() {
     Game * game1 = new Game();               // create the game
     Game * game2 = new Game();               // create the game
     cout << "past game"  << endl;
-    game->startGame();
+    game1->startGame();
     int row, col;
     int choice = 0;
-    while ( game->status() == ON )  // Start the game loop
+    while ( game1->status() == ON )  // Start the game loop
     {      
-        game->giveCard();   // draw a card if the player needs    
+        game1->giveCard();   // draw a card if the player needs    
 
-        if ( game->getCurrTurn() ) { cout << "player 1's turn" << endl; }
+        if ( game1->getCurrTurn() ) { cout << "player 1's turn" << endl; }
         else                       { cout << "player 2's turn" << endl; }
         cout << "Enter '1' to place a card on the board" << endl;
         cin >> choice;
@@ -27,7 +27,7 @@ int main() {
             cin >> row;
             cout << "col? ";
             cin >> col;
-            game->giveTurn(row, col);
+            game1->giveTurn(row, col);
             
             choice = 0;
         }

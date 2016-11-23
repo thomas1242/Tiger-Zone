@@ -29,11 +29,14 @@ Board::Board(Card * card) {                        // board constructor
     }
 
     cout << "Put center card on new board" << endl;
-    possibleMoves[ROWS/2][COLS/2] = true;                        // mark center location available
+    Moves temp(ROWS/2, COLS/2);
+    possibleMoves.push_back(temp);
     bool result = placeCard(ROWS/2, COLS/2, card );        // place center card on the board
 }
     
-
+/*******************************************************************************************
+    needs input argument to specify rotation
+********************************************************************************************/
 bool Board::placeCard(int i, int j, Card* card) {
     
     if(i < 0 || j < 0 || i >= ROWS || j >= COLS) {  // for GUI, if user clicks out of bounds
@@ -63,25 +66,23 @@ bool Board::placeCard(int i, int j, Card* card) {
 }
     
 
-void Board::updatePossibleMoves(Card * card) { // possible moves based on board state and current card
-	Moves temp;
+bool Board::updatePossibleMoves(Card * card) { // possible moves based on board state and current card
+	Moves temp(markedtiles.back().icoord, markedtiles.back().jcoord);
 	bool works = false;
-	temp.icoord = markedtile.back().icoord;
-	temp.jcoord = markedtile.back().jcoord;
 	for(int i = 0; i < 4; i++) {
-		if(checkiffits == true) {
-			possibleorientations[i] = 1;
+		if(checkIfFits(markedtiles.back().icoord, markedtiles.back().jcoord, card) == true) {
+			temp.possibleorientations[i] = 1;
 			works = true;
 		}
-		rotate();
+		card->rotate();
 	}
 
 	if(works == false) {
-		delete temp;
+		return false;
 	}
 
 	else {
-		possiblemoves.push_back(temp);
+		possibleMoves.push_back(temp);
 	}
 }
 
@@ -112,35 +113,8 @@ void Board::updatePossibleMoves(Card * card) { // possible moves based on board 
     
     for(int i = 0; i < ROWS; i++) {
         for(int j = 0; j < COLS; j++) {
-            if( possibleMoves[i][j] == true ) { // if this spot is potentially valid (it's adjacent to another tile)
-                int n = 1;
-                while(n <= 4) {                          // 0, 90, 180, 270
-                    if(checkIfFits(i, j, card)) {
-                        break;
-                    }
-                    card->rotate();
-                    n++;
-                }
-                if( n > 4) {
-                    possibleMoves[i][j] = false;;
-                }
-                else {
-                    possibleMoves[i][j] = true;
-                }
-            }
-        }
-    }
-
-}
-*/
-
-Moves temp;
-    temp.icoord = i;
-    temp.jcoord = j;
-
- if(result == false) {
-        delete temp;
-    }
+            if( possibleMoves[i][j] == true ) { // if this spot is potentially valid (it's a
+*/  
 
 bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
     

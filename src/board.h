@@ -38,6 +38,7 @@ public:
         void markavail(int xcoord, int ycoord, Card* card); // Marks available tile
         bool placeCard(int i, int j, Card* card);      	    // place a card onto the board
         Card getCard(int i, int j);
+        bool updatePossibleMoves(Card * card);
 
     
     private:

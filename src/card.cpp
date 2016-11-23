@@ -25,8 +25,9 @@ Card::Card() {
 Card::Card(int inputid) {
     id = inputid;           // set this cards id
     assignSides(id);        // set default sides corresponding to this card type
-    isfiller = false;		// Card initialized with id is a real card
     orientation = 0;
+    isden = 0;
+    endtrail = 0;
 }
 
 void Card::rotate() {   // rotate card 90 degrees clockwise
