@@ -7,12 +7,12 @@
 #include <list>
 using namespace std;
 
-Coords::Coords(int i, int j) {
+Board::Coords(int i, int j) {
 	icoord = i;
 	jcoord = j;
 }
 
-Moves::Moves(int i, int j) {
+Board::Moves(int i, int j) {
     icoord = i;
     jcoord = j;
     for (int i = 0; i < 4; i++) {
@@ -29,7 +29,9 @@ Board::Board(Card * card) {                        // board constructor
     }
 
     cout << "Put center card on new board" << endl;
-    Moves temp(ROWS/2, COLS/2);
+    Moves temp;
+    temp.icoord = ROWS/2;
+    temp.jcoord = COLS/2;
     possibleMoves.push_back(temp);
     bool result = placeCard(ROWS/2, COLS/2, card );        // place center card on the board
 }

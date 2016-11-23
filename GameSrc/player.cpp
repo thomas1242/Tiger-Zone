@@ -18,7 +18,7 @@ void Player::takeCard() {
     currCard = theDeck->drawCard();                  // draw new card id from the deck
     theBoard->updatePossibleMoves( currCard );
     
-    while(theBoard->isPossibleMove() == false ) {
+    while(theBoard->possibleMoves.empty()) {
         cout << "Cannot place card " << currCard->getId() << ". Discarded." << endl;
         delete currCard;                                // Card is discarded
         currCard = theDeck->drawCard();                 // draw new card id from the deck
@@ -33,7 +33,10 @@ void Player::takeCard() {
 
 bool Player::takeTurn(int i, int j) {
     bool res = false;
-    if( theBoard->checkPossibleMove(i, j) ) {
+
+    // This is incomplete with new implementation!
+    // This is just taking first move rn.
+    if( theBoard->possibleMoves.begin()->possibleorientations[0] == 1) {
         res = theBoard->placeCard(i, j, currCard);
         hasCard = false;
     }
