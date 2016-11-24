@@ -5,34 +5,14 @@
 #include <list>
 #include "card.h"
 #include "deck.h"
+#include "moves.h"
+#include "coords.h"
 
 #define ROWS  11 //MAXCARDS*2+1
 #define COLS  11 //MAXCARDS*2+1
 
 class Board {
 public:
-        struct Coords {
-        public:    
-            int icoord;
-            int jcoord;
-
-            Coords();
-            Coords(int i, int j);
-            ~Coords();
-        };
-
-        struct Moves {
-        public:    
-            int icoord;
-            int jcoord;
-            bool possibleorientations[4];    // 0=0, 1=90, 2=180, 3=270
-
-            Moves();
-            Moves(int i, int j);
-            ~Moves();
-        };
-
-
 
         Board(Card* card);                           		// board constructor
         void printBoard();                  				// print the state of the board

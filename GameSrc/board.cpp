@@ -1,27 +1,16 @@
 #include "board.h"
 #include "card.h"
 #include "deck.h"
+
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <list>
+
 using namespace std;
 
-Board::Coords(int i, int j) {
-	icoord = i;
-	jcoord = j;
-}
-
-Board::Moves(int i, int j) {
-    icoord = i;
-    jcoord = j;
-    for (int i = 0; i < 4; i++) {
-        possibleorientations[i] == 0;
-    }
-}
-
 Board::Board(Card * card) {                        // board constructor
-    
+
     board = new Card * [ROWS];              // board is initially all open space ( cards with id = -1 )
 
     for(int i = 0; i < ROWS; ++i) {
