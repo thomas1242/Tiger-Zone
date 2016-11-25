@@ -8,6 +8,8 @@
 #include "moves.h"
 #include "coords.h"
 
+using namespace std;
+
 #define ROWS  11 //MAXCARDS*2+1
 #define COLS  11 //MAXCARDS*2+1
 
@@ -21,7 +23,7 @@ public:
         bool placeCard(int i, int j, Card* card);      	    // place a card onto the board
         Card getCard(int i, int j);
         bool updatePossibleMoves(Card * card);
-        list<Moves> possibleMoves;      // 2D array which holds valid moves
+        list<Moves> possibleMoves;                          // 2D array which holds valid moves
 
     private:
         Card ** board;                  // will point to 2D array of Cards a.k.a. the board
@@ -30,3 +32,10 @@ public:
 
 
 #endif /* board_hpp */
+
+/*
+    LIST TRAVERSAL:
+        for (listname<type>::iterator iter = listname.begin(); iter != listname.end(); ++iter) {
+            do something with iter;
+        }
+*/

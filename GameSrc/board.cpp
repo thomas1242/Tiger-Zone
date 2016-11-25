@@ -175,40 +175,44 @@ void Board::markavail(int i, int j, Card* card) {
     ML  MID  MR
     BL  BOT  BR   */
 void Board::printBoard() {
-  /*  cout << "\nTHE BOARD: " << endl;
+  	cout << "\nTHE BOARD: " << endl;
     for(int i = 0; i < ROWS; i++) {           	// for each row
         for(int n = 0; n < 3; n++) {        	// 3 'rows' per row
             for(int j = 0; j < COLS; j++) {   	// for each col
                 if(n == 0) {
-                    cout << board[i][j].getT_L() << ' ' << board[i][j].getTop() << ' ' << board[i][j].getT_R() << ' ';
+                    cout << "   " << board[i][j].getTop() << "   ";
                 }
                 else if (n == 1) {
-                    cout << board[i][j].getLeft() << ' ' << board[i][j].getMid() << ' ' << board[i][j].getRight() << ' ';
+                    cout << board[i][j].getLeft() << ' ' << board[i][j].getId() << ' ' << board[i][j].getRight() << ' ';
                 }
                 else if (n == 2) {
-                    cout << board[i][j].getB_L() << ' ' << board[i][j].getBot() << ' ' << board[i][j].getB_R() << ' ';
+                    cout << "   " << board[i][j].getBot() << "   ";
                 }
                 cout << ' ';
             }
-            if( n == 1 ) {
+            /*if( n == 1 ) {
                 for(int k = 0; k < COLS; k++) {
                     cout << "  " << board[i][k].getId() << "  ";
                 }
-            }
+            }*/
            cout << endl;
         }
         cout << endl;
     }
-  
-    // print possibleMoves array underneath the board!
-    cout << "\nPOSSIBLE MOVES: " << endl;
-    for(int i = 0; i < ROWS; i++) {
-        for(int j = 0; j < COLS; j++) {
-            cout << ' ' << possibleMoves[i][j] << "  ";
-        }
-        cout << endl;
-    }*/
-    
+
+    cout << endl;
+    int i = 0; 
+  	for (list<Moves>::const_iterator iter = possibleMoves.begin(); iter != possibleMoves.end(); ++iter) {
+        cout << "Possible move #" << i << ": " << endl << "icoord: " << iter->icoord 
+        << endl << "jcoord: " << iter->jcoord << endl 
+        << "orientations: [" << iter-> possibleorientations[0] << ']'
+        << "[" << iter->possibleorientations[1] << ']'
+        << "[" << iter->possibleorientations[2] << ']'
+        << "[" << iter->possibleorientations[3] << ']' << endl << endl;
+        i++;
+ 	}
+ 	cout << endl;
+
 }
 
 Card Board::getCard(int i, int j) {
