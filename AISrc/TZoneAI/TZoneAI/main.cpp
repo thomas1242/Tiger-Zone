@@ -1,15 +1,9 @@
-//
-//  main.cpp
-//  TZoneAI
-//
-//  Created by Evan Amstutz on 11/23/16.
-//  Copyright © 2016 Evan Amstutz. All rights reserved.
-//
-
 #include <iostream>
 #include <string>
 #include "inout.h"
 using namespace std;
+//Until we have a makefile - to compile:
+//g++ -std=c++11 inout.h input.cpp output.cpp main.cpp
 
 int main(void){
     Output output;

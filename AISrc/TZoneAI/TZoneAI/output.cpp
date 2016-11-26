@@ -1,12 +1,3 @@
-//
-//  output.cpp
-//  TZoneAI
-//
-//  Created by Evan Amstutz on 11/22/16.
-//  Copyright © 2016 Evan Amstutz. All rights reserved.
-//
-
-
 #include <iostream>
 #include <string>
 #include "inout.h"
@@ -20,5 +11,14 @@ void Output::outputFunc(){
     if (signin == true) {
         cout << "I AM "<< username << " " << passwordUser << "\n";
         signin = false;
+    }
+    if (makeMove == true){
+        cout << "GAME " << game << " MOVE " << moveCount << " PLACE "
+        << tile << " AT " << xcoord << ycoord << orientation;
+        if(zone >= 0){  //Assuming zone < 0 is considered no tiger placement.
+          cout << " TIGER " << zone<< "\n";  //NEED SOMETHING HERE FOR CROCODILES
+        } else { cout << " NONE\n";}
+
+        makeMove = false;
     }
 }
