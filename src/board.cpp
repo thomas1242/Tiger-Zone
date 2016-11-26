@@ -72,7 +72,7 @@ bool Board::placeCard(int i, int j, Card * card) {
     
     if( card->getTop() == 'L')  {                                       // this card has lake face on top edge
        
-        if(i > 0 && board[i-1][j].botEdge->getType() == 'L') {          // card above has lake face on bot edge
+        if(i > 0 && board[i-1][j].botEdge->type == 'L') {          // card above has lake face on bot edge
             if(card->topEdge->l1 == card->l1) {     // which lake region does this cards top edge connect to
                 cout << "top has l1 connecting to side with id " << board[i-1][j].botEdge->l1->getId() << endl;
                 card->l1 = &lakes[ board[i-1][j].botEdge->l1->getId() ];
@@ -102,7 +102,7 @@ bool Board::placeCard(int i, int j, Card * card) {
     
     if( card->getBot() == 'L')  {                                       // this card has lake face on top edge
         
-        if(i < ROWS - 1 && board[i+1][j].topEdge->getType() == 'L') {          // card above has lake face on bot edge
+        if(i < ROWS - 1 && board[i+1][j].topEdge->type == 'L') {          // card above has lake face on bot edge
             if(card->botEdge->l1 == card->l1) {     // which lake region does this cards top edge connect to
                 cout << "bot has l1 connecting" << endl;
                 card->l1 = &lakes[ board[i+1][j].topEdge->l1->getId() ];
@@ -132,7 +132,7 @@ bool Board::placeCard(int i, int j, Card * card) {
 
     if( card->getLeft() == 'L')  {                                       // this card has lake face on top edge
         
-        if(j > 0 && board[i][j-1].rightEdge->getType() == 'L') {          // card above has lake face on bot edge
+        if(j > 0 && board[i][j-1].rightEdge->type == 'L') {          // card above has lake face on bot edge
             if(card->leftEdge->l1 == card->l1) {     // which lake region does this cards top edge connect to
                 cout << "left has l1 connecting to side with id " << board[i][j-1].rightEdge->l1->getId() << endl;
                 card->l1 = &lakes[ board[i][j-1].rightEdge->l1->getId() ];
@@ -162,7 +162,7 @@ bool Board::placeCard(int i, int j, Card * card) {
     
     if( card->getRight() == 'L')  {                                       // this card has lake face on top edge
         
-        if(j < COLS - 1 && board[i][j+1].leftEdge->getType() == 'L') {          // card above has lake face on bot edge
+        if(j < COLS - 1 && board[i][j+1].leftEdge->type == 'L') {          // card above has lake face on bot edge
             if(card->rightEdge->l1 == card->l1) {     // which lake region does this cards top edge connect to
                 cout << "right has l1 connecting" << endl;
                 card->l1 = &lakes[ board[i][j+1].leftEdge->l1->getId() ];
@@ -254,7 +254,7 @@ bool Board::placeCard(int i, int j, Card * card) {
 //    //
 //    if( card->getTop() == 'T' ) // card has trail top face
 //    {
-//        if(i > 0 && board[i-1][j].botEdge->getType() == 'T') {
+//        if(i > 0 && board[i-1][j].botEdge->type == 'T') {
 //            
 //            
 //            
@@ -266,7 +266,7 @@ bool Board::placeCard(int i, int j, Card * card) {
 //    
 //    if( card->getTop() == 'T') // card has trail top face
 //    {
-//        if(i > 0 && board[i-1][j].botEdge->getType() == 'T') { // card connects to a trail above
+//        if(i > 0 && board[i-1][j].botEdge->type == 'T') { // card connects to a trail above
 //           
 //            if(card->topEdge->t1 == card->t1) {                                // which trail region does it connect to
 //                card->t1 = &trails[ board[i-1][j].botEdge->t1->getId() ];
@@ -287,7 +287,7 @@ bool Board::placeCard(int i, int j, Card * card) {
 //            card->reConnect();
 //            cout << "trail id of top connecting card = " << board[i-1][j].botEdge->t1->getId() << endl;
 //        }
-//        else if (i > 0 && board[i-1][j].botEdge->getType() != 'T') {
+//        else if (i > 0 && board[i-1][j].botEdge->type != 'T') {
 //            if(card->topEdge->t1 == card->t1 && card->t1->getId() == 0) {                                // connects to nothing, make new trail
 //                newt1 = (newt1 == false)?false:true;
 //            }
@@ -456,7 +456,7 @@ bool Board::placeCard(int i, int j, Card * card) {
 //    //
 //    if( card->getTop() == 'T' ) // card has trail top face
 //    {
-//        if(i > 0 && board[i-1][j].botEdge->getType() == 'T') {
+//        if(i > 0 && board[i-1][j].botEdge->type == 'T') {
 //            
 //        }
 //    
@@ -466,7 +466,7 @@ bool Board::placeCard(int i, int j, Card * card) {
 //    
 //     if( card->getTop() == 'T') // card has trail top face
 //     {
-//         if(i > 0 && board[i-1][j].botEdge->getType() == 'T') { // card connects to a trail above
+//         if(i > 0 && board[i-1][j].botEdge->type == 'T') { // card connects to a trail above
 //             if(card->topEdge->t1 == card->t1) {                                // which trail region does it connect to
 //                 card->t1 = &trails[ board[i-1][j].botEdge->t1->getId() ];
 //                 newt1 = false;
@@ -486,7 +486,7 @@ bool Board::placeCard(int i, int j, Card * card) {
 //             card->reConnect();
 //             cout << "trail id of top connecting card = " << board[i-1][j].botEdge->t1->getId() << endl;
 //         }
-//         else if (i > 0 && board[i-1][j].botEdge->getType() != 'T') {
+//         else if (i > 0 && board[i-1][j].botEdge->type != 'T') {
 //             if(card->topEdge->t1 == card->t1 && card->t1->getId() == 0) {                                // connects to nothing, make new trail
 //                 newt1 = (newt1 == false)?false:true;
 //             }
