@@ -12,4 +12,4 @@ In another terminal:
 
 > make client 
 
->./client localhost
+>./client 127.0.0.1 1500
