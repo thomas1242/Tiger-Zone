@@ -9,18 +9,26 @@
 #include <string.h>
 using namespace std;
 
+/*argv[0] is the name of the executable*/
+/*argv[1] will be the IP address*/
+/*argv[2] will be the port number*/
+/*argv[3] will be the tournament password*/
+/*argv[4] will be our username*/
+/*argv[5] will be our password*/
+
 int main(int argc, char *argv[])
 {
-	int sock;
-	int portNumber = 1500;
 	struct sockaddr_in clientAddress;
-	struct hostent *host;
-	int dataLength = 100;
+	//struct hostent *host;
+	int dataLength = 1000;
 	char data[dataLength];
+
 	
+	int portNumber = atoi(argv[2]);		//converts string to integer to work with
+
 	//instantiate a new socket
-	
-	sock = socket(AF_INET, SOCK_STREAM, 0);		
+
+	int sock = socket(AF_INET, SOCK_STREAM, 0);		
 
 	if(sock < 0)				//confirm socket was created correctly
 	{
@@ -30,8 +38,9 @@ int main(int argc, char *argv[])
 
 	cout << "Socket successfully created" << endl;
 
-	host = gethostbyname(argv[1]);
-	memcpy(&clientAddress.sin_addr, host->h_addr, host->h_length);
+	//host = gethostbyname(argv[1]);
+	//memcpy(&clientAddress.sin_addr, host->h_addr, host->h_length);
+	clientAddress.sin_addr.s_addr = inet_addr(argv[1]);
 	clientAddress.sin_family = AF_INET; 			//specifies address for client
 	clientAddress.sin_port = htons(portNumber);		//translates port for host byte to network byte
 
@@ -48,19 +57,8 @@ int main(int argc, char *argv[])
 
 	//Once connected, wait to receive from the server
 
-	cout << "Looking for connection to server..." << endl;
+	cout << "tcp connection established" << endl;
 
-	
-/*
-	strcpy(data, "Connection established!");
-	sentData = send(sock, data, dataLength, 0);		//this will fill the data buffer with information from the server
-
-	if(sentData < 0)
-	{
-		cout << "failed to send data" << endl;
-		exit(1);
-	}
-*/
 	int sent, received;
 	while(1)
 	{

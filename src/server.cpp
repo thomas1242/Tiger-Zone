@@ -10,15 +10,14 @@ using namespace std;
 
 int main()
 {
-	int sock_client;
 	int portNumber = 1500;
 	struct sockaddr_in serverAddress;
-	int dataLength = 100;
+	int dataLength = 1000;
 	char data[dataLength];
 	
-	//instantiate a new socket...
+	/*instantiate a new socket...*/
 	
-	sock_client = socket(AF_INET, SOCK_STREAM, 0);		
+	int sock_client = socket(AF_INET, SOCK_STREAM, 0);		
 
 	if(sock_client < 0)				//confirm socket was created correctly
 	{
@@ -28,15 +27,16 @@ int main()
 
 	cout << "Socket successfully created" << endl;
 
-	serverAddress.sin_family = AF_INET; 			//specifies address for client
-	serverAddress.sin_port = htons(portNumber);	//translates port for host byte to network byte
-	serverAddress.sin_addr.s_addr = INADDR_ANY;
+	serverAddress.sin_family = AF_INET; 			//specifies address domain for client
+	serverAddress.sin_port = htons(portNumber);		//translates port for host byte to network byte
+	serverAddress.sin_addr.s_addr = INADDR_ANY;		//allows it to work with any connecting addresses
+
 	//serverAddress.sin_addr.s_addr = inet_addr("10.0.0.1");
 	//bzero(&serverAddress.sin_zero, 8);
 	
-	//Binding to address...
+	/*Binding to address...*/
 
-	socklen_t length = sizeof(serverAddress);		//same size as the clientAddress
+	socklen_t length = sizeof(serverAddress);	
 	int checkBinding = bind(sock_client, (struct sockaddr*)&serverAddress, length);
 
 	if(checkBinding < 0)
@@ -45,17 +45,17 @@ int main()
 		exit(1);
 	}
 
-	//now to listen for client connection...
+	/*now to listen for client connection...*/
 
 	int checkListening = listen(sock_client, 1);
 
-	//now to accept the client connection
+	/*now to accept the client connection*/
 
-	int sock_server, received, sent;
+	int sock_server;
 	sock_server = accept(sock_client, (struct sockaddr*)&serverAddress, &length);
 	if(sock_server != -1)
 	{
-		cout << "Connection found" << endl;
+		cout << "tcp connection established" << endl;
 	}
 
 	while(1)
