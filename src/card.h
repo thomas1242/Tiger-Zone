@@ -4,46 +4,59 @@
 #define card_h
 
 #include <stdio.h>
-
+#include "edge.h"
+//#include "trail.h"
+//#include "jungle.h"
+//#include "lake.h"
+#include <string>
+using namespace std;
 
 
 class Card {
     
-    private:
-        int id;                         	            // card identifier: what type of tile is this
-        int orientation;                                // degreees rotated clockwise, initally 0  
-        bool isden;                                     // states card is a den
-        bool endtrail;                                  // states card ends trail
-        char top, bot, left, right;     	            // l = lake, g = game-trail, j = jungle  
-/*        char T_L, T_R, B_L, B_R;                      // corner tiles
-        char mid;
-*/
+private:
     
-    public:
-        Card();             // construct null card ( id = 0 ). need this constructor for our board constructor
-        Card(int id);       // construct a Card a.k.a. an instance of a tile from the deck
-        void rotate();      // rotate card 90 degress clockwise
-        void assignSides(int id);
-        void printCard();
-        
-        int getId();
-        int getOrient( );
-        int getEndtrail();
-        char getTop();  // functions so other classes can have controlled access to private variables
-        char getBot();
-        char getRight();
-        char getLeft();
-/*        
-        char getT_L();
-        char getT_R();
-        char getB_L();
-        char getB_R();
-        char getMid();
-*/
+    string cardID;
+    int id;             // card identifier: what type of tile is this
+    int orientation;    // degreees rotated clockwise, initally 0
     
+
+    
+
+    
+    char mid; // might not need this
+    
+    
+public:
+    Card();             // construct null card ( id = 0 ). need this constructor for our board constructor
+    Card(int id);       // construct a Card a.k.a. an instance of a tile from the deck
+    void rotate();      // rotate card 90 degress clockwise
+    void assignSides();
+    void assignCardID();
+    void printCard();
+    
+    char getTop();  // functions so other classes can have controlled access to private variables
+    char getBot();
+    char getRight();
+    char getLeft();
+    char getMid();
+    
+    int getId();
+    int getOrient( );
+    string getCardID();
+    void connectEdgestoCard();
+    void reConnect();
+    
+    // a card can have...
+    Jungle * j1, * j2, * j3, * j4;          // up to 4 jungles
+    Trail  * t1, * t2, * t3, * t4;          // up to 4 trails
+    Lake   * l1, * l2;                      // up to 2 lakes
+    
+    Edge * topEdge;
+    Edge * rightEdge;
+    Edge * botEdge;
+    Edge * leftEdge;
 };
-
-
 
 
 

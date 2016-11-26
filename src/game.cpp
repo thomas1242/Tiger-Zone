@@ -1,5 +1,8 @@
 
 #include "game.h"
+#include "card.h"
+#include "board.h"
+#include "game.h"
 #include <iostream>
 using namespace std;
 
@@ -29,38 +32,41 @@ void Game::startGame() {
 
 void Game::endGame() {
     isActive = OFF;    // start the game
-   // this->~Game();      // delete the game
+    // this->~Game();      // delete the game
 }
 
 void Game::giveCard() {
     
     if( current_turn && player_one->hasCard == false && player_two->hasCard == false) {             // player one makes a move
-        cout << "player_one to draw card:" << endl;
+        //cout << "player_one to draw card:" << endl;
         player_one->takeCard();
     }
     else if ( !current_turn && player_one->hasCard == false && player_two->hasCard == false) {
-        cout << "player_two to draw card:" << endl;
+        //cout << "player_two to draw card:" << endl;
         player_two->takeCard();          // player two makes a move
     }
     
 }
 
 void Game::giveTurn(int i, int j) {
-
-    
-    if( current_turn && player_one->hasCard == true)  {            // player one makes a move
-        if(player_one->takeTurn(i, j))
-            current_turn = !current_turn;        // toggle turn
-    }
-    else if ( !current_turn && player_two->hasCard == true ) {
-        if (player_two->takeTurn(i, j))
-            current_turn = !current_turn;        // toggle turn
-    }
     
     if( deck->isEmpty() ) {    // if final card was played
         endGame();
         cout << "DECK EMPTY -> GAME OVER!";
         return;
+    }
+    else if( current_turn && player_one->hasCard == true)  {            // player one makes a move
+        if(player_one->takeTurn(i, j))
+            current_turn = !current_turn;        // toggle turn
+        else
+            cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
+        
+    }
+    else if ( !current_turn && player_two->hasCard == true ) {
+        if (player_two->takeTurn(i, j))
+            current_turn = !current_turn;        // toggle turn
+        else
+            cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
     }
 }
 
@@ -76,7 +82,7 @@ int Game::getCurrCardID() {
     }
     else return -1;
 }
- 
+
 void Game::rotateCard() {
     if ( current_turn ) {
         player_one->rotateCard();
@@ -116,3 +122,27 @@ int Game::getMeeples( bool player ) {
         return player_two->getMeeples();
     }
 }
+
+void Game::printBoard() {
+    board->printBoard();
+}
+
+//for gui
+Card * Game::getCurrCard() {
+    if ( current_turn ) {
+        return player_one->getCard();
+    }
+    else {
+        return player_two->getCard();
+    }
+}
+
+Deck * Game::getDeck() {
+    return deck;
+}
+
+
+
+
+
+
