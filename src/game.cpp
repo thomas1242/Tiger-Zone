@@ -38,11 +38,11 @@ void Game::endGame() {
 void Game::giveCard() {
     
     if( current_turn && player_one->hasCard == false && player_two->hasCard == false) {             // player one makes a move
-        cout << "player_one to draw card:" << endl;
+        //cout << "player_one to draw card:" << endl;
         player_one->takeCard();
     }
     else if ( !current_turn && player_one->hasCard == false && player_two->hasCard == false) {
-        cout << "player_two to draw card:" << endl;
+        //cout << "player_two to draw card:" << endl;
         player_two->takeCard();          // player two makes a move
     }
     

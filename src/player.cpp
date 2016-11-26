@@ -18,26 +18,36 @@ void Player::takeCard() {
     currCard = theDeck->drawCard();                  // draw new card id from the deck
     theBoard->updatePossibleMoves( currCard );
     
-    while(theBoard->possibleMoves.empty()) {
+    while(theBoard->updatePossibleMoves(currCard) == false ) {
         cout << "Cannot place card " << currCard->getId() << ". Discarded." << endl;
         delete currCard;                                // Card is discarded
         currCard = theDeck->drawCard();                 // draw new card id from the deck
-        theBoard->updatePossibleMoves( currCard );
         // TELL SERVER CARD IS DISCARDED, NEW CARD IS DRAWN.
     }
     
     hasCard = true;
-    theBoard->printBoard();
-    currCard->printCard();
+   // theBoard->printBoard();
+ //   currCard->printCard();
 }
 
 bool Player::takeTurn(int i, int j) {
     bool res = false;
-
     // This is incomplete with new implementation!
     // This is just taking first move rn.
     if( theBoard->possibleMoves.begin()->possibleorientations[0] == 1) {
-        res = theBoard->placeCard(i, j, currCard);
+        res = theBoard->placeCard(i, j, currCard, 0);
+        hasCard = false;
+    }
+    if( theBoard->possibleMoves.begin()->possibleorientations[1] == 1) {
+        res = theBoard->placeCard(i, j, currCard, 1);
+        hasCard = false;
+    }
+    if( theBoard->possibleMoves.begin()->possibleorientations[2] == 1) {
+        res = theBoard->placeCard(i, j, currCard, 2);
+        hasCard = false;
+    }
+    if( theBoard->possibleMoves.begin()->possibleorientations[3] == 1) {
+        res = theBoard->placeCard(i, j, currCard, 3);
         hasCard = false;
     }
     return res;

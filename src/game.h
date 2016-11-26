@@ -5,34 +5,11 @@
 
 
 #include "board.h"
+#include "player.h"
+
 
 #define OFF 0
 #define ON  1
-
-
-class Player {
-    
-public:
-    Player(Board * b, Deck * d);
-    void takeCard();
-    bool takeTurn(int i, int j);        // draw tile from the deck, place it, maybe place a meeple
-    void drawCard();
-    void rotateCard();
-    bool hasCard;
-    int getCardId();    // for GUI
-    int getScore();
-    int getMeeples();
-    Card * getCard();   // for GUI
-    
-    
-private:
-    int score;
-    int meeplesAvailable;
-    Board * theBoard;
-    Deck * theDeck;
-    Card * currCard;
-};
-
 
 
 class Game {
