@@ -30,11 +30,11 @@ void Card::edgeclone(Edge* output, Edge* input) {
 }
 
 void Card::printCard() {
-    cout << "Card " << cardID << " with id = " << id << " rotated " << orientation << " degrees." << endl;
+    cout << "\nCard " << cardID << " with id = " << id << " rotated " << orientation << " degrees." << endl;
     // ---------------------------------
     cout << " "   << " "  << topEdge->type << " " << " "   << " " << endl;
-    cout << leftEdge->type  << " "  << mid << " " << rightEdge->type << " " << endl;
-    cout << " "   << " "  << botEdge->type << " " << " "   << " " << endl;
+    cout << leftEdge->type  << " "  << id << " " << rightEdge->type << " " << endl;
+    cout << " "   << " "  << botEdge->type << " " << " "   << " " << endl << endl;
 }
 
 void Card::rotate() {   // rotate card 90 degrees clockwise

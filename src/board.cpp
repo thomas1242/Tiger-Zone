@@ -31,11 +31,7 @@ Board::Board(Card * card) {                            // board constructor
     
     
     cout << "Put center card on new board" << endl;
-    Moves temp;
-    temp.icoord = ROWS/2;
-    temp.jcoord = COLS/2;
-    possibleMoves.push_back(temp);
-    bool result = placeCard(ROWS/2, COLS/2, card, 0);        // place center card on the board
+    placeCard(ROWS/2, COLS/2, card, 0);        // place center card on the board
 }
 
 
@@ -210,20 +206,6 @@ bool Board::placeCard(int i, int j, Card * card, int rotations) {
          cout << "card->l2.getId() = " << card->l2->getId() << endl;
         card->reConnect();
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
 //    if(card->topEdge->t1 != NULL) {
@@ -741,51 +723,97 @@ bool Board::placeCard(int i, int j, Card * card, int rotations) {
     // rotate option
     // place meeple()
     //printBoard();
+
+    markavail(i, j, card);
     return true;
 }
 
+void Board::markavail(int i, int j, Card* card) {
+    Coords* temp = new Coords(i, j);
 
-bool Board::updatePossibleMoves(Card * card) { // possible moves based on board state and current card
-    Moves temp(markedtiles.back().icoord, markedtiles.back().jcoord);
+    // Deleting current location
+    markedtiles.remove(temp);
+
+    temp->reassign(i-1,j);
+    cout << "markavail i-1: " << temp->icoord << ", " << temp->jcoord << endl;
+    markedtiles.push_back(temp);
+
+    temp->reassign(i+1, j);
+    cout << "markavail i+1: " << temp->icoord << ", " << temp->jcoord << endl;
+    markedtiles.push_back(temp);
+
+    temp->reassign(i, j-1);
+    cout << "markavail j-1: " << temp->icoord << ", " << temp->jcoord << endl;
+    markedtiles.push_back(temp);
+
+    temp->reassign(i, j+1);
+    cout << "markavail i+1: " << temp->icoord << ", " << temp->jcoord << endl;
+    markedtiles.push_back(temp);
+
+    cout << "before unique markedtiles is " << markedtiles.size() << " big." << endl;
+    markedtiles.unique();
+    cout << "after unique markedtiles is " << markedtiles.size() << " big." << endl;
+
+}
+
+void Board::updatePossibleMoves(Card * card) { // possible moves based on board state and current card
+    
+
+    int i = markedtiles.front()->icoord;
+    int j = markedtiles.front()->jcoord;
+    cout << "0" << endl;
+    Moves* temp = new Moves(i, j);
+    cout << "1" <<endl;
     bool works = false;
-    for(int i = 0; i < 4; i++) {
-        if(checkIfFits(markedtiles.back().icoord, markedtiles.back().jcoord, card) == true) {
-            temp.possibleorientations[i] = 1;
-            works = true;
+    for (list<Coords*>::const_iterator iter = markedtiles.begin(); iter != markedtiles.end(); ++iter) {
+        for(i = 0; i < 4; i++) {
+            cout << "iter coords: " << (*iter)->icoord << ", " << (*iter)->jcoord << endl;
+            if(checkIfFits((*iter)->icoord, (*iter)->jcoord, card) == true) {
+                temp->possibleorientations[i] = 1;
+                cout << "DOES IT FIT? YES!" << endl;
+                works = true;
+            }
+            card->rotate();
         }
-        card->rotate();
-    }
 
-    if(works == false) {
-        return false;
-    }
 
-    else {
-        possibleMoves.push_back(temp);
+        cout << endl << "3" <<endl;
+        if(works == true) {
+            cout << endl << "4" <<endl;
+            possibleMoves.push_back(temp);
+            works = false;
+        }
     }
+    
+    //Printing possible moves
+    cout << endl;
+    i = 0; 
+    for (list<Moves*>::const_iterator iter = possibleMoves.begin(); iter != possibleMoves.end(); ++iter) {
+        cout << "Possible move #" << i << ": " << endl << "icoord: " << (*iter)->icoord 
+        << endl << "jcoord: " << (*iter)->jcoord << endl 
+        << "orientations: [" << (*iter)->possibleorientations[0] << ']'
+        << "[" << (*iter)->possibleorientations[1] << ']'
+        << "[" << (*iter)->possibleorientations[2] << ']'
+        << "[" << (*iter)->possibleorientations[3] << ']' << endl << endl;
+        i++;
+    }
+}
+
+void Board::refreshPossibleMoves() {
+    possibleMoves.clear();
 }
 
 bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
     
-    bool result = true;
+    bool result = false;
     
     // check that the sides match OR are next to open space
     
-    // there is no tile above, tile above matches the top, tile above is open space
-    if( !(i == 0 || card->getTop() == board[i-1][j].getBot() || board[i-1][j].getBot() == 'o' ) ) {              // check top side
-        result = false;
-    }
-    // there is no tile below, tile below matches the bot, tile below is open space
-    if( !(i == ROWS - 1 || card->getBot() == board[i+1][j].getTop() || board[i+1][j].getTop() == 'o' ) ) {         // check bot side
-        result = false;
-    }
-    // there is no tile on right, tile on right matches the right, right tile is open space
-    if( !(j == COLS - 1 || card->getRight() == board[i][j+1].getLeft() || board[i][j+1].getLeft() == 'o' ) ) {         // check right side
-        result = false;
-    }
-    // there is no tile on left, tile on left matches the left, left tile is open space
-    if( !(j == 0 || card->getLeft() == board[i][j-1].getRight() || board[i][j-1].getRight() == 'o' ) ) {         // check left side
-        result = false;
+    if((i == 0 || board[i-1][j].botEdge->type == card->topEdge->type || board[i-1][j].botEdge->type == 'o') &&           // check top
+        (i == ROWS-1 || board[i+1][j].topEdge->type == card->botEdge->type || board[i+1][j].topEdge->type =='o') &&      // check bot
+        (j == 0 || board[i][j-1].rightEdge->type == card->leftEdge->type || board[i][j-1].rightEdge->type == 'o') &&     // check to left
+        (j = COLS || board[i][j+1].leftEdge->type == card->rightEdge->type || board[i][j+1].leftEdge->type == 'o')) {    // check to right    
+        result = true;
     }
     
     return result;
@@ -821,27 +849,11 @@ void Board::printBoard() {
         }
         cout << endl;
     }
-
-    cout << endl;
-    int i = 0; 
-    for (list<Moves>::const_iterator iter = possibleMoves.begin(); iter != possibleMoves.end(); ++iter) {
-        cout << "Possible move #" << i << ": " << endl << "icoord: " << iter->icoord 
-        << endl << "jcoord: " << iter->jcoord << endl 
-        << "orientations: [" << iter-> possibleorientations[0] << ']'
-        << "[" << iter->possibleorientations[1] << ']'
-        << "[" << iter->possibleorientations[2] << ']'
-        << "[" << iter->possibleorientations[3] << ']' << endl << endl;
-        i++;
-    }
-    cout << endl;
-
 }
 
 Card Board::getCard(int i, int j) {
     return board[i][j];
 }
-
-
 
 
 

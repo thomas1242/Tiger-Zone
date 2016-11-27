@@ -15,6 +15,8 @@
 #define ROWS  11 //MAXCARDS*2+1
 #define COLS  11 //MAXCARDS*2+1
 
+using namespace std;
+
 class Board {
     
 public:
@@ -22,10 +24,11 @@ public:
     void printBoard();                  // print the state of the board
     bool checkIfFits(int i, int j, Card * card );     // check if a given card fits at a given location
     void markavail(int xcoord, int ycoord, Card* card); // Marks available tile
-    bool updatePossibleMoves(Card * card);         // update valid moves array
+    void updatePossibleMoves(Card * card);         // update valid moves array
+    void refreshPossibleMoves();
     bool placeCard(int i, int j, Card * card, int rotations);        // place a card onto the board
     Card getCard(int i, int j);
-    list<Moves> possibleMoves;   
+    list<Moves*> possibleMoves;   
     int numJungles, numTrails, numLakes;
   
     Jungle * jungles;
@@ -34,7 +37,7 @@ public:
         
 private:
     Card ** board;                    // will point to 2D array of Cards a.k.a. the board
-     list<Coords> markedtiles;        // Marked tiles can be possible moves
+     list<Coords*> markedtiles;        // Marked tiles can be possible moves
 };
 
 

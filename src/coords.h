@@ -6,8 +6,10 @@
         int icoord;
         int jcoord;
 
+        bool operator==(const Coords other);
         Coords();
         Coords(int i, int j);
         ~Coords();
+        void reassign(int i, int j);
     };
 #endif

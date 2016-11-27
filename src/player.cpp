@@ -14,18 +14,15 @@ Player::Player(Board * b, Deck * d) {
 }
 
 void Player::takeCard() {
-    
     currCard = theDeck->drawCard();                  // draw new card id from the deck
-    theBoard->updatePossibleMoves( currCard );
+    currCard->printCard();
+    theBoard->refreshPossibleMoves();
+    theBoard->updatePossibleMoves(currCard);
     
-    while(theBoard->updatePossibleMoves(currCard) == false ) {
-        cout << "Cannot place card " << currCard->getId() << ". Discarded." << endl;
-        delete currCard;                                // Card is discarded
-        currCard = theDeck->drawCard();                 // draw new card id from the deck
-        // TELL SERVER CARD IS DISCARDED, NEW CARD IS DRAWN.
+    if(!(theBoard->possibleMoves.empty())) {
+        hasCard = true;
     }
-    
-    hasCard = true;
+    cout << endl << "Has Card: " << hasCard << endl;
    // theBoard->printBoard();
  //   currCard->printCard();
 }
@@ -33,22 +30,22 @@ void Player::takeCard() {
 bool Player::takeTurn(int i, int j) {
     bool res = false;
     // This is incomplete with new implementation!
-    // This is just taking first move rn.
-    if( theBoard->possibleMoves.begin()->possibleorientations[0] == 1) {
+    // This is just taking first available move rn.
+    if( theBoard->possibleMoves.front()->possibleorientations[0] == 1) {
         res = theBoard->placeCard(i, j, currCard, 0);
-        hasCard = false;
+        hasCard = true;
     }
-    if( theBoard->possibleMoves.begin()->possibleorientations[1] == 1) {
+    else if( theBoard->possibleMoves.front()->possibleorientations[1] == 1) {
         res = theBoard->placeCard(i, j, currCard, 1);
-        hasCard = false;
+        hasCard = true;
     }
-    if( theBoard->possibleMoves.begin()->possibleorientations[2] == 1) {
+    else if( theBoard->possibleMoves.front()->possibleorientations[2] == 1) {
         res = theBoard->placeCard(i, j, currCard, 2);
-        hasCard = false;
+        hasCard = true;
     }
-    if( theBoard->possibleMoves.begin()->possibleorientations[3] == 1) {
+    else if( theBoard->possibleMoves.front()->possibleorientations[3] == 1) {
         res = theBoard->placeCard(i, j, currCard, 3);
-        hasCard = false;
+        hasCard = true;
     }
     return res;
 }

@@ -7,6 +7,7 @@
         int jcoord;
         bool possibleorientations[4];    // 0=0, 1=90, 2=180, 3=270
 
+        bool operator==(const Moves other);
         Moves();
         Moves(int i, int j);
         ~Moves();
