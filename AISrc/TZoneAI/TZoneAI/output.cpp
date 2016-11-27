@@ -13,12 +13,12 @@ void Output::outputFunc(){
         signin = false;
     }
     if (makeMove == true){
+        xcoord = 0; ycoord = 0; orientation = 0; zone = 0;
         cout << "GAME " << game << " MOVE " << moveCount << " PLACE "
-        << tile << " AT " << xcoord << ycoord << orientation;
+        << tile << " AT " << xcoord << " " << ycoord << " " << orientation;
         if(zone >= 0){  //Assuming zone < 0 is considered no tiger placement.
           cout << " TIGER " << zone<< "\n";  //NEED SOMETHING HERE FOR CROCODILES
         } else { cout << " NONE\n";}
-
         makeMove = false;
     }
 }

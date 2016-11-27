@@ -4,8 +4,8 @@ class Input{
 public:
     int score;          //AI' current score
     int opponentScore;  //oppenent's current score
-    int moveCount;
-    char game = 'A';
+    int moveCount;      //Move #
+    char game;          // Game 'A' || 'B'
 
     bool tournyStart = false;   //lets output know to submit tourney passw
     bool signin = false;        //output should sign in
@@ -24,8 +24,8 @@ private:
     string gid;         //game id
     string pid;         //player id
     string rid;         //round id
-    int timePlan;    //time to plan before game starts
-    int timeMove;    //time to make move
+    int timePlan;       //time to plan before game starts
+    int timeMove;       //time to make move
     string message;     //saves input to a string
 };
 
