@@ -19,6 +19,8 @@ void Input::takeInput(){
       message = "";
     }
     //STARTING TILE IS TLTJ- AT 0 0 0
+    //I dont think this if statement is necessary. Since originCoord,
+    /*origOrientation, and startTile are fixed. From what it looks like.
     if(message[1] == 'T'){
       origin = true;
       start = message.find("IS");
@@ -26,8 +28,7 @@ void Input::takeInput(){
       originCoord = make_pair(message[start+12]-'0', message[start+14]-'0');
       origOrientation = message[start+16]-'0';
       message = "";
-    }
-
+    }*/
     //THE REMAINING 6 TILES ARE [ TLTTP LJTJ- JLJL- JJTJX JLTTB TLLT- ]
     if(message[6]=='M'){
       //Store Tiles & Think for 15s boolean?
@@ -38,7 +39,6 @@ void Input::takeInput(){
       tiles = message.substr(start+2, (end-1)-(start+2));
       message = "";
     }
-
     //MAKE YOUR MOVE IN GAME A WITHIN 1 SECOND: MOVE 1 PLACE TLTTP
     //MAKE YOUR MOVE IN GAME A WITHIN 23 SECOND: MOVE 23 PLACE TLTTP
     if (message[2] == 'K') {
@@ -53,7 +53,7 @@ void Input::takeInput(){
       start = message.find(": MOVE ");
       end = message.find("PLACE");
       temp2 = message.substr(start+6, (end-1)-(start+6));
-      moveCount = stoi(temp2,&sz); //Move #
+      moveCount = stoi(temp2,&sz); //Move # place
 
       start = message.find("PLACE");
       tile = message.substr(start+6); //Place xxxxx
@@ -61,7 +61,7 @@ void Input::takeInput(){
       message = "";
     }
 
-    if (message[7] == 'C') { //END OF CHALLENGES
+    if (message[4] == 'K') { //THANK YOU FOR PLAYING! GOODBYE
       noInput = true;
       message = "";
     }

@@ -3,8 +3,8 @@
 using namespace std;
 class Input{
 public:
-    pair<int, int> originCoord;  //xCoord, yCoord (Start Tile)
-    int origOrientation;    //origin orientation
+    //pair<int, int> originCoord;  //xCoord, yCoord (Start Tile)
+    //int origOrientation;    //origin orientation
     int score;              //AI' current score
     int opponentScore;      //oppenent's current score
     int moveCount;          //Move #
@@ -12,7 +12,7 @@ public:
 
     bool tournyStart = false;   //lets output know to submit tourney passw
     bool signin = false;        //output should sign in
-    bool origin = false;        //Start Tile, Origin & orientation provided
+    //bool origin = false;        //Start Tile, Origin & orientation provided
     bool theTiles = false;
     bool makeMove = false;    //Since we're using Bools to track everything else
     bool noInput = false;
@@ -37,8 +37,7 @@ private:
 
 class Output : public Input{
 public:
-    int xcoord;             //x coordinate for tile placement
-    int ycoord;             //y coordinate for tile placement
+    pair<int, int> coord;   //Replace X & Y Coord
     int orientation;        //either 0, 90, 180, or 270
     int zone;               //where to place tiger in 3x3 grid
 
