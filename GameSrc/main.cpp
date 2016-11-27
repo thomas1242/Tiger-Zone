@@ -12,6 +12,11 @@ int main() {
     game->startGame();
     int row, col;
     string choice;
+    
+    
+    
+    
+    
     while ( game->status() == ON )  // Start the game loop
     {      
         game->giveCard();   // draw a card if the player needs    

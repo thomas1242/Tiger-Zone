@@ -46,7 +46,7 @@ Card* Deck::drawCard() {
     Card * top = deck.top();       // id of new top card (the card to be placed)
     deck.pop();
     
-    cout << "card " << top->getId() << " drawn from the deck, " << numCardsInDeck <<" cards left." << endl;
+ //   cout << "card " << top->getCardID() << " with id = " << top->getId() << " drawn, " << numCardsInDeck <<" cards left." << endl;
     return top;                 // return id of top card
 }
 

@@ -38,11 +38,11 @@ void Game::endGame() {
 void Game::giveCard() {
     
     if( current_turn && player_one->hasCard == false && player_two->hasCard == false) {             // player one makes a move
-        cout << "player_one to draw card:" << endl;
+        //cout << "player_one to draw card:" << endl;
         player_one->takeCard();
     }
     else if ( !current_turn && player_one->hasCard == false && player_two->hasCard == false) {
-        cout << "player_two to draw card:" << endl;
+        //cout << "player_two to draw card:" << endl;
         player_two->takeCard();          // player two makes a move
     }
     
@@ -58,15 +58,15 @@ void Game::giveTurn(int i, int j) {
     else if( current_turn && player_one->hasCard == true)  {            // player one makes a move
         if(player_one->takeTurn(i, j))
             current_turn = !current_turn;        // toggle turn
-        else
-            cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
+        else{}
+            //cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
         
     }
     else if ( !current_turn && player_two->hasCard == true ) {
         if (player_two->takeTurn(i, j))
             current_turn = !current_turn;        // toggle turn
-        else
-            cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
+        else{}
+            //cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
     }
 }
 
