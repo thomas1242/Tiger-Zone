@@ -3,33 +3,44 @@
 #include <sstream>
 #include <unistd.h>
 #include <stdio.h>
+#include <string>
 using namespace std;
 
 int main() {
     
-    Game * game1 = new Game();               // create the game
-    Game * game2 = new Game();               // create the game
-    cout << "past game"  << endl;
-    game1->startGame();
+    Game * game = new Game();               // create the game
+    game->startGame();
     int row, col;
-    int choice = 0;
-    while ( game1->status() == ON )  // Start the game loop
+    string choice;
+    
+    
+    
+    
+    
+    while ( game->status() == ON )  // Start the game loop
     {      
-        game1->giveCard();   // draw a card if the player needs    
+        game->giveCard();   // draw a card if the player needs    
 
-        if ( game1->getCurrTurn() ) { cout << "player 1's turn" << endl; }
-        else                       { cout << "player 2's turn" << endl; }
-        cout << "Enter '1' to place a card on the board" << endl;
+        if ( game->getCurrTurn() ) { cout << "\nPlayer 1's turn" << endl; }
+        else                       { cout << "\nPlayer 2's turn" << endl; }
+        cout << "enter '0' to place current card on the board" << endl;
+        cout << "enter '1' to rotate current card" << endl;
+        cout << "enter '2' to print the board\n" << endl;
+        
         cin >> choice;
 
-        if (choice == 1) {
+        if ( choice == "0" ) {
             cout << "row? ";
             cin >> row;
             cout << "col? ";
             cin >> col;
-            game1->giveTurn(row, col);
-            
-            choice = 0;
+            game->giveTurn(row, col);
+        }
+        else if( choice == "1") {
+            game->rotateCard();
+        }
+        else if( choice == "2") {
+            game->printBoard();
         }
     }
 

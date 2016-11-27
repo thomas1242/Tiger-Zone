@@ -4,92 +4,1033 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <list>
+
 using namespace std;
 
-Coords::Coords(int i, int j) {
-	icoord = i;
-	jcoord = j;
-}
-
-Moves::Moves(int i, int j) {
-    icoord = i;
-    jcoord = j;
-    for (int i = 0; i < 4; i++) {
-        possibleorientations[i] == 0;
-    }
-}
-
-Board::Board(Card * card) {                        // board constructor
-    
+Board::Board(Card * card) {                            // board constructor
+        
     board = new Card * [ROWS];              // board is initially all open space ( cards with id = -1 )
-
     for(int i = 0; i < ROWS; ++i) {
         board[i] = new Card[COLS];
+        for(int j = 0; j < COLS; j++) {
+            possibleMoves[i][j] = false;    // initalize possible moves
+        }
     }
-
-    cout << "Put center card on new board" << endl;
-    Moves temp(ROWS/2, COLS/2);
-    possibleMoves.push_back(temp);
-    bool result = placeCard(ROWS/2, COLS/2, card );        // place center card on the board
-}
     
-/*******************************************************************************************
-    needs input argument to specify rotation
-********************************************************************************************/
-bool Board::placeCard(int i, int j, Card* card) {
+    numJungles = 0;
+    numTrails = 0;
+    numLakes = 0;
+    
+    jungles = new Jungle[100];
+    trails = new Trail[100];
+    lakes = new Lake[100];
+    for(int i = 0; i < 100; i++) {
+        trails[i].setId(i );
+        lakes[i].setId(i);
+        jungles[i].setId(i);
+    }
+    
+    
+    cout << "Put center card on new board" << endl;
+    possibleMoves[ROWS/2][COLS/2] = true;                        // mark center location available
+    placeCard(ROWS/2, COLS/2, card );        // place center card on the board
+}
+
+
+bool Board::placeCard(int i, int j, Card * card) {
     
     if(i < 0 || j < 0 || i >= ROWS || j >= COLS) {  // for GUI, if user clicks out of bounds
+        cout << "Cannot place card " << card->getId() << " at (" << i << ',' << j << ']' << endl;
         return false;
     }
     
     // before placing this card on the board, make sure the location is valid
-    if( board[i][j].getId() != -1 ) {
-       cout << "Cannot place card " << card->getId() << " at (" << i << ',' << j << ']' << endl;
-       return false;
+    if( !possibleMoves[i][j] ) {
+        cout << "Cannot place card " << card->getId() << " at (" << i << ',' << j << ']' << endl;
+        return false;
     }
-
-// Match it with avail side
-/*    
-   while( !checkIfFits(i, j, card) ) {
+    
+    while( !checkIfFits(i, j, card) ) {
         card->rotate();                     // rotate card until it fits at the valid location
     }
-*/            
-    else {
-        cout << "Placed card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
-        board[i][j] = *card;            // replace with new card
-        markavail(i, j, card);
-        
-        printBoard();
-        return true;
+    
+   // cout << "Placed card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
+   // cout << "Placed card " << card->getId() << " at [" << j - 5 << ',' << -(i - 5) << ']' << endl;
+
+    
+    cout << "\n\n---------------------------------------------------------------------\n" << endl;
+    
+    bool lakeOne = false;
+    bool lakeTwo = false;
+    if(card->l1 != NULL) {
+        lakeOne = true;
     }
-}
+    if(card->l2 != NULL) {
+        lakeTwo = true;
+    }
+    
+    int l1_top_connect_id = -1;
+    int l1_right_connect_id = -1;
+    int l1_bot_connect_id = -1;
+    int l1_left_connect_id = -1;
+    int l2_top_connect_id = -1;
+    int l2_right_connect_id = -1;
+    int l2_bot_connect_id = -1;
+    int l2_left_connect_id = -1;
+
+    
+    if( card->getTop() == 'L')  {                                       // this card has lake face on top edge
+       
+        if(i > 0 && board[i-1][j].botEdge->getType() == 'L') {          // card above has lake face on bot edge
+            if(card->topEdge->l1 == card->l1) {     // which lake region does this cards top edge connect to
+                card->l1 = &lakes[ board[i-1][j].botEdge->l1->getId() ];
+                lakeOne = false;
+                l1_top_connect_id = board[i-1][j].botEdge->l1->getId();
+            }
+            if(card->topEdge->l1 == card->l2) {
+                card->l2 = &lakes[ board[i-1][j].botEdge->l1->getId() ];
+                lakeTwo = false;
+                l2_top_connect_id = board[i-1][j].botEdge->l1->getId();
+            }
+            card->reConnect();
+        }
+    }
+    
+    if( card->getBot() == 'L')  {                                       // this card has lake face on top edge
+        
+        if(i < ROWS - 1 && board[i+1][j].topEdge->getType() == 'L') {          // card above has lake face on bot edge
+            if(card->botEdge->l1 == card->l1) {     // which lake region does this cards top edge connect to
+                card->l1 = &lakes[ board[i+1][j].topEdge->l1->getId() ];
+                lakeOne = false;
+                l1_bot_connect_id = board[i+1][j].topEdge->l1->getId();
+            }
+            if(card->botEdge->l1 == card->l2) {
+                card->l2 = &lakes[ board[i+1][j].topEdge->l1->getId() ];
+                lakeTwo = false;
+                l2_bot_connect_id = board[i+1][j].topEdge->l1->getId();
+            }
+            card->reConnect();
+        }
+    }
+
+    if( card->getLeft() == 'L')  {                                       // this card has lake face on top edge
+        
+        if(j > 0 && board[i][j-1].rightEdge->getType() == 'L') {          // card above has lake face on bot edge
+            if(card->leftEdge->l1 == card->l1) {     // which lake region does this cards top edge connect to
+                card->l1 = &lakes[ board[i][j-1].rightEdge->l1->getId() ];
+                lakeOne = false;
+                l1_left_connect_id = board[i][j-1].rightEdge->l1->getId();
+            }
+            if(card->leftEdge->l1 == card->l2) {
+                card->l2 = &lakes[ board[i][j-1].rightEdge->l1->getId() ];
+                lakeTwo = false;
+                l2_left_connect_id = board[i][j-1].rightEdge->l1->getId();
+            }
+            card->reConnect();
+        }
+        
+    }
+    
+    if( card->getRight() == 'L')  {                                       // this card has lake face on top edge
+        
+        if(j < COLS - 1 && board[i][j+1].leftEdge->getType() == 'L') {          // card above has lake face on bot edge
+            if(card->rightEdge->l1 == card->l1) {     // which lake region does this cards top edge connect to
+                card->l1 = &lakes[ board[i][j+1].leftEdge->l1->getId() ];
+                lakeOne = false;
+                l1_right_connect_id = board[i][j+1].leftEdge->l1->getId();
+            }
+            if(card->rightEdge->l1 == card->l2) {
+                card->l2 = &lakes[ board[i][j+1].leftEdge->l1->getId() ];
+                lakeTwo = false;
+                l2_right_connect_id = board[i][j+1].leftEdge->l1->getId();
+            }
+            card->reConnect();
+        }
+    }
+    
+    // merge l1
+    if(l1_top_connect_id != l1_right_connect_id && l1_top_connect_id != -1 && l1_right_connect_id != -1 ) {
+        cout << "merging lake1 top and right connectors to 'new' lake " << endl;
+        lakes[ l1_right_connect_id ] = lakes[ l1_top_connect_id ];
+    }
+    if(l1_top_connect_id != l1_left_connect_id && l1_top_connect_id != -1 && l1_left_connect_id != -1 ) {
+        cout << "merging lake1 top and left connectors to 'new' lake " << endl;
+        lakes[ l1_left_connect_id ] = lakes[ l1_top_connect_id ];
+    }
+    if(l1_top_connect_id != l1_bot_connect_id && l1_top_connect_id != -1 && l1_bot_connect_id != -1 ) {
+        cout << "merging lake1 top and bot connectors to 'new' lake " << endl;
+        lakes[ l1_bot_connect_id ] = lakes[ l1_top_connect_id ];
+    }
+    
+    if(l1_left_connect_id != l1_bot_connect_id && l1_left_connect_id != -1 && l1_bot_connect_id != -1 ) {
+        cout << "merging lake1 left and bot connectors to 'new' lake " << endl;
+        lakes[ l1_bot_connect_id ] = lakes[ l1_left_connect_id ];
+    }
+    if(l1_right_connect_id != l1_bot_connect_id && l1_right_connect_id != -1 && l1_bot_connect_id != -1 ) {
+        cout << "merging lake1 right and bot connectors to 'new' lake " << endl;
+        lakes[ l1_bot_connect_id ] = lakes[ l1_right_connect_id ];
+    }
+    
+    if(l1_left_connect_id != l1_right_connect_id && l1_left_connect_id != -1 && l1_right_connect_id != -1 ) {
+        cout << "merging lake1 left and right connectors to 'new' lake " << endl;
+        lakes[ l1_left_connect_id ] = lakes[ l1_right_connect_id ];
+    }
+    
+    // merge l2
+    if(l2_top_connect_id != l2_right_connect_id && l2_top_connect_id != -1 && l2_right_connect_id != -1 ) {
+        cout << "merging lake1 top and right connectors to 'new' lake " << endl;
+        lakes[ l2_right_connect_id ] = lakes[ l2_top_connect_id ];
+    }
+    if(l2_top_connect_id != l2_left_connect_id && l2_top_connect_id != -1 && l2_left_connect_id != -1 ) {
+        cout << "merging lake1 top and left connectors to 'new' lake " << endl;
+        lakes[ l2_left_connect_id ] = lakes[ l2_top_connect_id ];
+    }
+    if(l2_top_connect_id != l2_bot_connect_id && l2_top_connect_id != -1 && l2_bot_connect_id != -1 ) {
+        cout << "merging lake1 top and bot connectors to 'new' lake " << endl;
+        lakes[ l2_bot_connect_id ] = lakes[ l2_top_connect_id ];
+    }
+    
+    if(l2_left_connect_id != l2_bot_connect_id && l2_left_connect_id != -1 && l2_bot_connect_id != -1 ) {
+        cout << "merging lake1 left and bot connectors to 'new' lake " << endl;
+        lakes[ l2_bot_connect_id ] = lakes[ l2_left_connect_id ];
+    }
+    if(l2_right_connect_id != l2_bot_connect_id && l2_right_connect_id != -1 && l2_bot_connect_id != -1 ) {
+        cout << "merging lake1 right and bot connectors to 'new' lake " << endl;
+        lakes[ l2_bot_connect_id ] = lakes[ l2_right_connect_id ];
+    }
+    
+    if(l2_left_connect_id != l2_right_connect_id && l2_left_connect_id != -1 && l2_right_connect_id != -1 ) {
+        cout << "merging lake1 left and right connectors to 'new' lake " << endl;
+        lakes[ l2_left_connect_id ] = lakes[ l2_right_connect_id ];
+    }
+
+    
+    if(lakeOne) {
+        numLakes++;
+        cout << "new l1 at lakes[" << numLakes << "]" << endl;
+        card->l1 = &lakes[ numLakes ];
+        card->reConnect();
+    }
+    if(lakeTwo) {
+        numLakes++;
+        cout << "new l2 at lakes[" << numLakes << "]" << endl;
+        card->l2 = &lakes[ numLakes ];
+        card->reConnect();
+    }
+
+    
+    // -------------------------------------------------------------------------------------
+    
+    bool trailOne = false;
+    bool trailTwo = false;
+    bool trailThree = false;
+    bool trailFour = false;
+    
+    if(card->t1 != NULL) {
+        trailOne = true;
+    }
+    if(card->t2 != NULL) {
+        trailTwo = true;
+    }
+    if(card->t3 != NULL) {
+        trailThree = true;
+    }
+    if(card->t4 != NULL) {
+        trailFour = true;
+    }
+    
+    int t1_top_connect_id = -1;
+    int t1_right_connect_id = -1;
+    int t1_bot_connect_id = -1;
+    int t1_left_connect_id = -1;
+    
+    int t2_top_connect_id = -1;
+    int t2_right_connect_id = -1;
+    int t2_bot_connect_id = -1;
+    int t2_left_connect_id = -1;
+    
+    int t3_top_connect_id = -1;
+    int t3_right_connect_id = -1;
+    int t3_bot_connect_id = -1;
+    int t3_left_connect_id = -1;
+    
+    int t4_top_connect_id = -1;
+    int t4_right_connect_id = -1;
+    int t4_bot_connect_id = -1;
+    int t4_left_connect_id = -1;
+    
+    
+    if( card->getTop() == 'T')  {                                       // this card has trail face on top edge
+        
+        if(i > 0 && board[i-1][j].botEdge->getType() == 'T') {          // card above has trail face on bot edge
+            if(card->topEdge->t1 == card->t1) {     // which trail region does this cards top edge connect to
+                card->t1 = &trails[ board[i-1][j].botEdge->t1->getId() ];
+                trailOne = false;
+                t1_top_connect_id = board[i-1][j].botEdge->t1->getId();
+            }
+            if(card->topEdge->t1 == card->t2) {
+                card->t2 = &trails[ board[i-1][j].botEdge->t1->getId() ];
+                trailTwo = false;
+                t2_top_connect_id = board[i-1][j].botEdge->t1->getId();
+            }
+            if(card->topEdge->t1 == card->t3) {
+                card->t3 = &trails[ board[i-1][j].botEdge->t1->getId() ];
+                trailThree = false;
+                t3_top_connect_id = board[i-1][j].botEdge->t1->getId();
+            }
+            if(card->topEdge->t1 == card->t4) {
+                card->t4 = &trails[ board[i-1][j].botEdge->t1->getId() ];
+                trailFour = false;
+                t4_top_connect_id = board[i-1][j].botEdge->t1->getId();
+            }
+            card->reConnect();
+        }
+      }
+    
+    if( card->getBot() == 'T')  {                                       // this card has trail face on bot edge
+        
+        if(i < ROWS - 1 && board[i+1][j].topEdge->getType() == 'T') {          // card above has trail face on bot edge
+            if(card->botEdge->t1 == card->t1) {     // which trail region does this cards top edge connect to
+                card->t1 = &trails[ board[i+1][j].topEdge->t1->getId() ];
+                trailOne = false;
+                t1_bot_connect_id = board[i+1][j].topEdge->t1->getId();
+            }
+            if(card->botEdge->t1 == card->t2) {
+                card->t2 = &trails[ board[i+1][j].topEdge->t1->getId() ];
+                trailTwo = false;
+                t2_bot_connect_id = board[i+1][j].topEdge->t1->getId();
+            }
+            if(card->botEdge->t1 == card->t3) {
+                card->t3 = &trails[ board[i+1][j].topEdge->t1->getId() ];
+                trailThree = false;
+                t3_bot_connect_id = board[i+1][j].topEdge->t1->getId();
+            }
+            if(card->botEdge->t1 == card->t4) {
+                card->t4 = &trails[ board[i+1][j].topEdge->t1->getId() ];
+                trailFour = false;
+                t4_bot_connect_id = board[i+1][j].topEdge->t1->getId();
+            }
+            card->reConnect();
+        }
+     }
+    
+    if( card->getLeft() == 'T')  {                                       // this card has trail face on top edge
+        
+        if(j > 0 && board[i][j-1].rightEdge->getType() == 'T') {          // card above has trail face on bot edge
+            if(card->leftEdge->t1 == card->t1) {     // which trail region does this cards top edge connect to
+                card->t1 = &trails[ board[i][j-1].rightEdge->t1->getId() ];
+                trailOne = false;
+                t1_left_connect_id = board[i][j-1].rightEdge->t1->getId();
+            }
+            if(card->leftEdge->t1 == card->t2) {
+                card->t2 = &trails[ board[i][j-1].rightEdge->t1->getId() ];
+                trailTwo = false;
+                t2_left_connect_id = board[i][j-1].rightEdge->t1->getId();
+            }
+            if(card->leftEdge->t1 == card->t3) {
+                card->t3 = &trails[ board[i][j-1].rightEdge->t1->getId() ];
+                trailThree = false;
+                t3_left_connect_id = board[i][j-1].rightEdge->t1->getId();
+            }
+            if(card->leftEdge->t1 == card->t4) {
+                card->t4 = &trails[ board[i][j-1].rightEdge->t1->getId() ];
+                trailFour = false;
+                t4_left_connect_id = board[i][j-1].rightEdge->t1->getId();
+            }
+            card->reConnect();
+        }
+    }
+    
+    if( card->getRight() == 'T')  {                                       // this card has trail face on top edge
+        
+        if(j < COLS - 1 && board[i][j+1].leftEdge->getType() == 'T') {          // card above has trail face on bot edge
+            if(card->rightEdge->t1 == card->t1) {     // which trail region does this cards top edge connect to
+                card->t1 = &trails[ board[i][j+1].leftEdge->t1->getId() ];
+                trailOne = false;
+                t1_right_connect_id = board[i][j+1].leftEdge->t1->getId();
+            }
+            if(card->rightEdge->t1 == card->t2) {
+                card->t2 = &trails[ board[i][j+1].leftEdge->t1->getId() ];
+                trailTwo = false;
+                t2_right_connect_id = board[i][j+1].leftEdge->t1->getId();
+            }
+            if(card->rightEdge->t1 == card->t3) {
+                card->t3 = &trails[ board[i][j+1].leftEdge->t1->getId() ];
+                trailThree = false;
+                t3_right_connect_id = board[i][j+1].leftEdge->t1->getId();
+            }
+            if(card->rightEdge->t1 == card->t4) {
+                card->t4 = &trails[ board[i][j+1].leftEdge->t1->getId() ];
+                trailFour = false;
+                t4_right_connect_id = board[i][j+1].leftEdge->t1->getId();
+            }
+            card->reConnect();
+        }
+    }
+
+    
+    // merge t1
+    if(t1_top_connect_id != t1_right_connect_id && t1_top_connect_id != -1 && t1_right_connect_id != -1 ) {
+        cout << "merging trail1 top and right connectors to 'new' lake " << endl;
+        trails[ t1_right_connect_id ] = trails[ t1_top_connect_id ];
+    }
+    if(t1_top_connect_id != t1_left_connect_id && t1_top_connect_id != -1 && t1_left_connect_id != -1 ) {
+        cout << "merging trail1 top and left connectors to 'new' lake " << endl;
+        trails[ t1_left_connect_id ] = trails[ t1_top_connect_id ];
+    }
+    if(t1_top_connect_id != t1_bot_connect_id && t1_top_connect_id != -1 && t1_bot_connect_id != -1 ) {
+        cout << "merging trail1 top and bot connectors to 'new' lake " << endl;
+        trails[ t1_bot_connect_id ] = trails[ t1_top_connect_id ];
+    }
+    
+    if(t1_left_connect_id != t1_bot_connect_id && t1_left_connect_id != -1 && t1_bot_connect_id != -1 ) {
+        cout << "merging trail1 left and bot connectors to 'new' lake " << endl;
+        trails[ t1_bot_connect_id ] = trails[ t1_left_connect_id ];
+    }
+    if(t1_right_connect_id != t1_bot_connect_id && t1_right_connect_id != -1 && t1_bot_connect_id != -1 ) {
+        cout << "merging trail1 right and bot connectors to 'new' lake " << endl;
+        trails[ t1_bot_connect_id ] = trails[ t1_right_connect_id ];
+    }
+    
+    if(t1_left_connect_id != t1_right_connect_id && t1_left_connect_id != -1 && t1_right_connect_id != -1 ) {
+        cout << "merging trail1 left and right connectors to 'new' lake " << endl;
+        trails[ t1_left_connect_id ] = trails[ t1_right_connect_id ];
+    }
+    
+    
+    // merge t2
+    if(t2_top_connect_id != t2_right_connect_id && t2_top_connect_id != -1 && t2_right_connect_id != -1 ) {
+        cout << "merging trail1 top and right connectors to 'new' lake " << endl;
+        trails[ t2_right_connect_id ] = trails[ t2_top_connect_id ];
+    }
+    if(t2_top_connect_id != t2_left_connect_id && t2_top_connect_id != -1 && t2_left_connect_id != -1 ) {
+        cout << "merging trail1 top and left connectors to 'new' lake " << endl;
+        trails[ t2_left_connect_id ] = trails[ t2_top_connect_id ];
+    }
+    if(t2_top_connect_id != t2_bot_connect_id && t2_top_connect_id != -1 && t2_bot_connect_id != -1 ) {
+        cout << "merging trail1 top and bot connectors to 'new' lake " << endl;
+        trails[ t2_bot_connect_id ] = trails[ t2_top_connect_id ];
+    }
+    
+    if(t2_left_connect_id != t2_bot_connect_id && t2_left_connect_id != -1 && t2_bot_connect_id != -1 ) {
+        cout << "merging trail1 left and bot connectors to 'new' lake " << endl;
+        trails[ t2_bot_connect_id ] = trails[ t2_left_connect_id ];
+    }
+    if(t2_right_connect_id != t2_bot_connect_id && t2_right_connect_id != -1 && t2_bot_connect_id != -1 ) {
+        cout << "merging trail1 right and bot connectors to 'new' lake " << endl;
+        trails[ t2_bot_connect_id ] = trails[ t2_right_connect_id ];
+    }
+    
+    if(t2_left_connect_id != t2_right_connect_id && t2_left_connect_id != -1 && t2_right_connect_id != -1 ) {
+        cout << "merging trail1 left and right connectors to 'new' lake " << endl;
+        trails[ t2_left_connect_id ] = trails[ t2_right_connect_id ];
+    }
+    
+    
+    // merge t3
+    if(t3_top_connect_id != t3_right_connect_id && t3_top_connect_id != -1 && t3_right_connect_id != -1 ) {
+        cout << "merging trail1 top and right connectors to 'new' lake " << endl;
+        trails[ t3_right_connect_id ] = trails[ t3_top_connect_id ];
+    }
+    if(t3_top_connect_id != t3_left_connect_id && t3_top_connect_id != -1 && t3_left_connect_id != -1 ) {
+        cout << "merging trail1 top and left connectors to 'new' lake " << endl;
+        trails[ t3_left_connect_id ] = trails[ t3_top_connect_id ];
+    }
+    if(t3_top_connect_id != t3_bot_connect_id && t3_top_connect_id != -1 && t3_bot_connect_id != -1 ) {
+        cout << "merging trail1 top and bot connectors to 'new' lake " << endl;
+        trails[ t3_bot_connect_id ] = trails[ t3_top_connect_id ];
+    }
+    
+    if(t3_left_connect_id != t3_bot_connect_id && t3_left_connect_id != -1 && t3_bot_connect_id != -1 ) {
+        cout << "merging trail1 left and bot connectors to 'new' lake " << endl;
+        trails[ t3_bot_connect_id ] = trails[ t3_left_connect_id ];
+    }
+    if(t3_right_connect_id != t3_bot_connect_id && t3_right_connect_id != -1 && t3_bot_connect_id != -1 ) {
+        cout << "merging trail1 right and bot connectors to 'new' lake " << endl;
+        trails[ t3_bot_connect_id ] = trails[ t3_right_connect_id ];
+    }
+    
+    if(t3_left_connect_id != t3_right_connect_id && t3_left_connect_id != -1 && t3_right_connect_id != -1 ) {
+        cout << "merging trail1 left and right connectors to 'new' lake " << endl;
+        trails[ t3_left_connect_id ] = trails[ t3_right_connect_id ];
+    }
+    
+    
+    // merge t4
+    if(t4_top_connect_id != t4_right_connect_id && t4_top_connect_id != -1 && t4_right_connect_id != -1 ) {
+        cout << "merging trail1 top and right connectors to 'new' lake " << endl;
+        trails[ t4_right_connect_id ] = trails[ t4_top_connect_id ];
+    }
+    if(t4_top_connect_id != t4_left_connect_id && t4_top_connect_id != -1 && t4_left_connect_id != -1 ) {
+        cout << "merging trail1 top and left connectors to 'new' lake " << endl;
+        trails[ t4_left_connect_id ] = trails[ t4_top_connect_id ];
+    }
+    if(t4_top_connect_id != t4_bot_connect_id && t4_top_connect_id != -1 && t4_bot_connect_id != -1 ) {
+        cout << "merging trail1 top and bot connectors to 'new' lake " << endl;
+        trails[ t4_bot_connect_id ] = trails[ t4_top_connect_id ];
+    }
+    
+    if(t4_left_connect_id != t4_bot_connect_id && t4_left_connect_id != -1 && t4_bot_connect_id != -1 ) {
+        cout << "merging trail1 left and bot connectors to 'new' lake " << endl;
+        trails[ t4_bot_connect_id ] = trails[ t4_left_connect_id ];
+    }
+    if(t4_right_connect_id != t4_bot_connect_id && t4_right_connect_id != -1 && t4_bot_connect_id != -1 ) {
+        cout << "merging trail1 right and bot connectors to 'new' lake " << endl;
+        trails[ t4_bot_connect_id ] = trails[ t4_right_connect_id ];
+    }
+    if(t4_left_connect_id != t4_right_connect_id && t4_left_connect_id != -1 && t4_right_connect_id != -1 ) {
+        cout << "merging trail1 left and right connectors to 'new' lake " << endl;
+        trails[ t4_left_connect_id ] = trails[ t4_right_connect_id ];
+    }
+    
+    
+    
+    
+    if(trailOne) {
+        numTrails++;
+        cout << "new t1 at trails[" << numTrails << "]" << endl;
+        card->t1 = &trails[ numTrails ];
+        card->reConnect();
+    }
+    if(trailTwo) {
+        numTrails++;
+        cout << "new t2 at trails[" << numTrails << "]" << endl;
+        card->t2 = &trails[ numTrails ];
+        card->reConnect();
+    }
+    if(trailThree) {
+        numTrails++;
+        cout << "new t3 at trails[" << numTrails << "]" << endl;
+        card->t3 = &trails[ numTrails ];
+        card->reConnect();
+    }
+    if(trailFour) {
+        numTrails++;
+        cout << "new t4 at trails[" << numTrails << "]" << endl;
+        card->t4 = &trails[ numTrails ];
+        card->reConnect();
+    }
+    
+    cout << "\n" << endl;
+
+    // -------------------------------------------------------------------------------------
+
+    bool jungleOne = false;
+    bool jungleTwo = false;
+    bool jungleThree = false;
+    bool jungleFour = false;
+    
+    if(card->j1 != NULL) {
+        jungleOne = true;
+    }
+    if(card->j2 != NULL) {
+        jungleTwo = true;
+    }
+    if(card->j3 != NULL) {
+        jungleThree = true;
+    }
+    if(card->j4 != NULL) {
+        jungleFour = true;
+    }
+    
+    
+    int j1_top_connect_id = -1;
+    int j1_right_connect_id = -1;
+    int j1_bot_connect_id = -1;
+    int j1_left_connect_id = -1;
+    
+    int j2_top_connect_id = -1;
+    int j2_right_connect_id = -1;
+    int j2_bot_connect_id = -1;
+    int j2_left_connect_id = -1;
+    
+    int j3_top_connect_id = -1;
+    int j3_right_connect_id = -1;
+    int j3_bot_connect_id = -1;
+    int j3_left_connect_id = -1;
+    
+    int j4_top_connect_id = -1;
+    int j4_right_connect_id = -1;
+    int j4_bot_connect_id = -1;
+    int j4_left_connect_id = -1;
     
 
-bool Board::updatePossibleMoves(Card * card) { // possible moves based on board state and current card
-	Moves temp(markedtiles.back().icoord, markedtiles.back().jcoord);
-	bool works = false;
-	for(int i = 0; i < 4; i++) {
-		if(checkIfFits(markedtiles.back().icoord, markedtiles.back().jcoord, card) == true) {
-			temp.possibleorientations[i] = 1;
-			works = true;
-		}
-		card->rotate();
-	}
 
-	if(works == false) {
-		return false;
-	}
+    if( card->getTop() == 'J')  {                                       // this card has jungle face on top edge
+        
+        if(i > 0 && board[i-1][j].botEdge->getType() == 'J') {          // card above has jungle face on bot edge
+            if(card->topEdge->j1 == card->j1) {     // which jungle region does this cards top edge connect to
+                card->j1 = &jungles[ board[i-1][j].botEdge->j1->getId() ];
+                jungleOne = false;
+                j1_top_connect_id = board[i-1][j].botEdge->j1->getId();
+            }
+            if(card->topEdge->j1 == card->j2) {
+                card->j2 = &jungles[ board[i-1][j].botEdge->j1->getId() ];
+                jungleTwo = false;
+                j2_top_connect_id = board[i-1][j].botEdge->j1->getId();
+            }
+            if(card->topEdge->j1 == card->j3) {
+                card->j3 = &jungles[ board[i-1][j].botEdge->j1->getId() ];
+                jungleThree = false;
+                j3_top_connect_id = board[i-1][j].botEdge->j1->getId();
+            }
+            if(card->topEdge->j1 == card->j4) {
+                card->j4 = &jungles[ board[i-1][j].botEdge->j1->getId() ];
+                jungleFour = false;
+                j4_top_connect_id = board[i-1][j].botEdge->j1->getId();
+            }
+            card->reConnect();
+        }
+    }
+    
+    if( card->getBot() == 'J')  {                                       // this card has jungle face on bot edge
+        
+        if(i < ROWS - 1 && board[i+1][j].topEdge->getType() == 'J') {          // card above has jungle face on bot edge
+            if(card->botEdge->j1 == card->j1) {     // which jungle region does this cards top edge connect to
+                card->j1 = &jungles[ board[i+1][j].topEdge->j1->getId() ];
+                jungleOne = false;
+                j1_bot_connect_id = board[i+1][j].topEdge->j1->getId();
+            }
+            if(card->botEdge->j1 == card->j2) {
+                card->j2 = &jungles[ board[i+1][j].topEdge->j1->getId() ];
+                jungleTwo = false;
+                j2_bot_connect_id = board[i+1][j].topEdge->j1->getId();
+            }
+            if(card->botEdge->j1 == card->j3) {
+                card->j3 = &jungles[ board[i+1][j].topEdge->j1->getId() ];
+                jungleThree = false;
+                j3_bot_connect_id = board[i+1][j].topEdge->j1->getId();
+            }
+            if(card->botEdge->j1 == card->j4) {
+                card->j4 = &jungles[ board[i+1][j].topEdge->j1->getId() ];
+                jungleFour = false;
+                j4_bot_connect_id = board[i+1][j].topEdge->j1->getId();
+            }
+            card->reConnect();
+        }
+    }
+    
+    if( card->getLeft() == 'J')  {                                       // this card has jungle face on top edge
+        
+        if(j > 0 && board[i][j-1].rightEdge->getType() == 'J') {          // card above has jungle face on bot edge
+            if(card->leftEdge->j1 == card->j1) {     // which jungle region does this cards top edge connect to
+                card->j1 = &jungles[ board[i][j-1].rightEdge->j1->getId() ];
+                jungleOne = false;
+                j1_left_connect_id = board[i][j-1].rightEdge->j1->getId();
+            }
+            if(card->leftEdge->j1 == card->j2) {
+                card->j2 = &jungles[ board[i][j-1].rightEdge->j1->getId() ];
+                jungleTwo = false;
+                j2_left_connect_id = board[i][j-1].rightEdge->j1->getId();
+            }
+            if(card->leftEdge->j1 == card->j3) {
+                card->j3 = &jungles[ board[i][j-1].rightEdge->j1->getId() ];
+                jungleThree = false;
+                j3_left_connect_id = board[i][j-1].rightEdge->j1->getId();
+            }
+            if(card->leftEdge->j1 == card->j4) {
+                card->j4 = &jungles[ board[i][j-1].rightEdge->j1->getId() ];
+                jungleFour = false;
+                j4_left_connect_id = board[i][j-1].rightEdge->j1->getId();
+            }
+            card->reConnect();
+        }
+    }
+    
+    if( card->getRight() == 'J')  {                                       // this card has jungle face on top edge
+        
+        if(j < COLS - 1 && board[i][j+1].leftEdge->getType() == 'J') {          // card above has jungle face on bot edge
+            if(card->rightEdge->j1 == card->j1) {     // which jungle region does this cards top edge connect to
+                card->j1 = &jungles[ board[i][j+1].leftEdge->j1->getId() ];
+                jungleOne = false;
+                j1_right_connect_id = board[i][j+1].leftEdge->j1->getId();
+            }
+            if(card->rightEdge->j1 == card->j2) {
+                card->j2 = &jungles[ board[i][j+1].leftEdge->j1->getId() ];
+                jungleTwo = false;
+                j2_right_connect_id = board[i][j+1].leftEdge->j1->getId();
+            }
+            if(card->rightEdge->j1 == card->j3) {
+                card->j3 = &jungles[ board[i][j+1].leftEdge->j1->getId() ];
+                jungleThree = false;
+                j3_right_connect_id = board[i][j+1].leftEdge->j1->getId();
+            }
+            if(card->rightEdge->j1 == card->j4) {
+                card->j4 = &jungles[ board[i][j+1].leftEdge->j1->getId() ];
+                jungleFour = false;
+                j4_right_connect_id = board[i][j+1].leftEdge->j1->getId();
+            }
+            card->reConnect();
+        }
+    }
 
-	else {
-		possibleMoves.push_back(temp);
-	}
+    cout << "\n\n" << endl;
+    
+    // ------------------------------------------------------------------------------------------
+    
+    
+    if( card->getTop() == 'T')  {                                       // this card has trail face on top edge
+        
+        if(i > 0 && board[i-1][j].botEdge->getType() == 'T') {          // card above has trail face on bot edge
+            
+            if(card->topEdge->j1 == card->j1) {     // which jungle region does this cards top edge connect to
+                card->j1 = &jungles[ board[i-1][j].botEdge->j2->getId() ];
+                jungleOne = false;
+                j1_top_connect_id = board[i-1][j].botEdge->j2->getId();
+            }
+            if(card->topEdge->j1 == card->j2) {     // which jungle region does this cards top edge connect to
+                card->j2 = &jungles[ board[i-1][j].botEdge->j2->getId() ];
+                jungleTwo = false;
+                j2_top_connect_id = board[i-1][j].botEdge->j2->getId();
+            }
+            if(card->topEdge->j1 == card->j3) {     // which jungle region does this cards top edge connect to
+                card->j3 = &jungles[ board[i-1][j].botEdge->j2->getId() ];
+                jungleThree = false;
+                j3_top_connect_id = board[i-1][j].botEdge->j2->getId();
+            }
+            if(card->topEdge->j1 == card->j4) {     // which jungle region does this cards top edge connect to
+                card->j4 = &jungles[ board[i-1][j].botEdge->j2->getId() ];
+                jungleFour = false;
+                j4_top_connect_id = board[i-1][j].botEdge->j2->getId();
+            }
+            
+            if(card->topEdge->j2 == card->j1) {     // which jungle region does this cards top edge connect to
+                card->j1 = &jungles[ board[i-1][j].botEdge->j1->getId() ];
+                jungleOne = false;
+                j1_top_connect_id = board[i-1][j].botEdge->j1->getId();
+            }
+            if(card->topEdge->j2 == card->j2) {     // which jungle region does this cards top edge connect to
+                card->j2 = &jungles[ board[i-1][j].botEdge->j1->getId() ];
+                jungleTwo = false;
+                j2_top_connect_id = board[i-1][j].botEdge->j1->getId();
+            }
+            if(card->topEdge->j2 == card->j3) {     // which jungle region does this cards top edge connect to
+                card->j3 = &jungles[ board[i-1][j].botEdge->j1->getId() ];
+                jungleThree = false;
+                j3_top_connect_id = board[i-1][j].botEdge->j1->getId();
+            }
+            if(card->topEdge->j2 == card->j4) {     // which jungle region does this cards top edge connect to
+                card->j4 = &jungles[ board[i-1][j].botEdge->j1->getId() ];
+                jungleFour = false;
+                j4_top_connect_id = board[i-1][j].botEdge->j1->getId();
+            }
+            card->reConnect();
+        }
+    }
+
+    if( card->getBot() == 'T')  {                                       // this card has trail face on top edge
+        
+        if(i < ROWS - 1 && board[i+1][j].topEdge->getType() == 'T') {          // card above has trail face on bot edge
+            
+            if(card->botEdge->j1 == card->j1) {     // which jungle region does this cards top edge connect to
+                card->j1 = &jungles[ board[i+1][j].topEdge->j2->getId() ];
+                jungleOne = false;
+                j1_bot_connect_id = board[i+1][j].topEdge->j2->getId();
+            }
+            if(card->botEdge->j1 == card->j2) {     // which jungle region does this cards top edge connect to
+                card->j2 = &jungles[ board[i+1][j].topEdge->j2->getId() ];
+                jungleTwo = false;
+                j2_bot_connect_id = board[i+1][j].topEdge->j2->getId();
+            }
+            if(card->botEdge->j1 == card->j3) {     // which jungle region does this cards top edge connect to
+                card->j3 = &jungles[ board[i+1][j].topEdge->j2->getId() ];
+                jungleThree = false;
+                j3_bot_connect_id = board[i+1][j].topEdge->j2->getId();
+            }
+            if(card->botEdge->j1 == card->j4) {     // which jungle region does this cards top edge connect to
+                card->j4 = &jungles[ board[i+1][j].topEdge->j2->getId() ];
+                jungleFour = false;
+                j4_bot_connect_id = board[i+1][j].topEdge->j2->getId();
+            }
+            
+            if(card->botEdge->j2 == card->j1) {     // which jungle region does this cards top edge connect to
+                card->j1 = &jungles[ board[i+1][j].topEdge->j1->getId() ];
+                jungleOne = false;
+                j1_bot_connect_id = board[i+1][j].topEdge->j1->getId();
+            }
+            if(card->botEdge->j2 == card->j2) {     // which jungle region does this cards top edge connect to
+                card->j2 = &jungles[ board[i+1][j].topEdge->j1->getId() ];
+                jungleTwo = false;
+                j2_bot_connect_id = board[i+1][j].topEdge->j1->getId();
+            }
+            if(card->botEdge->j2 == card->j3) {     // which jungle region does this cards top edge connect to
+                card->j3 = &jungles[ board[i+1][j].topEdge->j1->getId() ];
+                jungleThree = false;
+                j3_bot_connect_id = board[i+1][j].topEdge->j1->getId();
+            }
+            if(card->botEdge->j2 == card->j4) {     // which jungle region does this cards top edge connect to
+                card->j4 = &jungles[ board[i+1][j].topEdge->j1->getId() ];
+                jungleFour = false;
+                j4_bot_connect_id = board[i+1][j].topEdge->j1->getId();
+            }
+            card->reConnect();
+        }
+    }
+    
+    if( card->getLeft() == 'T')  {                                       // this card has trail face on top edge
+        
+        if(j > 0 && board[i][j-1].rightEdge->getType() == 'T') {          // card above has trail face on bot edge
+            
+            if(card->leftEdge->j1 == card->j1) {     // which jungle region does this cards top edge connect to
+                card->j1 = &jungles[ board[i][j-1].rightEdge->j2->getId() ];
+                jungleOne = false;
+                j1_left_connect_id = board[i][j-1].rightEdge->j2->getId();
+            }
+            if(card->leftEdge->j1 == card->j2) {     // which jungle region does this cards top edge connect to
+                card->j2 = &jungles[ board[i][j-1].rightEdge->j2->getId() ];
+                jungleTwo = false;
+                j2_left_connect_id = board[i][j-1].rightEdge->j2->getId();
+            }
+            if(card->leftEdge->j1 == card->j3) {     // which jungle region does this cards top edge connect to
+                card->j3 = &jungles[ board[i][j-1].rightEdge->j2->getId() ];
+                jungleThree = false;
+                j3_left_connect_id = board[i][j-1].rightEdge->j2->getId();
+            }
+            if(card->leftEdge->j1 == card->j4) {     // which jungle region does this cards top edge connect to
+                card->j4 = &jungles[ board[i][j-1].rightEdge->j2->getId() ];
+                jungleFour = false;
+                j4_left_connect_id = board[i][j-1].rightEdge->j2->getId();
+            }
+            
+            if(card->leftEdge->j2 == card->j1) {     // which jungle region does this cards top edge connect to
+                card->j1 = &jungles[ board[i][j-1].rightEdge->j1->getId() ];
+                jungleOne = false;
+                j1_left_connect_id = board[i][j-1].rightEdge->j1->getId();
+            }
+            if(card->leftEdge->j2 == card->j2) {     // which jungle region does this cards top edge connect to
+                card->j2 = &jungles[ board[i][j-1].rightEdge->j1->getId() ];
+                jungleTwo = false;
+                j2_left_connect_id = board[i][j-1].rightEdge->j1->getId();
+            }
+            if(card->leftEdge->j2 == card->j3) {     // which jungle region does this cards top edge connect to
+                card->j3 = &jungles[ board[i][j-1].rightEdge->j1->getId() ];
+                jungleThree = false;
+                j3_left_connect_id = board[i][j-1].rightEdge->j1->getId();
+            }
+            if(card->leftEdge->j2 == card->j4) {     // which jungle region does this cards top edge connect to
+                card->j4 = &jungles[ board[i][j-1].rightEdge->j1->getId() ];
+                jungleFour = false;
+                j4_left_connect_id = board[i][j-1].rightEdge->j1->getId();
+            }
+            card->reConnect();
+        }
+    }
+    
+    
+    if( card->getRight() == 'T')  {                                       // this card has trail face on top edge
+        
+        if(j < COLS - 1 && board[i][j+1].leftEdge->getType() == 'T') {          // card above has trail face on bot edge
+            
+            if(card->rightEdge->j1 == card->j1) {     // which jungle region does this cards top edge connect to
+                card->j1 = &jungles[ board[i][j+1].leftEdge->j2->getId() ];
+                jungleOne = false;
+                j1_right_connect_id = board[i][j+1].leftEdge->j2->getId();
+            }
+            if(card->rightEdge->j1 == card->j2) {     // which jungle region does this cards top edge connect to
+                card->j2 = &jungles[ board[i][j+1].leftEdge->j2->getId() ];
+                jungleTwo = false;
+                j2_right_connect_id = board[i][j+1].leftEdge->j2->getId();
+            }
+            if(card->rightEdge->j1 == card->j3) {     // which jungle region does this cards top edge connect to
+                card->j3 = &jungles[ board[i][j+1].leftEdge->j2->getId() ];
+                jungleThree = false;
+                j3_right_connect_id = board[i][j+1].leftEdge->j2->getId();
+            }
+            if(card->rightEdge->j1 == card->j4) {     // which jungle region does this cards top edge connect to
+                card->j4 = &jungles[ board[i][j+1].leftEdge->j2->getId() ];
+                jungleFour = false;
+                j4_right_connect_id = board[i][j+1].leftEdge->j2->getId();
+            }
+            
+            if(card->rightEdge->j2 == card->j1) {     // which jungle region does this cards top edge connect to
+                card->j1 = &jungles[ board[i][j+1].leftEdge->j1->getId() ];
+                jungleOne = false;
+                j1_right_connect_id = board[i][j+1].leftEdge->j1->getId();
+            }
+            if(card->rightEdge->j2 == card->j2) {     // which jungle region does this cards top edge connect to
+                card->j2 = &jungles[ board[i][j+1].leftEdge->j1->getId() ];
+                jungleTwo = false;
+                j2_right_connect_id = board[i][j+1].leftEdge->j1->getId();
+            }
+            if(card->rightEdge->j2 == card->j3) {     // which jungle region does this cards top edge connect to
+                card->j3 = &jungles[ board[i][j+1].leftEdge->j1->getId() ];
+                jungleThree = false;
+                j3_right_connect_id = board[i][j+1].leftEdge->j1->getId();
+            }
+            if(card->rightEdge->j2 == card->j4) {     // which jungle region does this cards top edge connect to
+                card->j4 = &jungles[ board[i][j+1].leftEdge->j1->getId() ];
+                jungleFour = false;
+                j4_right_connect_id = board[i][j+1].leftEdge->j1->getId();
+            }
+            
+            card->reConnect();
+        }
+        
+    }
+
+    
+    
+    
+    // merge j1
+    if(j1_top_connect_id != j1_right_connect_id && j1_top_connect_id != -1 && j1_right_connect_id != -1 ) {
+        cout << "merging traij1 top and right connectors to 'new' lake " << endl;
+        jungles[ j1_right_connect_id ] = jungles[ j1_top_connect_id ];
+    }
+    if(j1_top_connect_id != j1_left_connect_id && j1_top_connect_id != -1 && j1_left_connect_id != -1 ) {
+        cout << "merging traij1 top and left connectors to 'new' lake " << endl;
+        jungles[ j1_left_connect_id ] = jungles[ j1_top_connect_id ];
+    }
+    if(j1_top_connect_id != j1_bot_connect_id && j1_top_connect_id != -1 && j1_bot_connect_id != -1 ) {
+        cout << "merging traij1 top and bot connectors to 'new' lake " << endl;
+        jungles[ j1_bot_connect_id ] = jungles[ j1_top_connect_id ];
+    }
+    
+    if(j1_left_connect_id != j1_bot_connect_id && j1_left_connect_id != -1 && j1_bot_connect_id != -1 ) {
+        cout << "merging traij1 left and bot connectors to 'new' lake " << endl;
+        jungles[ j1_bot_connect_id ] = jungles[ j1_left_connect_id ];
+    }
+    if(j1_right_connect_id != j1_bot_connect_id && j1_right_connect_id != -1 && j1_bot_connect_id != -1 ) {
+        cout << "merging traij1 right and bot connectors to 'new' lake " << endl;
+        jungles[ j1_bot_connect_id ] = jungles[ j1_right_connect_id ];
+    }
+    
+    if(j1_left_connect_id != j1_right_connect_id && j1_left_connect_id != -1 && j1_right_connect_id != -1 ) {
+        cout << "merging traij1 left and right connectors to 'new' lake " << endl;
+        jungles[ j1_left_connect_id ] = jungles[ j1_right_connect_id ];
+    }
+    
+    
+    // merge j2
+    if(j2_top_connect_id != j2_right_connect_id && j2_top_connect_id != -1 && j2_right_connect_id != -1 ) {
+        cout << "merging traij1 top and right connectors to 'new' lake " << endl;
+        jungles[ j2_right_connect_id ] = jungles[ j2_top_connect_id ];
+    }
+    if(j2_top_connect_id != j2_left_connect_id && j2_top_connect_id != -1 && j2_left_connect_id != -1 ) {
+        cout << "merging traij1 top and left connectors to 'new' lake " << endl;
+        jungles[ j2_left_connect_id ] = jungles[ j2_top_connect_id ];
+    }
+    if(j2_top_connect_id != j2_bot_connect_id && j2_top_connect_id != -1 && j2_bot_connect_id != -1 ) {
+        cout << "merging traij1 top and bot connectors to 'new' lake " << endl;
+        jungles[ j2_bot_connect_id ] = jungles[ j2_top_connect_id ];
+    }
+    
+    if(j2_left_connect_id != j2_bot_connect_id && j2_left_connect_id != -1 && j2_bot_connect_id != -1 ) {
+        cout << "merging traij1 left and bot connectors to 'new' lake " << endl;
+        jungles[ j2_bot_connect_id ] = jungles[ j2_left_connect_id ];
+    }
+    if(j2_right_connect_id != j2_bot_connect_id && j2_right_connect_id != -1 && j2_bot_connect_id != -1 ) {
+        cout << "merging traij1 right and bot connectors to 'new' lake " << endl;
+        jungles[ j2_bot_connect_id ] = jungles[ j2_right_connect_id ];
+    }
+    
+    if(j2_left_connect_id != j2_right_connect_id && j2_left_connect_id != -1 && j2_right_connect_id != -1 ) {
+        cout << "merging traij1 left and right connectors to 'new' lake " << endl;
+        jungles[ j2_left_connect_id ] = jungles[ j2_right_connect_id ];
+    }
+    
+    
+    // merge j3
+    if(j3_top_connect_id != j3_right_connect_id && j3_top_connect_id != -1 && j3_right_connect_id != -1 ) {
+        cout << "merging traij1 top and right connectors to 'new' lake " << endl;
+        jungles[ j3_right_connect_id ] = jungles[ j3_top_connect_id ];
+    }
+    if(j3_top_connect_id != j3_left_connect_id && j3_top_connect_id != -1 && j3_left_connect_id != -1 ) {
+        cout << "merging traij1 top and left connectors to 'new' lake " << endl;
+        jungles[ j3_left_connect_id ] = jungles[ j3_top_connect_id ];
+    }
+    if(j3_top_connect_id != j3_bot_connect_id && j3_top_connect_id != -1 && j3_bot_connect_id != -1 ) {
+        cout << "merging traij1 top and bot connectors to 'new' lake " << endl;
+        jungles[ j3_bot_connect_id ] = jungles[ j3_top_connect_id ];
+    }
+    
+    if(j3_left_connect_id != j3_bot_connect_id && j3_left_connect_id != -1 && j3_bot_connect_id != -1 ) {
+        cout << "merging traij1 left and bot connectors to 'new' lake " << endl;
+        jungles[ j3_bot_connect_id ] = jungles[ j3_left_connect_id ];
+    }
+    if(j3_right_connect_id != j3_bot_connect_id && j3_right_connect_id != -1 && j3_bot_connect_id != -1 ) {
+        cout << "merging traij1 right and bot connectors to 'new' lake " << endl;
+        jungles[ j3_bot_connect_id ] = jungles[ j3_right_connect_id ];
+    }
+    
+    if(j3_left_connect_id != j3_right_connect_id && j3_left_connect_id != -1 && j3_right_connect_id != -1 ) {
+        cout << "merging traij1 left and right connectors to 'new' lake " << endl;
+        jungles[ j3_left_connect_id ] = jungles[ j3_right_connect_id ];
+    }
+    
+    
+    // merge j4
+    if(j4_top_connect_id != j4_right_connect_id && j4_top_connect_id != -1 && j4_right_connect_id != -1 ) {
+        cout << "merging traij1 top and right connectors to 'new' lake " << endl;
+        jungles[ j4_right_connect_id ] = jungles[ j4_top_connect_id ];
+    }
+    if(j4_top_connect_id != j4_left_connect_id && j4_top_connect_id != -1 && j4_left_connect_id != -1 ) {
+        cout << "merging traij1 top and left connectors to 'new' lake " << endl;
+        jungles[ j4_left_connect_id ] = jungles[ j4_top_connect_id ];
+    }
+    if(j4_top_connect_id != j4_bot_connect_id && j4_top_connect_id != -1 && j4_bot_connect_id != -1 ) {
+        cout << "merging traij1 top and bot connectors to 'new' lake " << endl;
+        jungles[ j4_bot_connect_id ] = jungles[ j4_top_connect_id ];
+    }
+    
+    if(j4_left_connect_id != j4_bot_connect_id && j4_left_connect_id != -1 && j4_bot_connect_id != -1 ) {
+        cout << "merging traij1 left and bot connectors to 'new' lake " << endl;
+        jungles[ j4_bot_connect_id ] = jungles[ j4_left_connect_id ];
+    }
+    if(j4_right_connect_id != j4_bot_connect_id && j4_right_connect_id != -1 && j4_bot_connect_id != -1 ) {
+        cout << "merging traij1 right and bot connectors to 'new' lake " << endl;
+        jungles[ j4_bot_connect_id ] = jungles[ j4_right_connect_id ];
+    }
+    if(j4_left_connect_id != j4_right_connect_id && j4_left_connect_id != -1 && j4_right_connect_id != -1 ) {
+        cout << "merging traij1 left and right connectors to 'new' lake " << endl;
+        jungles[ j4_left_connect_id ] = jungles[ j4_right_connect_id ];
+    }
+    
+    
+    
+    if(jungleOne) {
+        numJungles++;
+        cout << "new j1 at jungles[" << numJungles << "]" << endl;
+        card->j1 = &jungles[ numJungles ];
+        card->reConnect();
+    }
+    if(jungleTwo) {
+        numJungles++;
+        cout << "new j2 at jungles[" << numJungles << "]" << endl;
+        card->j2 = &jungles[ numJungles ];
+        card->reConnect();
+    }
+    if(jungleThree) {
+        numJungles++;
+        cout << "new j3 at jungles[" << numJungles << "]" << endl;
+        card->j3 = &jungles[ numJungles ];
+        card->reConnect();
+    }
+    if(jungleFour) {
+        numJungles++;
+        cout << "new j4 at jungles[" << numJungles << "]" << endl;
+        card->j4 = &jungles[ numJungles ];
+        card->reConnect();
+    }
+    
+    board[i][j] = *card;            // replace with new card
+
+    printRegions(i, j);
+    printRegions(i-1, j);
+    printRegions(i, j-1);
+    printRegions(i+1, j);
+    printRegions(i, j+1);
+
+    
+    // rotate option
+    // place meeple()
+    //printBoard();
+    return true;
 }
 
-/*
+
 void Board::updatePossibleMoves(Card * card) { // possible moves based on board state and current card
     
-    for(int i = 0; i < ROWS; i++) {     
+    for(int i = 0; i < ROWS; i++) {
         for(int j = 0; j < COLS; j++) {
             if(board[i][j].getId() == -1) {                                  // if this spot is not taken (open space)
                 if(i - 1 > 0 && board[i - 1][j].getId() != -1) {             // and is adjacent to a taken spot
@@ -113,102 +1054,83 @@ void Board::updatePossibleMoves(Card * card) { // possible moves based on board 
     
     for(int i = 0; i < ROWS; i++) {
         for(int j = 0; j < COLS; j++) {
-            if( possibleMoves[i][j] == true ) { // if this spot is potentially valid (it's a
-*/  
+            if( possibleMoves[i][j] == true ) { // if this spot is potentially valid (it's adjacent to another tile)
+                int n = 1;
+                while(n <= 4) {                          // 0, 90, 180, 270
+                    if(checkIfFits(i, j, card)) {
+                        break;
+                    }
+                    card->rotate();
+                    n++;
+                }
+                if( n > 4) {
+                    possibleMoves[i][j] = false;;
+                }
+                else {
+                    possibleMoves[i][j] = true;
+                }
+            }
+        }
+    }
+    
+}
 
 bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
     
     bool result = true;
+    
     // check that the sides match OR are next to open space
     // there is no tile above, tile above matches the top, tile above is open space
-    if(i == 0 || card->getTop() == board[i-1][j].getBot() || board[i-1][j].getBot() == 'o') {              // check top side
+    if( !(i == 0 || card->getTop() == board[i-1][j].getBot() || board[i-1][j].getBot() == 'o' ) ) {              // check top side
         result = false;
     }
     // there is no tile below, tile below matches the bot, tile below is open space
-    if(i == ROWS - 1 || card->getBot() == board[i+1][j].getTop() || board[i+1][j].getTop() == 'o') {         // check bot side
+    if( !(i == ROWS - 1 || card->getBot() == board[i+1][j].getTop() || board[i+1][j].getTop() == 'o' ) ) {         // check bot side
         result = false;
     }
     // there is no tile on right, tile on right matches the right, right tile is open space
-    if(j == COLS - 1 || card->getRight() == board[i][j+1].getLeft() || board[i][j+1].getLeft() == 'o') {         // check right side
+    if( !(j == COLS - 1 || card->getRight() == board[i][j+1].getLeft() || board[i][j+1].getLeft() == 'o' ) ) {         // check right side
         result = false;
     }
     // there is no tile on left, tile on left matches the left, left tile is open space
-    if(j == 0 || card->getLeft() == board[i][j-1].getRight() || board[i][j-1].getRight() == 'o') {         // check left side
+    if( !(j == 0 || card->getLeft() == board[i][j-1].getRight() || board[i][j-1].getRight() == 'o' ) ) {         // check left side
         result = false;
     }
-
+    
     return result;
 }
 
-// Mark available spots for the board
-void Board::markavail(int i, int j, Card* card) {
-	//Marking space above
-	if(i > 0) {
-        //check to see if card is already there
-        if(board[i-1][j].getId() == -1) {
-            Coords temp(i-1,j);
-            markedtiles.push_back(temp);
-        }			
-	}	
-
-	//Marking space below
-	if(i < ROWS-1) {
-        //check to see if card is already there
-        if(board[i+1][j].getId() == -1) {
-            Coords temp(i+1,j);
-            markedtiles.push_back(temp);
-        }
-	}
-	
-	//Marking space on left
-	if(j > 0) {
-        //check to see if card is already there
-        if(board[i][j-1].getId() == -1) {
-            Coords temp(i,j-1);
-            markedtiles.push_back(temp);
-        }
-	}
-	
-	//Marking space on right
-	if(j < COLS-1) { 
-        //check to see if card is already there
-        if(board[i][j+1].getId() == -1) {
-            Coords temp(i,j+1);
-            markedtiles.push_back(temp);
-        }
-	}	
-}
 
 
 /*  TL  TOP  TR
-    ML  MID  MR
-    BL  BOT  BR   */
+ ML  MID  MR
+ BL  BOT  BR   */
 void Board::printBoard() {
-  /*  cout << "\nTHE BOARD: " << endl;
-    for(int i = 0; i < ROWS; i++) {           	// for each row
-        for(int n = 0; n < 3; n++) {        	// 3 'rows' per row
-            for(int j = 0; j < COLS; j++) {   	// for each col
+    cout << "\nTHE BOARD: " << endl;
+    for(int i = 0; i < ROWS; i++) {           // for each row
+        for(int n = 0; n < 3; n++) {        // 3 'rows' per row
+            for(int j = 0; j < COLS; j++) {   // for each col
                 if(n == 0) {
-                    cout << board[i][j].getT_L() << ' ' << board[i][j].getTop() << ' ' << board[i][j].getT_R() << ' ';
+                    cout << ' ' << ' ' << board[i][j].getTop() << ' ' << ' ' << ' ';
                 }
                 else if (n == 1) {
                     cout << board[i][j].getLeft() << ' ' << board[i][j].getMid() << ' ' << board[i][j].getRight() << ' ';
                 }
                 else if (n == 2) {
-                    cout << board[i][j].getB_L() << ' ' << board[i][j].getBot() << ' ' << board[i][j].getB_R() << ' ';
+                    cout << ' ' << ' ' << board[i][j].getBot() << ' ' << ' ' << ' ';
                 }
                 cout << ' ';
             }
-            if( n == 1 ) {
-                for(int k = 0; k < COLS; k++) {
-                    cout << "  " << board[i][k].getId() << "  ";
-                }
-            }
-           cout << endl;
+           // if( n == 1 ) {
+           //     for(int k = 0; k < COLS; k++) {
+           //         cout << "  " << board[i][k].getId() << "  ";
+           //    }
+           // }
+            cout << endl;
         }
         cout << endl;
     }
-  
+    
     // print possibleMoves array underneath the board!
     cout << "\nPOSSIBLE MOVES: " << endl;
     for(int i = 0; i < ROWS; i++) {
@@ -216,10 +1138,76 @@ void Board::printBoard() {
             cout << ' ' << possibleMoves[i][j] << "  ";
         }
         cout << endl;
-    }*/
+    }
+    
     
 }
 
 Card Board::getCard(int i, int j) {
     return board[i][j];
 }
+
+bool Board::checkPossibleMove(int i, int j) {
+    return possibleMoves[i][j];
+}
+
+bool * Board::getPossibleMoves() {
+    return (bool*)possibleMoves;
+}
+
+bool Board::isPossibleMove() {
+    for(int i = 0; i < ROWS; i++) {
+        for(int j = 0; j < COLS; j++) {
+            if(possibleMoves[i][j] == true) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Board::printRegions(int i, int j) {
+    
+    if(i < 0 || j < 0 || i >= ROWS || j >= COLS) {  
+        return;
+    }
+    
+    cout << "\n----------------------------------------------------" << endl;
+    cout << "card [" << (j-5) << "][" << -(i-5) << "] :" << endl;
+    if(board[i][j].l1 != NULL) {
+        cout << "lake   1 belongs to lake   # " << (board[i][j]).l1->getId() << endl;
+    }
+    if(board[i][j].l2 != NULL) {
+        cout << "lake   2 belongs to lake   # " << board[i][j].l2->getId() << endl;
+    }
+    if(board[i][j].t1 != NULL) {
+        cout << "trail  1 belongs to trail  # " << board[i][j].t1->getId() << endl;
+    }
+    if(board[i][j].t2 != NULL) {
+        cout << "trail  2 belongs to trail  # " << board[i][j].t2->getId() << endl;
+    }
+    if(board[i][j].t3 != NULL) {
+        cout << "trail  3 belongs to trail  # " << board[i][j].t3->getId() << endl;
+    }
+    if(board[i][j].t4 != NULL) {
+        cout << "trail  4 belongs to trail  # " << board[i][j].t4->getId() << endl;
+    }
+    if(board[i][j].j1 != NULL) {
+        cout << "jungle 1 belongs to jungle # " << board[i][j].j1->getId() << endl;
+    }
+    if(board[i][j].j2 != NULL) {
+        cout << "jungle 2 belongs to jungle # " << board[i][j].j2->getId() << endl;
+    }
+    if(board[i][j].j3 != NULL) {
+        cout << "jungle 3 belongs to jungle # " << board[i][j].j3->getId() << endl;
+    }
+    if(board[i][j].j4 != NULL) {
+        cout << "jungle 4 belongs to jungle # " << board[i][j].j4->getId() << endl;
+    }
+    cout << endl;
+}
+
+
+
+
+
