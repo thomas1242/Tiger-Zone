@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <utility>
 #include "inout.h"
 using namespace std;
 
@@ -10,22 +11,32 @@ void Input::takeInput(){
     getline(cin, message);
 
     if(message[2] == 'I'){//THIS IS SPARTA
-        tournyStart = true;
-        message = "";
+      tournyStart = true;
+      message = "";
     }
     if(message[5] == '!') {//HELLO!
-        signin = true;
-        message = "";
+      signin = true;
+      message = "";
     }
     //STARTING TILE IS TLTJ- AT 0 0 0
-    //if(message[1] == 'T'){}
+    if(message[1] == 'T'){
+      origin = true;
+      start = message.find("IS");
+      startTile = message.substr(start+3, 5);
+      originCoord = make_pair(message[start+12]-'0', message[start+14]-'0');
+      origOrientation = message[start+16]-'0';
+      message = "";
+    }
 
     //THE REMAINING 6 TILES ARE [ TLTTP LJTJ- JLJL- JJTJX JLTTB TLLT- ]
     if(message[6]=='M'){
       //Store Tiles & Think for 15s boolean?
+      theTiles = true;
       int n = message[14];
       start = message.find("[");
-      tiles = message.substr(start+1, 6*n);
+      end = message.find("]");
+      tiles = message.substr(start+2, (end-1)-(start+2));
+      message = "";
     }
 
     //MAKE YOUR MOVE IN GAME A WITHIN 1 SECOND: MOVE 1 PLACE TLTTP
@@ -51,8 +62,8 @@ void Input::takeInput(){
     }
 
     if (message[7] == 'C') { //END OF CHALLENGES
-        noInput = true;
-        message = "";
+      noInput = true;
+      message = "";
     }
 
 }
