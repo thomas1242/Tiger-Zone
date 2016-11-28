@@ -59,14 +59,14 @@ void Game::giveTurn(int i, int j, int orientation) {
         if(player_one->takeTurn(i, j, orientation))
             current_turn = !current_turn;        // toggle turn
         else
-            cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
+            cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ')' << endl;
         
     }
     else if ( !current_turn && player_two->hasCard == true ) {
         if (player_two->takeTurn(i, j, orientation))
             current_turn = !current_turn;        // toggle turn
         else
-            cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
+            cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ')' << endl;
     }
 }
 

@@ -29,23 +29,30 @@ void Player::takeCard() {
 
 bool Player::takeTurn(int i, int j, int orientation) {
     bool res = false;
-    // This is incomplete with new implementation!
-    // This is just taking first available move rn.
-    if( orientation == 1 && theBoard->possibleMoves.front()->possibleorientations[0] == 1) {
-        res = theBoard->placeCard(i, j, currCard, 0);
-        hasCard = true;
-    }
-    else if( orientation == 2 && theBoard->possibleMoves.front()->possibleorientations[1] == 1) {
-        res = theBoard->placeCard(i, j, currCard, 1);
-        hasCard = true;
-    }
-    else if( orientation == 3 && theBoard->possibleMoves.front()->possibleorientations[2] == 1) {
-        res = theBoard->placeCard(i, j, currCard, 2);
-        hasCard = true;
-    }
-    else if( orientation == 4 && theBoard->possibleMoves.front()->possibleorientations[3] == 1) {
-        res = theBoard->placeCard(i, j, currCard, 3);
-        hasCard = true;
+
+    for (list<Moves*>::iterator iter = theBoard->possibleMoves.begin(); iter != theBoard->possibleMoves.end(); ++iter) {
+        if((*iter)->icoord == i && (*iter)->jcoord == j) {
+            if( orientation == 0 && (*iter)->possibleorientations[0] == 1) {
+                theBoard->placeCard(i, j, currCard, 0);
+                res = true;
+                hasCard = true;
+            }
+            else if( orientation == 90 && (*iter)->possibleorientations[1] == 1) {
+                theBoard->placeCard(i, j, currCard, 1);
+                res = true;
+                hasCard = true;
+            }
+            else if( orientation == 180 && (*iter)->possibleorientations[2] == 1) {
+                theBoard->placeCard(i, j, currCard, 2);
+                res = true;
+                hasCard = true;
+            }
+            else if( orientation == 270 && (*iter)->possibleorientations[3] == 1) {
+                theBoard->placeCard(i, j, currCard, 3);
+                res = true;
+                hasCard = true;
+            }
+        }
     }
     return res;
 }

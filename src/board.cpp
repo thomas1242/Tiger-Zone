@@ -38,7 +38,6 @@ Board::Board(Card * card) {                            // board constructor
 bool Board::placeCard(int i, int j, Card * card, int rotations) {
     
     if(i < 0 || j < 0 || i >= ROWS || j >= COLS) {  // for GUI, if user clicks out of bounds
-        cout << "Cannot place card " << card->getId() << " at (" << i << ',' << j << ']' << endl;
         return false;
     }
 /*    
@@ -780,9 +779,6 @@ void Board::updatePossibleMoves(Card * card) { // possible moves based on board 
         int j = (*iter)->jcoord;
         Moves* temp = new Moves(i, j);
 
-        cout << "1" <<endl;
-
-
         for(i = 0; i < 4; i++) {
             cout << "iter coords: " << (*iter)->icoord << ", " << (*iter)->jcoord << endl;
             if(checkIfFits((*iter)->icoord, (*iter)->jcoord, card) == true) {
@@ -795,10 +791,7 @@ void Board::updatePossibleMoves(Card * card) { // possible moves based on board 
             cout << endl << "passed the rotate"<< endl;
         }
 
-
-        cout << endl << "3" <<endl;
         if(works == true) {
-            cout << endl << "4" <<endl;
             possibleMoves.push_back(temp);
             works = false;
         }
