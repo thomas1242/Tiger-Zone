@@ -20,17 +20,29 @@ Card::Card(int id) {
     
     orientation = 0;
 }
+
+void Card::edgeclone(Edge* ae, Edge* be) {
+        ae->j1 = be->j1;
+        ae->j2 = be->j2;
+        ae->t1 = be->t1;
+        ae->l1 = be->l1;
+        ae->type = be->type;
+}
+
 void Card::rotate() {   // rotate card 90 degrees clockwise
-    Edge * temp;
-    temp = rightEdge;
-    rightEdge = topEdge;
-    topEdge = leftEdge;
-    leftEdge = botEdge;
-    botEdge = temp;
+    cout << "Before edge* creation" << endl;
+    Edge * temp = new Edge();
+    cout << "After edge* creation" << endl;
+    edgeclone(temp, rightEdge);
+    edgeclone(rightEdge, topEdge);
+    edgeclone(topEdge, leftEdge);
+    edgeclone(leftEdge, botEdge);
+    edgeclone(botEdge, temp);
     
     orientation = (orientation + 90) % 360;
-    //printCard();
+    printCard();
 }
+   
 
 void Card::printCard() {
     cout << "Card " << cardID << " with id = " << id << " rotated " << orientation << " degrees." << endl;

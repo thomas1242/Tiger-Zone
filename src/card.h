@@ -22,21 +22,17 @@ private:
     int id;             // card identifier: what type of tile is this
     int orientation;    // degreees rotated clockwise, initally 0
     
-
-    
-
-    
-    char mid; // might not need this
-    
     
 public:
     Card();             // construct null card ( id = 0 ). need this constructor for our board constructor
     Card(int id);       // construct a Card a.k.a. an instance of a tile from the deck
+    void edgeclone(Edge* ae, Edge* be);
     void rotate();      // rotate card 90 degress clockwise
     void assignSides();
     void assignCardID();
     void printCard();
     
+    char mid;       // Do we need this?
     char getTop();  // functions so other classes can have controlled access to private variables
     char getBot();
     char getRight();

@@ -4,58 +4,120 @@
 #include <iostream>
 #include <unistd.h>
 
-Player::Player(Board * b, Deck * d, int pid) {
+Player::Player(Board * b, int pid) {
     theBoard = b;           // point this players to the game's board;
-    theDeck = d;            // point this players to the game's deck
     score = 0;
-    meeplesAvailable = 7;   // players start with 7 meeples
+    tigersAvailable = 7;   // players start with 7 meeples
     currCard = NULL;
     hasCard = false;
     playerID = pid;
 }
 
-void Player::takeCard() {
-    
-    currCard = theDeck->drawCard();                  // draw new card id from the deck
-    theBoard->updatePossibleMoves( currCard );
-
-//    for(int i = 0; i < ROWS; i++) {
-//        for(int j = 0; j < COLS; j++) {
-//            int n = 1;
-//            while(n <= 4) {                          // 0, 90, 180, 270
-//                if(theBoard->checkIfFits(i, j, currCard)) {
-//                    break;
-//                }
-//                currCard->rotate();
-//                n++;
-//            }
-//            if( n <= 4) {
-//                // update AI current move
-//                i = ROWS;
-//                j = COLS;
-//            }
-//        }
-//    }
-
-    
-    while(theBoard->isPossibleMove() == false ) {
-        cout << "Cannot place card " << currCard->getId() << ". Discarded." << endl;
-        delete currCard;                                // Card is discarded
-        currCard = theDeck->drawCard();                 // draw new card id from the deck
-        theBoard->updatePossibleMoves( currCard );
-        // TELL SERVER CARD IS DISCARDED, NEW CARD IS DRAWN.
+int Player::ji_to_xy(int input, char id) {
+    int output;
+    if(id == 'i') {
+        output = -input + ROWS;    //ROWS/2
     }
-    
-    hasCard = true;
-    //theBoard->printBoard();
- //   currCard->printCard();
+    if(id == 'j') {
+        output = input - COLS;     //COLS/2
+    }    
+    return output;
 }
 
-bool Player::takeTurn(int i, int j) {
+bool Player::underduress() {
     bool res = false;
-    if( theBoard->checkPossibleMove(i, j) ) {
-        res = theBoard->placeCard(i, j, currCard, playerID, 0);
+    // If AI gets stresssed
+    // it makes a quick decision.
+
+    int i = theBoard->possibleMoves.front()->icoord;
+    int j = theBoard->possibleMoves.front()->jcoord;
+
+    int x = ji_to_xy(j, 'j');
+    int y = ji_to_xy(i, 'i');
+
+    cout << "xy: " << x << ' ' << y << endl;
+    out.xcoord = x;
+    out.ycoord = y;
+
+    if( theBoard->possibleMoves.front()->possibleorientations[0] == 1) {
+        theBoard->placeCard(i, j, currCard, 0, playerID, 0);
+        out.orientation = 0;
+        res = true;
         hasCard = false;
+    }
+    else if( theBoard->possibleMoves.front()->possibleorientations[1] == 1) {
+        theBoard->placeCard(i, j, currCard, 1, playerID, 0);
+        out.orientation = 90;
+        res = true;
+        hasCard = false;
+    }
+    else if( theBoard->possibleMoves.front()->possibleorientations[2] == 1) {
+        theBoard->placeCard(i, j, currCard, 2, playerID, 0);
+        out.orientation = 180;
+        res = true;
+        hasCard = false;
+    }
+    else if( theBoard->possibleMoves.front()->possibleorientations[3] == 1) {
+        theBoard->placeCard(i, j, currCard, 3, playerID, 0);
+        out.orientation = 270;
+        res = true;
+        hasCard = false;
+    }
+    return res;
+}
+
+void Player::takeCard(Card* input, bool DURESS) {
+    currCard = input;
+    cout << "pass1" << endl;
+    currCard->printCard();
+    cout << "pass2" << endl;
+    theBoard->refreshPossibleMoves();
+    cout << "pass3" << endl;
+    theBoard->updatePossibleMoves(currCard);
+    cout << "pass4" << endl;
+
+    if(!(theBoard->possibleMoves.empty())) {
+        hasCard = true;
+        if(DURESS == true) {
+            underduress();
+        }
+    }
+    else {
+        cout << "error1" << endl;
+        delete currCard;  
+        hasCard = false;
+    }
+                                  // Card is discarded
+    // TELL SERVER CARD IS DISCARDED, NEW THING IS DONE.
+    //theBoard->printBoard();
+    // currCard->printCard();
+}
+
+bool Player::takeTurn(int i, int j, int orientation) {
+    bool res = false;
+    for (list<Moves*>::iterator iter = theBoard->possibleMoves.begin(); iter != theBoard->possibleMoves.end(); ++iter) {
+        if((*iter)->icoord == i && (*iter)->jcoord == j) {
+            if( orientation == 0 && (*iter)->possibleorientations[0] == 1) {
+                theBoard->placeCard(i, j, currCard, 0, playerID, 0);
+                res = true;
+                hasCard = false;
+            }
+            else if( orientation == 90 && (*iter)->possibleorientations[1] == 1) {
+                theBoard->placeCard(i, j, currCard, 1, playerID, 0);
+                res = true;
+                hasCard = false;
+            }
+            else if( orientation == 180 && (*iter)->possibleorientations[2] == 1) {
+                theBoard->placeCard(i, j, currCard, 2, playerID, 0);
+                res = true;
+                hasCard = false;
+            }
+            else if( orientation == 270 && (*iter)->possibleorientations[3] == 1) {
+                theBoard->placeCard(i, j, currCard, 3, playerID, 0);
+                res = true;
+                hasCard = false;
+            }
+        }
     }
     return res;
 }
@@ -76,8 +138,8 @@ int Player::getScore() {
     return score;
 }
 
-int Player::getMeeples() {
-    return meeplesAvailable;
+int Player::getTigers() {
+    return tigersAvailable;
 }
 
 // for gui
