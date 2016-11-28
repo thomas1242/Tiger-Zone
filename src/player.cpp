@@ -27,23 +27,23 @@ void Player::takeCard() {
  //   currCard->printCard();
 }
 
-bool Player::takeTurn(int i, int j) {
+bool Player::takeTurn(int i, int j, int orientation) {
     bool res = false;
     // This is incomplete with new implementation!
     // This is just taking first available move rn.
-    if( theBoard->possibleMoves.front()->possibleorientations[0] == 1) {
+    if( orientation == 1 && theBoard->possibleMoves.front()->possibleorientations[0] == 1) {
         res = theBoard->placeCard(i, j, currCard, 0);
         hasCard = true;
     }
-    else if( theBoard->possibleMoves.front()->possibleorientations[1] == 1) {
+    else if( orientation == 2 && theBoard->possibleMoves.front()->possibleorientations[1] == 1) {
         res = theBoard->placeCard(i, j, currCard, 1);
         hasCard = true;
     }
-    else if( theBoard->possibleMoves.front()->possibleorientations[2] == 1) {
+    else if( orientation == 3 && theBoard->possibleMoves.front()->possibleorientations[2] == 1) {
         res = theBoard->placeCard(i, j, currCard, 2);
         hasCard = true;
     }
-    else if( theBoard->possibleMoves.front()->possibleorientations[3] == 1) {
+    else if( orientation == 4 && theBoard->possibleMoves.front()->possibleorientations[3] == 1) {
         res = theBoard->placeCard(i, j, currCard, 3);
         hasCard = true;
     }

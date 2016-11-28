@@ -1,9 +1,19 @@
 #include "coords.h"
 
-bool Coords::operator==(const Coords other) {
-    if(this->icoord == other.icoord &&
-    	this->jcoord == other.jcoord) {
+bool Coords::operator == (const Coords &other) const{
+    if(icoord == other.icoord &&
+    	jcoord == other.jcoord) {
     	return true;
+    }
+    else {
+        return false;
+    }
+}
+
+bool Coords::operator == (const Coords* &other) const{
+    if(this->icoord == other->icoord &&
+        this->jcoord == other->jcoord) {
+        return true;
     }
     else {
         return false;

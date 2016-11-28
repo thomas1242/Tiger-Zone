@@ -6,7 +6,8 @@
         int icoord;
         int jcoord;
 
-        bool operator==(const Coords other);
+        bool operator==(const Coords &other) const;
+        bool operator==(const Coords* &other) const;
         Coords();
         Coords(int i, int j);
         ~Coords();

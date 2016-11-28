@@ -1,14 +1,17 @@
 #include "moves.h"
 
-bool Moves::operator==(const Moves other) {
-    if(this->icoord == other.icoord &&
-        this->jcoord == other.jcoord) {
+bool Moves::operator == (const Moves &other) const {
+    if(icoord == other.icoord &&
+        jcoord == other.jcoord) {
         for(int i = 0; i < 4; i++) {
             if(this->possibleorientations[i] != other.possibleorientations[i]) {
                 return false;
             }
         }
         return true;
+    }
+    else {
+        return false;
     }
 }
 

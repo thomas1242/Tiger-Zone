@@ -729,10 +729,18 @@ bool Board::placeCard(int i, int j, Card * card, int rotations) {
 }
 
 void Board::markavail(int i, int j, Card* card) {
-    Coords* temp1 = new Coords(i, j);
-
+    cout << "i is: " << i << endl;
+    cout << "j is: " << j << endl;
     // Deleting current location
-    markedtiles.remove(temp1);
+
+    for (list<Coords*>::iterator iter = markedtiles.begin(); iter != markedtiles.end();) {
+        if((*iter)->icoord == i && (*iter)->jcoord == j) {
+            iter = markedtiles.erase(iter);
+        }
+        else {
+            ++iter;
+        }
+    }
 
     Coords* temp2 = new Coords(i-1, j);
     cout << "markavail i-1: " << temp2->icoord << ", " << temp2->jcoord << endl;
@@ -751,10 +759,10 @@ void Board::markavail(int i, int j, Card* card) {
     markedtiles.push_back(temp5);
     
     cout << endl << "Marked tile contents" << endl;
+    int k = 0;
     for (list<Coords*>::const_iterator iter = markedtiles.begin(); iter != markedtiles.end(); ++iter) {
-        for(int i = 0;  i < markedtiles.size();i--) {
-            cout << "Space 1: " << (*iter)->icoord << (*iter)->jcoord << endl;
-        }
+        cout << "Space " << k << ": " << (*iter)->icoord << "," <<(*iter)->jcoord << endl;
+        k++;
     }
 
     /*
@@ -782,7 +790,9 @@ void Board::updatePossibleMoves(Card * card) { // possible moves based on board 
                 cout << "FITS" << endl;
                 works = true;
             }
+            cout << endl << "before the rotate" << endl;
             card->rotate();
+            cout << endl << "passed the rotate"<< endl;
         }
 
 
@@ -811,7 +821,9 @@ void Board::updatePossibleMoves(Card * card) { // possible moves based on board 
 }
 
 void Board::refreshPossibleMoves() {
+    cout << endl << "did we clear?" << endl;
     possibleMoves.clear();
+    cout << endl << "we cleared" << endl;
 }
 
 bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
@@ -820,10 +832,10 @@ bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
     
     // check that the sides match OR are next to open space
     
-    if((i == 0 || board[i-1][j].botEdge->type == card->topEdge->type || board[i-1][j].botEdge->type == 'o') &&           // check top
-        (i == ROWS-1 || board[i+1][j].topEdge->type == card->botEdge->type || board[i+1][j].topEdge->type =='o') &&      // check bot
-        (j == 0 || board[i][j-1].rightEdge->type == card->leftEdge->type || board[i][j-1].rightEdge->type == 'o') &&     // check to left
-        (j = COLS || board[i][j+1].leftEdge->type == card->rightEdge->type || board[i][j+1].leftEdge->type == 'o')) {    // check to right    
+    if((i == 0          || board[i-1][j].botEdge->type == card->topEdge->type    || board[i-1][j].botEdge->type == 'o') &&           // check top
+        (i == ROWS-1    || board[i+1][j].topEdge->type == card->botEdge->type    || board[i+1][j].topEdge->type =='o') &&      // check bot
+        (j == 0         || board[i][j-1].rightEdge->type == card->leftEdge->type || board[i][j-1].rightEdge->type == 'o') &&     // check to left
+        (j == COLS-1    || board[i][j+1].leftEdge->type == card->rightEdge->type || board[i][j+1].leftEdge->type == 'o')) {    // check to right    
         result = true;
     }
     
@@ -844,7 +856,12 @@ void Board::printBoard() {
                     cout << "   " << board[i][j].getTop() << "   ";
                 }
                 else if (n == 1) {
-                    cout << board[i][j].getLeft() << ' ' << board[i][j].getId() << ' ' << board[i][j].getRight() << ' ';
+                    if(board[i][j].getId() < 10 && board[i][j].getId() > 0) {
+                       cout << board[i][j].getLeft() << "  " << board[i][j].getId() << ' ' << board[i][j].getRight() << ' '; 
+                    }
+                    else {
+                         cout << board[i][j].getLeft() << ' ' << board[i][j].getId() << ' ' << board[i][j].getRight() << ' ';
+                    }
                 }
                 else if (n == 2) {
                     cout << "   " << board[i][j].getBot() << "   ";

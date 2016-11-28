@@ -10,7 +10,7 @@ int main() {
     
     Game * game = new Game();               // create the game
     game->startGame();
-    int row, col;
+    int row, col, orientation;
     string choice;
     
     
@@ -34,7 +34,9 @@ int main() {
             cin >> row;
             cout << "col? ";
             cin >> col;
-            game->giveTurn(row, col);
+            cout << "orientation?";
+            cin >> orientation;
+            game->giveTurn(row, col, orientation);
         }
         else if( choice == "1") {
             game->rotateCard();

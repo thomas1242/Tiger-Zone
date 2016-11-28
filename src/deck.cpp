@@ -21,7 +21,7 @@ Deck::Deck() {
     
     for(int i = 0; i < MAXCARDS; i++) {   // put 71 cards into the deck
         do{
-            id = rand() % 27;                                // generate random card
+            id = rand() % 29;                                // generate random card
         } while ( counts[id] >= maxCounts[id] );       // only use cards we need
         
         deck.push( new Card(id) );  // put the card in the deck

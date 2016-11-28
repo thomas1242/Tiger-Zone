@@ -26,7 +26,7 @@ public:
     Game();
     ~Game();
     void giveCard();
-    void giveTurn(int i, int j);
+    void giveTurn(int i, int j, int orientation);
     void startGame();
     void endGame();
     bool status();
