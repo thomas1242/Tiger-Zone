@@ -10,23 +10,22 @@
 class Player {
     
 public:
-    Player(Board * b, Deck * d);
-    void takeCard();
-    bool takeTurn(int i, int j, int orientation);        // draw tile from the deck, place it, maybe place a meeple
+    Player(Board * b);
+    void takeCard(Card* input);
+    bool takeTurn(int i, int j, int orientation);  // draw tile from the deck, place it, maybe place a meeple
     void drawCard();
     void rotateCard();
     bool hasCard;
     int getCardId();    // for GUI
     int getScore();
-    int getMeeples();
+    int getTigers();
     Card * getCard();   // for GUI
     
     
 private:
     int score;
-    int meeplesAvailable;
+    int tigersAvailable;
     Board * theBoard;
-    Deck * theDeck;
     Card * currCard;
 };
 

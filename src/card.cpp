@@ -22,6 +22,7 @@ Card::Card(int id) {
 }
 
 void Card::edgeclone(Edge* output, Edge* input) {
+        cout << "Segfault yet?" << endl;
         output->j1 = input->j1;
         output->j2 = input->j2;
         output->t1 = input->t1;
@@ -29,16 +30,10 @@ void Card::edgeclone(Edge* output, Edge* input) {
         output->type = input->type;
 }
 
-void Card::printCard() {
-    cout << "\nCard " << cardID << " with id = " << id << " rotated " << orientation << " degrees." << endl;
-    // ---------------------------------
-    cout << " "   << " "  << topEdge->type << " " << " "   << " " << endl;
-    cout << leftEdge->type  << " "  << id << " " << rightEdge->type << " " << endl;
-    cout << " "   << " "  << botEdge->type << " " << " "   << " " << endl << endl;
-}
-
 void Card::rotate() {   // rotate card 90 degrees clockwise
+    cout << "Before edge* creation" << endl;
     Edge * temp = new Edge();
+    cout << "After edge* creation" << endl;
     edgeclone(temp, rightEdge);
     edgeclone(rightEdge, topEdge);
     edgeclone(topEdge, leftEdge);
@@ -47,49 +42,58 @@ void Card::rotate() {   // rotate card 90 degrees clockwise
     
     orientation = (orientation + 90) % 360;
     printCard();
+    //printCard();
+}
+
+void Card::printCard() {
+    cout << "Card " << cardID << " with id = " << id << " rotated " << orientation << " degrees." << endl;
+    // ---------------------------------
+    cout << " "   << " "  << topEdge->getType() << " " << " "   << " " << endl;
+    cout << leftEdge->getType()  << " "  << mid << " " << rightEdge->getType() << " " << endl;
+    cout << " "   << " "  << botEdge->getType() << " " << " "   << " " << endl;
 }
 
 void Card::assignCardID() {
     
     cardID = "";
 
-    if(topEdge->type == 'J') {
+    if(topEdge->getType() == 'J') {
         cardID += 'J';
     }
-    else if(topEdge->type == 'L') {
+    else if(topEdge->getType() == 'L') {
         cardID += 'L';
     }
-    else if(topEdge->type == 'T') {
+    else if(topEdge->getType() == 'T') {
         cardID += 'T';
     }
     
-    if(rightEdge->type == 'J') {
+    if(rightEdge->getType() == 'J') {
         cardID += 'J';
     }
-    else if(rightEdge->type == 'L') {
+    else if(rightEdge->getType() == 'L') {
         cardID += 'L';
     }
-    else if(rightEdge->type == 'T') {
+    else if(rightEdge->getType() == 'T') {
         cardID += 'T';
     }
     
-    if(botEdge->type == 'J') {
+    if(botEdge->getType() == 'J') {
         cardID += 'J';
     }
-    else if(botEdge->type == 'L') {
+    else if(botEdge->getType() == 'L') {
         cardID += 'L';
     }
-    else if(botEdge->type == 'T') {
+    else if(botEdge->getType() == 'T') {
         cardID += 'T';
     }
     
-    if(leftEdge->type == 'J') {
+    if(leftEdge->getType() == 'J') {
         cardID += 'J';
     }
-    else if(leftEdge->type == 'L') {
+    else if(leftEdge->getType() == 'L') {
         cardID += 'L';
     }
-    else if(leftEdge->type == 'T') {
+    else if(leftEdge->getType() == 'T') {
         cardID += 'T';
     }
     
@@ -197,19 +201,19 @@ string Card::getCardID() {
 }
 
 char Card::getTop() {
-    return topEdge->type;
+    return topEdge->getType();
 }
 
 char Card::getBot() {
-    return botEdge->type;
+    return botEdge->getType();
 }
 
 char Card::getRight() {
-    return rightEdge->type;
+    return rightEdge->getType();
 }
 
 char Card::getLeft() {
-    return leftEdge->type;
+    return leftEdge->getType();
 }
 
 int Card::getId() {
@@ -272,595 +276,337 @@ void Card::connectEdgestoCard() {
     //------------------------------------------------------------------
     
     // connect top edge to card's internal regions
-    if(id == 0) {
-        topEdge->j1 = j1;
-        rightEdge->j1 = j1;
-        botEdge->j1 = j1;
-        leftEdge->j1 = j1;
-    }
-    else if(id == 1) {
-        topEdge->j1 = j1;
-        rightEdge->j1 = j1;
-        botEdge->j1 = j1;
-        leftEdge->j1 = j1;
-    }
-    else if(id == 2) {
-        topEdge->j1 = j1;
-        rightEdge->j1 = j1;
-        botEdge->t1 = t1;
-        botEdge->j1 = j1;
-        botEdge->j2 = j1;
-        leftEdge->j1 = j1;
-    }
-    else if(id == 3) {
-        
-        topEdge->j1 = j1;
-        topEdge->t1 = t4;
-        topEdge->j2 = j3;
-        
-        rightEdge->j1 = j3;
-        rightEdge->t1 = t3;
-        rightEdge->j2 = j4;
-        
-        botEdge->j1 = j4;
-        botEdge->t1 = t2;
-        botEdge->j2 = j2;
-        
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
-        
-    }
-    else if(id == 4) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
-        
-        rightEdge->j1 = j2;
-        
-        botEdge->j1 = j2;
-        botEdge->t1 = t1;
-        botEdge->j2 = j1;
-        
-        leftEdge->j1 = j1;
-    }
-    else if(id == 5) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
-        
-        rightEdge->j1 = j2;
-        
-        botEdge->j1 = j2;
-        
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
-    }
-    else if(id == 6) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t3;
-        topEdge->j2 = j3;
-        
-        rightEdge->j1 = j3;
-        
-        botEdge->j1 = j3;
-        botEdge->t1 = t2;
-        botEdge->j2 = j2;
-        
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
-    }
-    else if(id == 7) {
-        topEdge->l1 = l1;
-        rightEdge->l1 = l1;
-        botEdge->l1 = l1;
-        leftEdge->l1 = l1;
-    }
-    else if(id == 8) {
-        topEdge->j1 = j1;
-        rightEdge->l1 = l1;
-        botEdge->l1 = l1;
-        leftEdge->l1 = l1;
-    }
-    else if(id == 9) {
-        topEdge->l1 = l1;
-        rightEdge->l1 = l1;
-        botEdge->j1 = j1;
-        leftEdge->j1 = j1;
-    }
-    else if(id == 10) {
-        topEdge->j1 = j1;
-        rightEdge->l1 = l1;
-        botEdge->j1 = j2;
-        leftEdge->l1 = l1;
-    }
-    else if(id == 11) {
-        topEdge->l1 = l1;
-        rightEdge->j1 = j1;
-        botEdge->l1 = l2;
-        leftEdge->j1 = j1;
-    }
-    else if(id == 12) {
-        topEdge->l1 = l1;
-        rightEdge->j1 = j1;
-        botEdge->j1 = j1;
-        leftEdge->j1 = j1;
-    }
-    else if(id == 13) {
-        topEdge->j1 = j1;
-        rightEdge->l1 = l2;
-        botEdge->l1 = l1;
-        leftEdge->j1 = j1;
-    }
-    else if(id == 14) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
-        
-        rightEdge->l1 = l1;
-        
-        botEdge->j1 = j2;
-        
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
-    }
-    else if(id == 15) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
-        
-        rightEdge->l1 = l1;
-        
-        botEdge->j1 = j2;
-        
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
-    }
-    else if(id == 16) {
-        topEdge->j1 = j1;
-        
-        rightEdge->l1 = l1;
-        
-        botEdge->j1 = j1;
-        botEdge->t1 = t1;
-        botEdge->j2 = j2;
-        
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
-    }
-    else if(id == 17) {
-        topEdge->j1 = j1;
-        
-        rightEdge->l1 = l1;
-        
-        botEdge->j1 = j1;
-        botEdge->t1 = t1;
-        botEdge->j2 = j2;
-        
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
-    }
-    else if(id == 18) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
-        
-        rightEdge->l1 = l1;
-        
-        botEdge->j1 = j2;
-        botEdge->t1 = t1;
-        botEdge->j2 = j1;
-        
-        leftEdge->j1 = j1;
-    }
-    else if(id == 19) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
-        
-        rightEdge->l1 = l1;
-        
-        botEdge->j1 = j2;
-        botEdge->t1 = t1;
-        botEdge->j2 = j1;
-        
-        leftEdge->j1 = j1;
-    }
-    else if(id == 20) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
-        rightEdge->l1 = l1;
-        botEdge->l1 = l1;
-        leftEdge->l1 = l1;
-        
-    }
-    else if(id == 21) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t3;
-        topEdge->j2 = j3;
-        
-        rightEdge->l1 = l1;
-        
-        botEdge->j1 = j3;
-        botEdge->t1 = t2;
-        botEdge->j2 = j2;
-        
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
-    }
-    else if(id == 22) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t3;
-        topEdge->j2 = j3;
-        
-        rightEdge->l1 = l1;
-        
-        botEdge->j1 = j3;
-        botEdge->t1 = t2;
-        botEdge->j2 = j2;
-        
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
-    }
-    else if(id == 23) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
-        
-        rightEdge->l1 = l1;
-        
-        botEdge->l1 = l1;
-        
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
-    }
-    else if(id == 24) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
-        
-        rightEdge->l1 = l1;
-        
-        botEdge->l1 = l1;
-        
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
-    }
-    else if(id == 25) {
-        topEdge->l1 = l1;
-        rightEdge->j1 = j2;
-        botEdge->j1 = j2;
-        botEdge->t1 = t1;
-        botEdge->j2 = j1;
-        leftEdge->j1 = j1;
-    }
-    else if(id == 26) {
-        topEdge->l1 = l1;
-        rightEdge->j1 = j2;
-        botEdge->j1 = j2;
-        botEdge->t1 = t1;
-        botEdge->j2 = j1;
-        leftEdge->j1 = j1;
-    }
-    else if(id == 27) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
-        
-        rightEdge->l1 = l1;
-        botEdge->l1 = l1;
-        leftEdge->l1 = l1;
-    }
-
-
+    
+    reConnect();
 }
 
 void Card::reConnect() {
     
+    Edge * curr_topEdge = new Edge();   // where the default edges are located
+    Edge * curr_rightEdge = new Edge();
+    Edge * curr_botEdge = new Edge();
+    Edge * curr_leftEdge = new Edge();
+
+    
+    if(orientation == 0) {
+        curr_topEdge   = topEdge;
+        curr_rightEdge = rightEdge;
+        curr_botEdge   = botEdge;
+        curr_leftEdge  = leftEdge;
+    }
+    else if (orientation == 90) {
+        curr_topEdge   = rightEdge;
+        curr_rightEdge = botEdge;
+        curr_botEdge   = leftEdge;
+        curr_leftEdge  = topEdge;
+    }
+    else if (orientation == 180) {
+        curr_topEdge   = botEdge;
+        curr_rightEdge = leftEdge;
+        curr_botEdge   = topEdge;
+        curr_leftEdge  = rightEdge;
+    }
+    else if (orientation == 270) {
+        curr_topEdge   = leftEdge;
+        curr_rightEdge = topEdge;
+        curr_botEdge   = rightEdge;
+        curr_leftEdge  = botEdge;
+    }
+    
     // connect top edge to card's internal regions
     if(id == 0) {
-        topEdge->j1 = j1;
-        rightEdge->j1 = j1;
-        botEdge->j1 = j1;
-        leftEdge->j1 = j1;
+        curr_topEdge->j1 = j1;
+        curr_rightEdge->j1 = j1;
+        curr_botEdge->j1 = j1;
+        curr_leftEdge->j1 = j1;
     }
     else if(id == 1) {
-        topEdge->j1 = j1;
-        rightEdge->j1 = j1;
-        botEdge->j1 = j1;
-        leftEdge->j1 = j1;
+        curr_topEdge->j1 = j1;
+        curr_rightEdge->j1 = j1;
+        curr_botEdge->j1 = j1;
+        curr_leftEdge->j1 = j1;
     }
     else if(id == 2) {
-        topEdge->j1 = j1;
-        rightEdge->j1 = j1;
-        botEdge->t1 = t1;
-        botEdge->j1 = j1;
-        botEdge->j2 = j1;
-        leftEdge->j1 = j1;
+        curr_topEdge->j1 = j1;
+        curr_rightEdge->j1 = j1;
+        curr_botEdge->t1 = t1;
+        curr_botEdge->j1 = j1;
+        curr_botEdge->j2 = j1;
+        curr_leftEdge->j1 = j1;
     }
     else if(id == 3) {
         
-        topEdge->j1 = j1;
-        topEdge->t1 = t4;
-        topEdge->j2 = j3;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t4;
+        curr_topEdge->j2 = j3;
         
-        rightEdge->j1 = j3;
-        rightEdge->t1 = t3;
-        rightEdge->j2 = j4;
+        curr_rightEdge->j1 = j3;
+        curr_rightEdge->t1 = t3;
+        curr_rightEdge->j2 = j4;
         
-        botEdge->j1 = j4;
-        botEdge->t1 = t2;
-        botEdge->j2 = j2;
+        curr_botEdge->j1 = j4;
+        curr_botEdge->t1 = t2;
+        curr_botEdge->j2 = j2;
         
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
+        curr_leftEdge->j1 = j2;
+        curr_leftEdge->t1 = t1;
+        curr_leftEdge->j2 = j1;
         
     }
     else if(id == 4) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t1;
+        curr_topEdge->j2 = j2;
         
-        rightEdge->j1 = j2;
+        curr_rightEdge->j1 = j2;
         
-        botEdge->j1 = j2;
-        botEdge->t1 = t1;
-        botEdge->j2 = j1;
+        curr_botEdge->j1 = j2;
+        curr_botEdge->t1 = t1;
+        curr_botEdge->j2 = j1;
         
-        leftEdge->j1 = j1;
+        curr_leftEdge->j1 = j1;
     }
     else if(id == 5) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t1;
+        curr_topEdge->j2 = j2;
         
-        rightEdge->j1 = j2;
+        curr_rightEdge->j1 = j2;
         
-        botEdge->j1 = j2;
+        curr_botEdge->j1 = j2;
         
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
+        curr_leftEdge->j1 = j2;
+        curr_leftEdge->t1 = t1;
+        curr_leftEdge->j2 = j1;
     }
     else if(id == 6) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t3;
-        topEdge->j2 = j3;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t3;
+        curr_topEdge->j2 = j3;
         
-        rightEdge->j1 = j3;
+        curr_rightEdge->j1 = j3;
         
-        botEdge->j1 = j3;
-        botEdge->t1 = t2;
-        botEdge->j2 = j2;
+        curr_botEdge->j1 = j3;
+        curr_botEdge->t1 = t2;
+        curr_botEdge->j2 = j2;
         
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
+        curr_leftEdge->j1 = j2;
+        curr_leftEdge->t1 = t1;
+        curr_leftEdge->j2 = j1;
     }
     else if(id == 7) {
-        topEdge->l1 = l1;
-        rightEdge->l1 = l1;
-        botEdge->l1 = l1;
-        leftEdge->l1 = l1;
+        curr_topEdge->l1 = l1;
+        curr_rightEdge->l1 = l1;
+        curr_botEdge->l1 = l1;
+        curr_leftEdge->l1 = l1;
     }
     else if(id == 8) {
-        topEdge->j1 = j1;
-        rightEdge->l1 = l1;
-        botEdge->l1 = l1;
-        leftEdge->l1 = l1;
+        curr_topEdge->j1 = j1;
+        curr_rightEdge->l1 = l1;
+        curr_botEdge->l1 = l1;
+        curr_leftEdge->l1 = l1;
     }
     else if(id == 9) {
-        topEdge->l1 = l1;
-        rightEdge->l1 = l1;
-        botEdge->j1 = j1;
-        leftEdge->j1 = j1;
+        curr_topEdge->l1 = l1;
+        curr_rightEdge->l1 = l1;
+        curr_botEdge->j1 = j1;
+        curr_leftEdge->j1 = j1;
     }
     else if(id == 10) {
-        topEdge->j1 = j1;
-        rightEdge->l1 = l1;
-        botEdge->j1 = j2;
-        leftEdge->l1 = l1;
+        curr_topEdge->j1 = j1;
+        curr_rightEdge->l1 = l1;
+        curr_botEdge->j1 = j2;
+        curr_leftEdge->l1 = l1;
     }
     else if(id == 11) {
-        topEdge->l1 = l1;
-        rightEdge->j1 = j1;
-        botEdge->l1 = l2;
-        leftEdge->j1 = j1;
+        curr_topEdge->l1 = l1;
+        curr_rightEdge->j1 = j1;
+        curr_botEdge->l1 = l2;
+        curr_leftEdge->j1 = j1;
     }
     else if(id == 12) {
-        topEdge->l1 = l1;
-        rightEdge->j1 = j1;
-        botEdge->j1 = j1;
-        leftEdge->j1 = j1;
+        curr_topEdge->l1 = l1;
+        curr_rightEdge->j1 = j1;
+        curr_botEdge->j1 = j1;
+        curr_leftEdge->j1 = j1;
     }
     else if(id == 13) {
-        topEdge->j1 = j1;
-        rightEdge->l1 = l2;
-        botEdge->l1 = l1;
-        leftEdge->j1 = j1;
+        curr_topEdge->j1 = j1;
+        curr_rightEdge->l1 = l2;
+        curr_botEdge->l1 = l1;
+        curr_leftEdge->j1 = j1;
     }
     else if(id == 14) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t1;
+        curr_topEdge->j2 = j2;
         
-        rightEdge->l1 = l1;
+        curr_rightEdge->l1 = l1;
         
-        botEdge->j1 = j2;
+        curr_botEdge->j1 = j2;
         
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
+        curr_leftEdge->j1 = j2;
+        curr_leftEdge->t1 = t1;
+        curr_leftEdge->j2 = j1;
     }
     else if(id == 15) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t1;
+        curr_topEdge->j2 = j2;
         
-        rightEdge->l1 = l1;
+        curr_rightEdge->l1 = l1;
         
-        botEdge->j1 = j2;
+        curr_botEdge->j1 = j2;
         
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
+        curr_leftEdge->j1 = j2;
+        curr_leftEdge->t1 = t1;
+        curr_leftEdge->j2 = j1;
     }
     else if(id == 16) {
-        topEdge->j1 = j1;
+        curr_topEdge->j1 = j1;
         
-        rightEdge->l1 = l1;
+        curr_rightEdge->l1 = l1;
         
-        botEdge->j1 = j1;
-        botEdge->t1 = t1;
-        botEdge->j2 = j2;
+        curr_botEdge->j1 = j1;
+        curr_botEdge->t1 = t1;
+        curr_botEdge->j2 = j2;
         
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
+        curr_leftEdge->j1 = j2;
+        curr_leftEdge->t1 = t1;
+        curr_leftEdge->j2 = j1;
     }
     else if(id == 17) {
-        topEdge->j1 = j1;
+        curr_topEdge->j1 = j1;
         
-        rightEdge->l1 = l1;
+        curr_rightEdge->l1 = l1;
         
-        botEdge->j1 = j1;
-        botEdge->t1 = t1;
-        botEdge->j2 = j2;
+        curr_botEdge->j1 = j1;
+        curr_botEdge->t1 = t1;
+        curr_botEdge->j2 = j2;
         
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
+        curr_leftEdge->j1 = j2;
+        curr_leftEdge->t1 = t1;
+        curr_leftEdge->j2 = j1;
     }
     else if(id == 18) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t1;
+        curr_topEdge->j2 = j2;
         
-        rightEdge->l1 = l1;
+        curr_rightEdge->l1 = l1;
         
-        botEdge->j1 = j2;
-        botEdge->t1 = t1;
-        botEdge->j2 = j1;
+        curr_botEdge->j1 = j2;
+        curr_botEdge->t1 = t1;
+        curr_botEdge->j2 = j1;
         
-        leftEdge->j1 = j1;
+        curr_leftEdge->j1 = j1;
     }
     else if(id == 19) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t1;
+        curr_topEdge->j2 = j2;
         
-        rightEdge->l1 = l1;
+        curr_rightEdge->l1 = l1;
         
-        botEdge->j1 = j2;
-        botEdge->t1 = t1;
-        botEdge->j2 = j1;
+        curr_botEdge->j1 = j2;
+        curr_botEdge->t1 = t1;
+        curr_botEdge->j2 = j1;
         
-        leftEdge->j1 = j1;
+        curr_leftEdge->j1 = j1;
     }
     else if(id == 20) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
-        rightEdge->l1 = l1;
-        botEdge->l1 = l1;
-        leftEdge->l1 = l1;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t1;
+        curr_topEdge->j2 = j2;
+        curr_rightEdge->l1 = l1;
+        curr_botEdge->l1 = l1;
+        curr_leftEdge->l1 = l1;
         
     }
     else if(id == 21) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t3;
-        topEdge->j2 = j3;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t3;
+        curr_topEdge->j2 = j3;
         
-        rightEdge->l1 = l1;
+        curr_rightEdge->l1 = l1;
         
-        botEdge->j1 = j3;
-        botEdge->t1 = t2;
-        botEdge->j2 = j2;
+        curr_botEdge->j1 = j3;
+        curr_botEdge->t1 = t2;
+        curr_botEdge->j2 = j2;
         
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
+        curr_leftEdge->j1 = j2;
+        curr_leftEdge->t1 = t1;
+        curr_leftEdge->j2 = j1;
     }
     else if(id == 22) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t3;
-        topEdge->j2 = j3;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t3;
+        curr_topEdge->j2 = j3;
         
-        rightEdge->l1 = l1;
+        curr_rightEdge->l1 = l1;
         
-        botEdge->j1 = j3;
-        botEdge->t1 = t2;
-        botEdge->j2 = j2;
+        curr_botEdge->j1 = j3;
+        curr_botEdge->t1 = t2;
+        curr_botEdge->j2 = j2;
         
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
+        curr_leftEdge->j1 = j2;
+        curr_leftEdge->t1 = t1;
+        curr_leftEdge->j2 = j1;
     }
     else if(id == 23) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t1;
+        curr_topEdge->j2 = j2;
         
-        rightEdge->l1 = l1;
+        curr_rightEdge->l1 = l1;
         
-        botEdge->l1 = l1;
+        curr_botEdge->l1 = l1;
         
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
+        curr_leftEdge->j1 = j2;
+        curr_leftEdge->t1 = t1;
+        curr_leftEdge->j2 = j1;
     }
     else if(id == 24) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t1;
+        curr_topEdge->j2 = j2;
         
-        rightEdge->l1 = l1;
+        curr_rightEdge->l1 = l1;
         
-        botEdge->l1 = l1;
+        curr_botEdge->l1 = l1;
         
-        leftEdge->j1 = j2;
-        leftEdge->t1 = t1;
-        leftEdge->j2 = j1;
+        curr_leftEdge->j1 = j2;
+        curr_leftEdge->t1 = t1;
+        curr_leftEdge->j2 = j1;
     }
     else if(id == 25) {
-        topEdge->l1 = l1;
-        rightEdge->j1 = j2;
-        botEdge->j1 = j2;
-        botEdge->t1 = t1;
-        botEdge->j2 = j1;
-        leftEdge->j1 = j1;
+        curr_topEdge->l1 = l1;
+        curr_rightEdge->j1 = j2;
+        curr_botEdge->j1 = j2;
+        curr_botEdge->t1 = t1;
+        curr_botEdge->j2 = j1;
+        curr_leftEdge->j1 = j1;
     }
     else if(id == 26) {
-        topEdge->l1 = l1;
-        rightEdge->j1 = j2;
-        botEdge->j1 = j2;
-        botEdge->t1 = t1;
-        botEdge->j2 = j1;
-        leftEdge->j1 = j1;
+        curr_topEdge->l1 = l1;
+        curr_rightEdge->j1 = j2;
+        curr_botEdge->j1 = j2;
+        curr_botEdge->t1 = t1;
+        curr_botEdge->j2 = j1;
+        curr_leftEdge->j1 = j1;
     }
     else if(id == 27) {
-        topEdge->j1 = j1;
-        topEdge->t1 = t1;
-        topEdge->j2 = j2;
+        curr_topEdge->j1 = j1;
+        curr_topEdge->t1 = t1;
+        curr_topEdge->j2 = j2;
         
-        rightEdge->l1 = l1;
-        botEdge->l1 = l1;
-        leftEdge->l1 = l1;
+        curr_rightEdge->l1 = l1;
+        curr_botEdge->l1 = l1;
+        curr_leftEdge->l1 = l1;
     }
-
     
+    
+
     
 }
 

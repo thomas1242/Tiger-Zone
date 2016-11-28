@@ -4,59 +4,55 @@
 #include <iostream>
 #include <unistd.h>
 
-Player::Player(Board * b, Deck * d) {
+Player::Player(Board * b) {
     theBoard = b;           // point this players to the game's board;
-    theDeck = d;            // point this players to the game's deck
     score = 0;
-    meeplesAvailable = 7;   // players start with 7 meeples
+    tigersAvailable = 7;   // players start with 7 tigers
     currCard = NULL;
     hasCard = false;
 }
 
-void Player::takeCard() {
-    currCard = theDeck->drawCard();                  // draw new card id from the deck
+void Player::takeCard(Card* input) {
+    currCard = input;
     currCard->printCard();
     theBoard->refreshPossibleMoves();
     theBoard->updatePossibleMoves(currCard);
-    
+
     if(!(theBoard->possibleMoves.empty())) {
         hasCard = true;
     }
-    cout << endl << "Has Card: " << hasCard << endl;
-   // theBoard->printBoard();
- //   currCard->printCard();
+    //delete currCard;                                // Card is discarded
+    // TELL SERVER CARD IS DISCARDED, NEW THING IS DONE.
+    
+    hasCard = true;
+    //theBoard->printBoard();
+    // currCard->printCard();
 }
 
 bool Player::takeTurn(int i, int j, int orientation) {
     bool res = false;
-
     for (list<Moves*>::iterator iter = theBoard->possibleMoves.begin(); iter != theBoard->possibleMoves.end(); ++iter) {
         if((*iter)->icoord == i && (*iter)->jcoord == j) {
             if( orientation == 0 && (*iter)->possibleorientations[0] == 1) {
-                theBoard->placeCard(i, j, currCard, 0);
-                res = true;
+                res = theBoard->placeCard(i, j, currCard, 0);
                 hasCard = true;
             }
             else if( orientation == 90 && (*iter)->possibleorientations[1] == 1) {
-                theBoard->placeCard(i, j, currCard, 1);
-                res = true;
+                res = theBoard->placeCard(i, j, currCard, 1);
                 hasCard = true;
             }
             else if( orientation == 180 && (*iter)->possibleorientations[2] == 1) {
-                theBoard->placeCard(i, j, currCard, 2);
-                res = true;
+                res = theBoard->placeCard(i, j, currCard, 2);
                 hasCard = true;
             }
             else if( orientation == 270 && (*iter)->possibleorientations[3] == 1) {
                 theBoard->placeCard(i, j, currCard, 3);
-                res = true;
                 hasCard = true;
             }
         }
     }
     return res;
 }
-
 int Player::getCardId() {
     return currCard->getId();
 }
@@ -73,8 +69,8 @@ int Player::getScore() {
     return score;
 }
 
-int Player::getMeeples() {
-    return meeplesAvailable;
+int Player::getTigers() {
+    return tigersAvailable;
 }
 
 // for gui

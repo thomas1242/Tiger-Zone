@@ -1,4 +1,4 @@
-//#include "trail.h"
+#include "trail.h"
 #include "regs.h"
 
 Trail::Trail() {

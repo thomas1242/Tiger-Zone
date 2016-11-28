@@ -36,7 +36,7 @@ public:
     Player * getCurrPlayer();
     bool getCurrTurn();
     int getScore( bool player );
-    int getMeeples( bool player );
+    int getTigers( bool player );
     void printBoard();
     Card * getCurrCard();   // for GUI
     Deck * getDeck();

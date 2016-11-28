@@ -5,17 +5,16 @@
 #include <list>
 #include "card.h"
 #include "deck.h"
-//#include "trail.h"
-//#include "lake.h"
-//#include "jungle.h"
+#include "trail.h"
+#include "lake.h"
+#include "jungle.h"
 #include "regs.h"
 #include "moves.h"
 #include "coords.h"
+#include <list>
 
 #define ROWS  11 //MAXCARDS*2+1
 #define COLS  11 //MAXCARDS*2+1
-
-using namespace std;
 
 class Board {
     
@@ -28,16 +27,19 @@ public:
     void refreshPossibleMoves();
     bool placeCard(int i, int j, Card * card, int rotations);        // place a card onto the board
     Card getCard(int i, int j);
-    list<Moves*> possibleMoves;   
+    list<Moves*> possibleMoves; 
+
     int numJungles, numTrails, numLakes;
   
     Jungle * jungles;
     Trail * trails;
     Lake * lakes;
+    
+    void printRegions(int i, int j);
         
 private:
     Card ** board;                    // will point to 2D array of Cards a.k.a. the board
-     list<Coords*> markedtiles;        // Marked tiles can be possible moves
+    list<Coords*> markedtiles;        // Marked tiles can be possible moves
 };
 
 

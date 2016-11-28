@@ -5,9 +5,9 @@
 
 #include <stdio.h>
 #include "edge.h"
-//#include "trail.h"
-//#include "jungle.h"
-//#include "lake.h"
+#include "trail.h"
+#include "jungle.h"
+#include "lake.h"
 #include <string>
 using namespace std;
 
@@ -19,6 +19,10 @@ private:
     string cardID;
     int id;             // card identifier: what type of tile is this
     int orientation;    // degreees rotated clockwise, initally 0
+    
+
+    
+
     
     char mid; // might not need this
     
@@ -43,6 +47,8 @@ public:
     string getCardID();
     void connectEdgestoCard();
     void reConnect();
+
+
     
     // a card can have...
     Jungle * j1, * j2, * j3, * j4;          // up to 4 jungles

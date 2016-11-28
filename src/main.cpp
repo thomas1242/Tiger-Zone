@@ -14,9 +14,6 @@ int main() {
     string choice;
     
     
-    
-    
-    
     while ( game->status() == ON )  // Start the game loop
     {      
         game->giveCard();   // draw a card if the player needs    
@@ -34,7 +31,7 @@ int main() {
             cin >> row;
             cout << "col? ";
             cin >> col;
-            cout << "orientation?";
+            cout << "orientation? ";
             cin >> orientation;
             game->giveTurn(row, col, orientation);
         }
