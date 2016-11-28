@@ -20,76 +20,67 @@ Card::Card(int id) {
     
     orientation = 0;
 }
-
-void Card::edgeclone(Edge* output, Edge* input) {
-        output->j1 = input->j1;
-        output->j2 = input->j2;
-        output->t1 = input->t1;
-        output->l1 = input->l1;
-        output->type = input->type;
-}
-
 void Card::rotate() {   // rotate card 90 degrees clockwise
-    Edge * temp = new Edge();
-    edgeclone(temp, rightEdge);
-    edgeclone(rightEdge, topEdge);
-    edgeclone(topEdge, leftEdge);
-    edgeclone(leftEdge, botEdge);
-    edgeclone(botEdge, temp);
+    Edge * temp;
+    temp = rightEdge;
+    rightEdge = topEdge;
+    topEdge = leftEdge;
+    leftEdge = botEdge;
+    botEdge = temp;
     
     orientation = (orientation + 90) % 360;
-    printCard();
+   // printCard();
 }
 
 void Card::printCard() {
     cout << "Card " << cardID << " with id = " << id << " rotated " << orientation << " degrees." << endl;
     // ---------------------------------
-    cout << " "   << " "  << topEdge->type << " " << " "   << " " << endl;
-    cout << leftEdge->type  << " "  << mid << " " << rightEdge->type << " " << endl;
-    cout << " "   << " "  << botEdge->type << " " << " "   << " " << endl;
+    cout << " "   << " "  << topEdge->getType() << " " << " "   << " " << endl;
+    cout << leftEdge->getType()  << " "  << mid << " " << rightEdge->getType() << " " << endl;
+    cout << " "   << " "  << botEdge->getType() << " " << " "   << " " << endl;
 }
 
 void Card::assignCardID() {
     
     cardID = "";
 
-    if(topEdge->type == 'J') {
+    if(topEdge->getType() == 'J') {
         cardID += 'J';
     }
-    else if(topEdge->type == 'L') {
+    else if(topEdge->getType() == 'L') {
         cardID += 'L';
     }
-    else if(topEdge->type == 'T') {
+    else if(topEdge->getType() == 'T') {
         cardID += 'T';
     }
     
-    if(rightEdge->type == 'J') {
+    if(rightEdge->getType() == 'J') {
         cardID += 'J';
     }
-    else if(rightEdge->type == 'L') {
+    else if(rightEdge->getType() == 'L') {
         cardID += 'L';
     }
-    else if(rightEdge->type == 'T') {
+    else if(rightEdge->getType() == 'T') {
         cardID += 'T';
     }
     
-    if(botEdge->type == 'J') {
+    if(botEdge->getType() == 'J') {
         cardID += 'J';
     }
-    else if(botEdge->type == 'L') {
+    else if(botEdge->getType() == 'L') {
         cardID += 'L';
     }
-    else if(botEdge->type == 'T') {
+    else if(botEdge->getType() == 'T') {
         cardID += 'T';
     }
     
-    if(leftEdge->type == 'J') {
+    if(leftEdge->getType() == 'J') {
         cardID += 'J';
     }
-    else if(leftEdge->type == 'L') {
+    else if(leftEdge->getType() == 'L') {
         cardID += 'L';
     }
-    else if(leftEdge->type == 'T') {
+    else if(leftEdge->getType() == 'T') {
         cardID += 'T';
     }
     
@@ -197,19 +188,19 @@ string Card::getCardID() {
 }
 
 char Card::getTop() {
-    return topEdge->type;
+    return topEdge->getType();
 }
 
 char Card::getBot() {
-    return botEdge->type;
+    return botEdge->getType();
 }
 
 char Card::getRight() {
-    return rightEdge->type;
+    return rightEdge->getType();
 }
 
 char Card::getLeft() {
-    return leftEdge->type;
+    return leftEdge->getType();
 }
 
 int Card::getId() {

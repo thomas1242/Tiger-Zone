@@ -2,8 +2,8 @@
 #include "game.h"
 #include "card.h"
 #include "board.h"
-#include "game.h"
 #include <iostream>
+#include <string>
 using namespace std;
 
 Game::Game() {
@@ -35,15 +35,15 @@ void Game::endGame() {
     // this->~Game();      // delete the game
 }
 
-void Game::giveCard() {
+void Game::giveCard(string ID, Output *out) {
     
     if( current_turn && player_one->hasCard == false && player_two->hasCard == false) {             // player one makes a move
         //cout << "player_one to draw card:" << endl;
-        player_one->takeCard();
+        player_one->takeCard(ID, out);
     }
     else if ( !current_turn && player_one->hasCard == false && player_two->hasCard == false) {
         //cout << "player_two to draw card:" << endl;
-        player_two->takeCard();          // player two makes a move
+        player_two->takeCard(ID, out);          // player two makes a move
     }
     
 }
@@ -141,6 +141,14 @@ Deck * Game::getDeck() {
     return deck;
 }
 
+void Game::setStartingPlayer(bool us) {
+    if(us){
+        current_turn = true;
+    }
+    else {
+        current_turn = false;
+    }
+}
 
 
 

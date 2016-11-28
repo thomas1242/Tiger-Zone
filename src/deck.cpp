@@ -30,7 +30,7 @@ Deck::Deck() {
     }
     deck.push( new Card(18) );         // push center card on top of the deck
     numCardsInDeck++;
-    printDeck();
+    //printDeck();
 }
 
 // pop old top card off the deck, return new top card's id to the player who drew the card

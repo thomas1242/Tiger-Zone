@@ -9,8 +9,8 @@
 //#include "jungle.h"
 #include "regs.h"
 
-#define ROWS  11 //MAXCARDS*2+1
-#define COLS  11 //MAXCARDS*2+1
+#define ROWS  11 //MAXCARDS*2+1  will change to 155 later
+#define COLS  11 //MAXCARDS*2+1  will change to 155 later
 
 class Board {
     
@@ -32,7 +32,6 @@ public:
     Trail * trails;
     Lake * lakes;
         
-private:
     Card ** board;                    // will point to 2D array of Cards a.k.a. the board
     bool possibleMoves[ROWS][COLS];   // 2D array which holds valid moves
 };

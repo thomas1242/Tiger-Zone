@@ -13,11 +13,10 @@ Edge::Edge(char type) {
 
 Edge::~Edge() {
 }
-/*
+
 char Edge::getType() {
 	return type;			
 }
-*/
 
 void Edge::setEdgePointers(char type) {
         j1 = NULL;

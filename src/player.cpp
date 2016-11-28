@@ -3,6 +3,8 @@
 #include "deck.h"
 #include <iostream>
 #include <unistd.h>
+#include <utility>
+#include <string>
 
 Player::Player(Board * b, Deck * d) {
     theBoard = b;           // point this players to the game's board;
@@ -13,11 +15,47 @@ Player::Player(Board * b, Deck * d) {
     hasCard = false;
 }
 
-void Player::takeCard() {
-    
-    currCard = theDeck->drawCard();                  // draw new card id from the deck
-    theBoard->updatePossibleMoves( currCard );
-    
+int Player::convertID(string ID)
+{
+    if(ID == "JJJJ-"){return 0;}
+    if(ID == "JJJJX"){return 1;}
+    if(ID == "JJTJX"){return 2;}
+    if(ID == "TTTT-"){return 3;}
+    if(ID == "TJTJ-"){return 4;}
+    if(ID == "TJJT-"){return 5;}
+    if(ID == "TJTT-"){return 6;}
+    if(ID == "LLLL-"){return 7;}
+    if(ID == "JLLL-"){return 8;}
+    if(ID == "LLJJ-"){return 9;}
+    if(ID == "JLJL-"){return 10;}
+    if(ID == "LJLJ-"){return 11;}
+    if(ID == "LJJJ-"){return 12;}
+    if(ID == "JLLJ-"){return 13;}
+    if(ID == "TLJT-"){return 14;}
+    if(ID == "TLJTP"){return 15;}
+    if(ID == "JLTT-"){return 16;}
+    if(ID == "JLTTB"){return 17;}
+    if(ID == "TLTJ-"){return 18;}
+    if(ID == "TLTJD"){return 19;}
+    if(ID == "TLLL-"){return 20;}
+    if(ID == "TLTT-"){return 21;}     
+    if(ID == "TLTTP"){return 22;}
+    if(ID == "TLTT-"){return 23;}
+    if(ID == "TLLTB"){return 24;}
+    if(ID == "LJTJ-"){return 25;}
+    if(ID == "LJTJD"){return 26;}
+    if(ID == "TLLLC"){return 27;}
+}
+
+void Player::takeCard(string strID, Output *out) {
+    out->zone = 1;
+
+
+
+    currCard = new Card(convertID(strID));
+    //currCard = theDeck->drawCard();                  // draw new card id from the deck
+    theBoard->updatePossibleMoves( currCard);
+  
     while(theBoard->isPossibleMove() == false ) {
         cout << "Cannot place card " << currCard->getId() << ". Discarded." << endl;
         delete currCard;                                // Card is discarded

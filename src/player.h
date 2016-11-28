@@ -3,15 +3,17 @@
 #ifndef player_h
 #define player_h
 
-
+//#include "game.h"
+#include "inout.h"
 #include "board.h"
-
+#include <string>
 
 class Player {
     
 public:
     Player(Board * b, Deck * d);
-    void takeCard();
+    int convertID(string ID);
+    void takeCard(string strID, Output *out);
     bool takeTurn(int i, int j);        // draw tile from the deck, place it, maybe place a meeple
     void drawCard();
     void rotateCard();
@@ -20,12 +22,12 @@ public:
     int getScore();
     int getMeeples();
     Card * getCard();   // for GUI
-    
+    Board * theBoard;
     
 private:
     int score;
     int meeplesAvailable;
-    Board * theBoard;
+    
     Deck * theDeck;
     Card * currCard;
 };
