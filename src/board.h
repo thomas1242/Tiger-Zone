@@ -13,8 +13,6 @@
 #include "moves.h"
 #include "coords.h"
 
-#define ROWS  11 //MAXCARDS*2+1
-#define COLS  11 //MAXCARDS*2+1
 
 class Board {
     
