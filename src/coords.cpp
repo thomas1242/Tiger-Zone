@@ -23,9 +23,3 @@ Coords::Coords(int i, int j) {
 Coords::~Coords() {
     
 }
-
-void Coords::reassign(int i, int j) {
-	icoord = i;
-	jcoord = j;
-}
-

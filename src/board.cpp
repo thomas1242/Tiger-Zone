@@ -729,48 +729,57 @@ bool Board::placeCard(int i, int j, Card * card, int rotations) {
 }
 
 void Board::markavail(int i, int j, Card* card) {
-    Coords* temp = new Coords(i, j);
+    Coords* temp1 = new Coords(i, j);
 
     // Deleting current location
-    markedtiles.remove(temp);
+    markedtiles.remove(temp1);
 
-    temp->reassign(i-1,j);
-    cout << "markavail i-1: " << temp->icoord << ", " << temp->jcoord << endl;
-    markedtiles.push_back(temp);
+    Coords* temp2 = new Coords(i-1, j);
+    cout << "markavail i-1: " << temp2->icoord << ", " << temp2->jcoord << endl;
+    markedtiles.push_back(temp2);
 
-    temp->reassign(i+1, j);
-    cout << "markavail i+1: " << temp->icoord << ", " << temp->jcoord << endl;
-    markedtiles.push_back(temp);
+    Coords* temp3 = new Coords(i+1, j);
+    cout << "markavail i+1: " << temp3->icoord << ", " << temp3->jcoord << endl;
+    markedtiles.push_back(temp3);
 
-    temp->reassign(i, j-1);
-    cout << "markavail j-1: " << temp->icoord << ", " << temp->jcoord << endl;
-    markedtiles.push_back(temp);
+    Coords* temp4 = new Coords(i, j-1);
+    cout << "markavail j-1: " << temp4->icoord << ", " << temp4->jcoord << endl;
+    markedtiles.push_back(temp4);
 
-    temp->reassign(i, j+1);
-    cout << "markavail i+1: " << temp->icoord << ", " << temp->jcoord << endl;
-    markedtiles.push_back(temp);
+    Coords* temp5 = new Coords(i, j+1);
+    cout << "markavail i+1: " << temp5->icoord << ", " << temp5->jcoord << endl;
+    markedtiles.push_back(temp5);
+    
+    cout << endl << "Marked tile contents" << endl;
+    for (list<Coords*>::const_iterator iter = markedtiles.begin(); iter != markedtiles.end(); ++iter) {
+        for(int i = 0;  i < markedtiles.size();i--) {
+            cout << "Space 1: " << (*iter)->icoord << (*iter)->jcoord << endl;
+        }
+    }
 
+    /*
     cout << "before unique markedtiles is " << markedtiles.size() << " big." << endl;
     markedtiles.unique();
     cout << "after unique markedtiles is " << markedtiles.size() << " big." << endl;
-
+    */
 }
 
 void Board::updatePossibleMoves(Card * card) { // possible moves based on board state and current card
     
-
-    int i = markedtiles.front()->icoord;
-    int j = markedtiles.front()->jcoord;
-    cout << "0" << endl;
-    Moves* temp = new Moves(i, j);
-    cout << "1" <<endl;
     bool works = false;
     for (list<Coords*>::const_iterator iter = markedtiles.begin(); iter != markedtiles.end(); ++iter) {
+        int i = (*iter)->icoord;
+        int j = (*iter)->jcoord;
+        Moves* temp = new Moves(i, j);
+
+        cout << "1" <<endl;
+
+
         for(i = 0; i < 4; i++) {
             cout << "iter coords: " << (*iter)->icoord << ", " << (*iter)->jcoord << endl;
             if(checkIfFits((*iter)->icoord, (*iter)->jcoord, card) == true) {
                 temp->possibleorientations[i] = 1;
-                cout << "DOES IT FIT? YES!" << endl;
+                cout << "FITS" << endl;
                 works = true;
             }
             card->rotate();
@@ -787,7 +796,9 @@ void Board::updatePossibleMoves(Card * card) { // possible moves based on board 
     
     //Printing possible moves
     cout << endl;
-    i = 0; 
+    int i = 0;
+    printBoard();
+    card->printCard(); 
     for (list<Moves*>::const_iterator iter = possibleMoves.begin(); iter != possibleMoves.end(); ++iter) {
         cout << "Possible move #" << i << ": " << endl << "icoord: " << (*iter)->icoord 
         << endl << "jcoord: " << (*iter)->jcoord << endl 
