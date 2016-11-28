@@ -11,6 +11,11 @@ public:
     bool trailNotOwnedAvailable;
     bool lakeClaimed;
     bool trailClaimed;
+    bool isCloseable;
+    
+    int indexToUse;
+    int minEdge;
+    int indexMin;
     
     int makeDecision(int cardID);
 };
