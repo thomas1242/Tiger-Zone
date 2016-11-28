@@ -4,6 +4,8 @@
 
 Lake::Lake() {
 	id = 0;				 // not part of any jungle
+    owner = 0;
+    edgeConnects = 0;
 }
 
 Lake::~Lake() {

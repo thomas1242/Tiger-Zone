@@ -2,7 +2,9 @@
 #include "regs.h"
 
 Trail::Trail() {
-	id = 0;				
+	id = 0;
+    owner = 0;
+    edgeConnects = 0;
 }
 
 Trail::~Trail() {

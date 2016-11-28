@@ -9,10 +9,11 @@ public:
     ~Trail();
     void setId(int id);
     int getId();
+    int owner;         // true if we own the region, false if un-owned
+    int edgeConnects;   // number of edge connections
     
 private:
     int id;
-    
 };
 
 //=====================================================
@@ -24,6 +25,8 @@ public:
     ~Lake();
     void setId(int id);
     int getId();
+    int owner;         // true if we own the region, false if un-owned
+    int edgeConnects;   // number of edge connections
     
 private:
     int id;			// which jungle is this
@@ -40,6 +43,8 @@ public:
     ~Jungle();
     void setId(int id);
     int getId();
+    int owner;         // true if we own the region, false if un-owned
+    int edgeConnects;   // number of edge connections
     
 private:
     int id;			// which jungle is this

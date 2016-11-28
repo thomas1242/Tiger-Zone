@@ -15,8 +15,8 @@ Card::Card(int id) {
     this->id = id;          // set this cards id
     assignSides();        // add edges to this card
     assignCardID();
-    
     connectEdgestoCard();
+    assignCloseID();
     
     orientation = 0;
 }
@@ -592,16 +592,415 @@ void Card::reConnect() {
         curr_leftEdge->l1 = l1;
     }
     
-    
-
-    
 }
 
 
+void Card::assignCloseID() {
+    
+     // 0 if extending trail, 1 if extending lake, 2 if closing trail, 3 if closing lake, -1 non of the above
+    
+    if( id == 4 || id == 5 || id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 23 || id == 24 ) {              // extending trail
+        extendID = 0;
+    }
+    else if( id == 2 || id == 3 || id == 6 || id == 20 || id == 21 || id == 22 || id == 25 || id == 26 || id == 27  ) {        // closing trail
+        extendID = 2;
+    }
+    else if( id == 7 || id == 8 || id == 9 || id == 10 || id == 20 || id == 23 || id == 24 || id == 27  ) {        // extending lake
+        extendID = 1;
+    }
+    else if( id == 11 || id == 12 || id == 13 || id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 21 || id == 22 || id == 25 || id == 26  ) {        // closing lake
+        extendID = 3;
+    }
+    else {
+        extendID = -1;
+    }
+    
+    
+}
 
+void Card::printCells(int & L1, int & L2, int & J1, int & J2, int & J3, int & J4, int & T1, int & T2, int & T3, int & T4) {
+    
+       
+    // top edge
+    if( topEdge->getType() == 'J' ) {
+        if(topEdge->j1 == j1) {
+            setValue( J1 , 1);
+        }
+        if(topEdge->j1 == j2) {
+            setValue( J2 , 1);
+        }
+        if(topEdge->j1 == j3) {
+            setValue( J3 , 1);
+        }
+        if(topEdge->j1 == j4) {
+            setValue( J4 , 1);
+        }
+    }
+    if( topEdge->getType() == 'L' ) {
+        
+        if( leftEdge->getType() != 'L' && rightEdge->getType() != 'L' ) { // left and right edge not lake
+            if(topEdge->l1 == l1) {
+                setValue( L1 , 2);
+            }
+            if(topEdge->l1 == l2) {
+                setValue( L2 , 2);
+            }
+        }
+        else if( leftEdge->getType() != 'L' ) {    // left edge not lake
+            if(topEdge->l1 == l1) {
+                setValue( L1 , 2);
+            }
+            if(topEdge->l1 == l2) {
+                setValue( L2 , 2);
+            }
+        }
+        else {                                          // right edge not lake
+            if(topEdge->l1 == l1) {
+                setValue( L1 , 1);
+            }
+            if(topEdge->l1 == l2) {
+                setValue( L2 , 1);
+            }
+        }
+        
+    }
+    if( topEdge->getType() == 'T' ) {
+        if(topEdge->j1 == j1) {
+            setValue( J1 , 1);
+        }
+        if(topEdge->j1 == j2) {
+            setValue( J2 , 1);
+        }
+        if(topEdge->j1 == j3) {
+            setValue( J3 , 1);
+        }
+        if(topEdge->j1 == j4) {
+            setValue( J4 , 1);
+        }
+        
+        if(topEdge->t1 == t1) {
+            setValue( T1 , 2);
+        }
+        if(topEdge->t1 == t2) {
+            setValue( T2 , 2);
+        }
+        if(topEdge->t1 == t3) {
+            setValue( T3 , 2);
+        }
+        if(topEdge->t1 == t4) {
+            setValue( T4 , 2);
+        }
+        if(topEdge->j2 == j1) {
+            setValue( J1 , 3);
+        }
+        if(topEdge->j2 == j2) {
+            setValue( J2 , 3);
+        }
+        if(topEdge->j2 == j3) {
+            setValue( J3 , 3);
+        }
+        if(topEdge->j2 == j4) {
+            setValue( J4 , 3);
+        }
+    }
+    
+    // left edge
+    if( leftEdge->getType() == 'J' ) {
+        if(leftEdge->j1 == j1) {
+            setValue( J1 , 1);
+        }
+        if(leftEdge->j1 == j2) {
+            setValue( J2 , 1);
+        }
+        if(leftEdge->j1 == j3) {
+            setValue( J3 , 1);
+        }
+        if(leftEdge->j1 == j4) {
+            setValue( J4 , 1);
+        }
+    }
+    if( leftEdge->getType() == 'L' ) {
+        
+        if( topEdge->getType() != 'L' && botEdge->getType() != 'L' ) { // top and bot edge not lake
+            if(leftEdge->l1 == l1) {
+                setValue( L1 , 4);
+            }
+            if(leftEdge->l1 == l2) {
+                setValue( L2 , 4);
+            }
+        }
+        else if( topEdge->getType() != 'L' ) {    // top edge not lake
+            if(leftEdge->l1 == l1) {
+                setValue( L1 , 4);
+            }
+            if(leftEdge->l1 == l2) {
+                setValue( L2 , 4);
+            }
+        }
+        else {                                          // right edge not lake
+            if(leftEdge->l1 == l1) {
+                setValue( L1 , 1);
+            }
+            if(leftEdge->l1 == l2) {
+                setValue( L2 , 1);
+            }
+        }
+        
+        
+        
+    }
+    if( leftEdge->getType() == 'T' ) {
+        if(leftEdge->j2 == j1) {
+            setValue( J1 , 1);
+        }
+        if(leftEdge->j2 == j2) {
+            setValue( J2 , 1);
+        }
+        if(leftEdge->j2 == j3) {
+            setValue( J3 , 1);
+        }
+        if(leftEdge->j2 == j4) {
+            setValue( J4 , 1);
+        }
+        
+        if(leftEdge->t1 == t1) {
+            setValue( T1 , 4);
+        }
+        if(leftEdge->t1 == t2) {
+            setValue( T2 , 4);
+        }
+        if(leftEdge->t1 == t3) {
+            setValue( T3 , 4);
+        }
+        if(leftEdge->t1 == t4) {
+            setValue( T4 , 4);
+        }
+        
+        if(leftEdge->j1 == j1) {
+            setValue( J1, 7 );
+        }
+        if(leftEdge->j1 == j2) {
+            setValue( J2, 7 );
+        }
+        if(leftEdge->j1 == j3) {
+            setValue( J3, 7 );
+        }
+        if(leftEdge->j1 == j4) {
+            setValue( J4, 7 );
+        }
+    }
+    
+    // right edge
+    if( rightEdge->getType() == 'J' ) {
+        if(rightEdge->j1 == j1) {
+            setValue( J1, 3 );
+        }
+        if(rightEdge->j1 == j2) {
+            setValue( J2, 3 );
+        }
+        if(rightEdge->j1 == j3) {
+            setValue( J3, 3 );
+        }
+        if(rightEdge->j1 == j4) {
+            setValue( J4, 3 );
+        }
+    }
+    if( rightEdge->getType() == 'L' ) {
+        
+        if( topEdge->getType() != 'L' && botEdge->getType() != 'L' ) { // top and bot edge not lake
+            if(rightEdge->l1 == l1) {
+                setValue( L1 , 6);
+            }
+            if(rightEdge->l1 == l2) {
+                setValue( L2 , 6);
+            }
+        }
+        else if( topEdge->getType() != 'L' ) {    // top edge not lake
+            if(rightEdge->l1 == l1) {
+                setValue( L1 , 6);
+            }
+            if(rightEdge->l1 == l2) {
+                setValue( L2 , 6);
+            }
+        }
+        else {                                          // right edge not lake
+            if(rightEdge->l1 == l1) {
+                setValue( L1 , 3);
+            }
+            if(rightEdge->l1 == l2) {
+                setValue( L2 , 3);
+            }
+        }
+        
+        
+        
+    }
+    if( rightEdge->getType() == 'T' ) {
+        if(rightEdge->j2 == j1) {
+            setValue( J1, 9 );
+        }
+        if(rightEdge->j2 == j2) {
+            setValue( J2, 9 );
+        }
+        if(rightEdge->j2 == j3) {
+            setValue( J3, 9 );
+        }
+        if(rightEdge->j2 == j4) {
+            setValue( J4, 9 );
+        }
+        
+        if(rightEdge->t1 == t1) {
+            setValue( T1, 6 );
+        }
+        if(rightEdge->t1 == t2) {
+            setValue( T2, 6 );
+        }
+        if(rightEdge->t1 == t3) {
+            setValue( T3, 6 );
+        }
+        if(rightEdge->t1 == t4) {
+            setValue( T4, 6 );
+        }
+        
+        if(rightEdge->j1 == j1) {
+            setValue( J1, 3 );
+        }
+        if(rightEdge->j1 == j2) {
+            setValue( J2, 3 );
+        }
+        if(rightEdge->j1 == j3) {
+            setValue( J3, 3 );
+        }
+        if(rightEdge->j1 == j4) {
+            setValue( J4, 3 );
+        }
+    }
+    
+    // bot edge
+    if( botEdge->getType() == 'J' ) {
+        if(botEdge->j1 == j1) {
+            setValue( J1, 7 );
+        }
+        if(botEdge->j1 == j2) {
+            setValue( J2, 7 );
+        }
+        if(botEdge->j1 == j3) {
+            setValue( J3, 7 );
+        }
+        if(botEdge->j1 == j4) {
+            setValue( J4, 7 );
+        }
+    }
+    if( botEdge->getType() == 'L' ) {
+        
+        if( leftEdge->getType() != 'L' && rightEdge->getType() != 'L' ) { // left and right edge not lake
+            if(botEdge->l1 == l1) {
+                setValue( L1 , 8);
+            }
+            if(botEdge->l1 == l2) {
+                setValue( L2 , 8);
+            }
+        }
+        else if( leftEdge->getType() != 'L' ) {    // left edge not lake
+            if(botEdge->l1 == l1) {
+                setValue( L1 , 8);
+            }
+            if(botEdge->l1 == l2) {
+                setValue( L2 , 8);
+            }
+        }
+        else {                                          // right edge not lake
+            if(botEdge->l1 == l1) {
+                setValue( L1 , 7);
+            }
+            if(botEdge->l1 == l2) {
+                setValue( L2 , 7);
+            }
+        }
+        
+    }
+    if( botEdge->getType() == 'T' ) {
+        if(botEdge->j2 == j1) {
+            setValue( J1, 7 );
+        }
+        if(botEdge->j2 == j2) {
+            setValue( J2, 7 );
+        }
+        if(botEdge->j2 == j3) {
+            setValue( J3, 7 );
+        }
+        if(botEdge->j2 == j4) {
+            setValue( J4, 7 );
+        }
+        
+        if(botEdge->t1 == t1) {
+            setValue( T1, 8 );
+        }
+        if(botEdge->t1 == t2) {
+            setValue( T2, 8 );
+        }
+        if(botEdge->t1 == t3) {
+            setValue( T3, 8 );
+        }
+        if(botEdge->t1 == t4) {
+            setValue( T4, 8 );
+        }
+        
+        if(botEdge->j1 == j1) {
+            setValue( J1, 9 );
+        }
+        if(botEdge->j1 == j2) {
+            setValue( J2, 9 );
+        }
+        if(botEdge->j1 == j3) {
+            setValue( J3, 9 );
+        }
+        if(botEdge->j1 == j4) {
+            setValue( J4, 9 );
+        }
+    }
+    
+    /* when specifying where a tiger is to be placed on a tile, specify the smallest
+       zone number that describes the feature into which it is being added.       */
+    
+    cout << "Card " << getCardID() << " with orientation " << getOrient() << endl;
+    if(L1 != 10) {
+        cout << "lake 1 region in zone " << L1 << endl;
+    }
+    if(L2 != 10) {
+        cout << "lake 2 region in zone " << L2 << endl;
+    }
+    if(J1 != 10) {
+        cout << "jungle 1 region in zone " << J1 << endl;
+    }
+    if(J2 != 10) {
+        cout << "jungle 2 region in zone " << J2 << endl;
+    }
+    if(J3 != 10) {
+        cout << "jungle 3 region in zone " << J3 << endl;
+    }
+    if(J4 != 10) {
+        cout << "jungle 4 region in zone " << J4 << endl;
+    }
+    if(T1 != 10) {
+        cout << "trail 1 region in zone " << T1 << endl;
+    }
+    if(T2 != 10) {
+        cout << "trail 2 region in zone " << T2 << endl;
+    }
+    if(T3 != 10) {
+        cout << "trail 3 region in zone " << T3 << endl;
+    }
+    if(T4 != 10) {
+        cout << "trail 4 region in zone " << T4 << endl;
+    }
+    
+    
+}
 
-
-
-
-
+void Card::setValue( int & oldVal, int newVal  ) {
+    if( newVal < oldVal) {
+        oldVal = newVal;
+    }
+}
 

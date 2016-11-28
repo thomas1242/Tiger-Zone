@@ -22,10 +22,12 @@ Board::Board(Card * card) {                            // board constructor
     numLakes = 0;
     
     jungles = new Jungle[100];
-    trails = new Trail[100];
-    lakes = new Lake[100];
+    trails  = new Trail[100];
+    lakes   = new Lake[100];
+    
+    
     for(int i = 0; i < 100; i++) {
-        trails[i].setId(i );
+        trails[i].setId(i);
         lakes[i].setId(i);
         jungles[i].setId(i);
     }
@@ -33,11 +35,11 @@ Board::Board(Card * card) {                            // board constructor
     
     cout << "Put center card on new board" << endl;
     possibleMoves[ROWS/2][COLS/2] = true;                        // mark center location available
-    placeCard(ROWS/2, COLS/2, card );        // place center card on the board
+    placeCard(ROWS/2, COLS/2, card, 1, 0 );        // place center card on the board
 }
 
 
-bool Board::placeCard(int i, int j, Card * card) {
+bool Board::placeCard(int i, int j, Card * card, int playerID, int zone) {
     
     if(i < 0 || j < 0 || i >= ROWS || j >= COLS) {  // for GUI, if user clicks out of bounds
         cout << "Cannot place card " << card->getId() << " at (" << i << ',' << j << ']' << endl;
@@ -56,7 +58,6 @@ bool Board::placeCard(int i, int j, Card * card) {
     
    // cout << "Placed card " << card->getId() << " at [" << i << ',' << j << ']' << endl;
    // cout << "Placed card " << card->getId() << " at [" << j - 5 << ',' << -(i - 5) << ']' << endl;
-
     
     cout << "\n\n---------------------------------------------------------------------\n" << endl;
     
@@ -207,13 +208,11 @@ bool Board::placeCard(int i, int j, Card * card) {
     
     if(lakeOne) {
         numLakes++;
-        cout << "new l1 at lakes[" << numLakes << "]" << endl;
         card->l1 = &lakes[ numLakes ];
         card->reConnect();
     }
     if(lakeTwo) {
         numLakes++;
-        cout << "new l2 at lakes[" << numLakes << "]" << endl;
         card->l2 = &lakes[ numLakes ];
         card->reConnect();
     }
@@ -371,115 +370,91 @@ bool Board::placeCard(int i, int j, Card * card) {
     
     // merge t1
     if(t1_top_connect_id != t1_right_connect_id && t1_top_connect_id != -1 && t1_right_connect_id != -1 ) {
-        cout << "merging trail1 top and right connectors to 'new' lake " << endl;
         trails[ t1_right_connect_id ] = trails[ t1_top_connect_id ];
     }
     if(t1_top_connect_id != t1_left_connect_id && t1_top_connect_id != -1 && t1_left_connect_id != -1 ) {
-        cout << "merging trail1 top and left connectors to 'new' lake " << endl;
         trails[ t1_left_connect_id ] = trails[ t1_top_connect_id ];
     }
     if(t1_top_connect_id != t1_bot_connect_id && t1_top_connect_id != -1 && t1_bot_connect_id != -1 ) {
-        cout << "merging trail1 top and bot connectors to 'new' lake " << endl;
         trails[ t1_bot_connect_id ] = trails[ t1_top_connect_id ];
     }
     
     if(t1_left_connect_id != t1_bot_connect_id && t1_left_connect_id != -1 && t1_bot_connect_id != -1 ) {
-        cout << "merging trail1 left and bot connectors to 'new' lake " << endl;
         trails[ t1_bot_connect_id ] = trails[ t1_left_connect_id ];
     }
     if(t1_right_connect_id != t1_bot_connect_id && t1_right_connect_id != -1 && t1_bot_connect_id != -1 ) {
-        cout << "merging trail1 right and bot connectors to 'new' lake " << endl;
         trails[ t1_bot_connect_id ] = trails[ t1_right_connect_id ];
     }
     
     if(t1_left_connect_id != t1_right_connect_id && t1_left_connect_id != -1 && t1_right_connect_id != -1 ) {
-        cout << "merging trail1 left and right connectors to 'new' lake " << endl;
         trails[ t1_left_connect_id ] = trails[ t1_right_connect_id ];
     }
     
     
     // merge t2
     if(t2_top_connect_id != t2_right_connect_id && t2_top_connect_id != -1 && t2_right_connect_id != -1 ) {
-        cout << "merging trail1 top and right connectors to 'new' lake " << endl;
         trails[ t2_right_connect_id ] = trails[ t2_top_connect_id ];
     }
     if(t2_top_connect_id != t2_left_connect_id && t2_top_connect_id != -1 && t2_left_connect_id != -1 ) {
-        cout << "merging trail1 top and left connectors to 'new' lake " << endl;
         trails[ t2_left_connect_id ] = trails[ t2_top_connect_id ];
     }
     if(t2_top_connect_id != t2_bot_connect_id && t2_top_connect_id != -1 && t2_bot_connect_id != -1 ) {
-        cout << "merging trail1 top and bot connectors to 'new' lake " << endl;
         trails[ t2_bot_connect_id ] = trails[ t2_top_connect_id ];
     }
     
     if(t2_left_connect_id != t2_bot_connect_id && t2_left_connect_id != -1 && t2_bot_connect_id != -1 ) {
-        cout << "merging trail1 left and bot connectors to 'new' lake " << endl;
         trails[ t2_bot_connect_id ] = trails[ t2_left_connect_id ];
     }
     if(t2_right_connect_id != t2_bot_connect_id && t2_right_connect_id != -1 && t2_bot_connect_id != -1 ) {
-        cout << "merging trail1 right and bot connectors to 'new' lake " << endl;
         trails[ t2_bot_connect_id ] = trails[ t2_right_connect_id ];
     }
     
     if(t2_left_connect_id != t2_right_connect_id && t2_left_connect_id != -1 && t2_right_connect_id != -1 ) {
-        cout << "merging trail1 left and right connectors to 'new' lake " << endl;
         trails[ t2_left_connect_id ] = trails[ t2_right_connect_id ];
     }
     
     
     // merge t3
     if(t3_top_connect_id != t3_right_connect_id && t3_top_connect_id != -1 && t3_right_connect_id != -1 ) {
-        cout << "merging trail1 top and right connectors to 'new' lake " << endl;
         trails[ t3_right_connect_id ] = trails[ t3_top_connect_id ];
     }
     if(t3_top_connect_id != t3_left_connect_id && t3_top_connect_id != -1 && t3_left_connect_id != -1 ) {
-        cout << "merging trail1 top and left connectors to 'new' lake " << endl;
         trails[ t3_left_connect_id ] = trails[ t3_top_connect_id ];
     }
     if(t3_top_connect_id != t3_bot_connect_id && t3_top_connect_id != -1 && t3_bot_connect_id != -1 ) {
-        cout << "merging trail1 top and bot connectors to 'new' lake " << endl;
         trails[ t3_bot_connect_id ] = trails[ t3_top_connect_id ];
     }
     
     if(t3_left_connect_id != t3_bot_connect_id && t3_left_connect_id != -1 && t3_bot_connect_id != -1 ) {
-        cout << "merging trail1 left and bot connectors to 'new' lake " << endl;
         trails[ t3_bot_connect_id ] = trails[ t3_left_connect_id ];
     }
     if(t3_right_connect_id != t3_bot_connect_id && t3_right_connect_id != -1 && t3_bot_connect_id != -1 ) {
-        cout << "merging trail1 right and bot connectors to 'new' lake " << endl;
         trails[ t3_bot_connect_id ] = trails[ t3_right_connect_id ];
     }
     
     if(t3_left_connect_id != t3_right_connect_id && t3_left_connect_id != -1 && t3_right_connect_id != -1 ) {
-        cout << "merging trail1 left and right connectors to 'new' lake " << endl;
         trails[ t3_left_connect_id ] = trails[ t3_right_connect_id ];
     }
     
     
     // merge t4
     if(t4_top_connect_id != t4_right_connect_id && t4_top_connect_id != -1 && t4_right_connect_id != -1 ) {
-        cout << "merging trail1 top and right connectors to 'new' lake " << endl;
         trails[ t4_right_connect_id ] = trails[ t4_top_connect_id ];
     }
     if(t4_top_connect_id != t4_left_connect_id && t4_top_connect_id != -1 && t4_left_connect_id != -1 ) {
-        cout << "merging trail1 top and left connectors to 'new' lake " << endl;
         trails[ t4_left_connect_id ] = trails[ t4_top_connect_id ];
     }
     if(t4_top_connect_id != t4_bot_connect_id && t4_top_connect_id != -1 && t4_bot_connect_id != -1 ) {
-        cout << "merging trail1 top and bot connectors to 'new' lake " << endl;
         trails[ t4_bot_connect_id ] = trails[ t4_top_connect_id ];
     }
     
     if(t4_left_connect_id != t4_bot_connect_id && t4_left_connect_id != -1 && t4_bot_connect_id != -1 ) {
-        cout << "merging trail1 left and bot connectors to 'new' lake " << endl;
         trails[ t4_bot_connect_id ] = trails[ t4_left_connect_id ];
     }
     if(t4_right_connect_id != t4_bot_connect_id && t4_right_connect_id != -1 && t4_bot_connect_id != -1 ) {
-        cout << "merging trail1 right and bot connectors to 'new' lake " << endl;
         trails[ t4_bot_connect_id ] = trails[ t4_right_connect_id ];
     }
     if(t4_left_connect_id != t4_right_connect_id && t4_left_connect_id != -1 && t4_right_connect_id != -1 ) {
-        cout << "merging trail1 left and right connectors to 'new' lake " << endl;
         trails[ t4_left_connect_id ] = trails[ t4_right_connect_id ];
     }
     
@@ -488,25 +463,21 @@ bool Board::placeCard(int i, int j, Card * card) {
     
     if(trailOne) {
         numTrails++;
-        cout << "new t1 at trails[" << numTrails << "]" << endl;
         card->t1 = &trails[ numTrails ];
         card->reConnect();
     }
     if(trailTwo) {
         numTrails++;
-        cout << "new t2 at trails[" << numTrails << "]" << endl;
         card->t2 = &trails[ numTrails ];
         card->reConnect();
     }
     if(trailThree) {
         numTrails++;
-        cout << "new t3 at trails[" << numTrails << "]" << endl;
         card->t3 = &trails[ numTrails ];
         card->reConnect();
     }
     if(trailFour) {
         numTrails++;
-        cout << "new t4 at trails[" << numTrails << "]" << endl;
         card->t4 = &trails[ numTrails ];
         card->reConnect();
     }
@@ -873,115 +844,91 @@ bool Board::placeCard(int i, int j, Card * card) {
     
     // merge j1
     if(j1_top_connect_id != j1_right_connect_id && j1_top_connect_id != -1 && j1_right_connect_id != -1 ) {
-        cout << "merging traij1 top and right connectors to 'new' lake " << endl;
         jungles[ j1_right_connect_id ] = jungles[ j1_top_connect_id ];
     }
     if(j1_top_connect_id != j1_left_connect_id && j1_top_connect_id != -1 && j1_left_connect_id != -1 ) {
-        cout << "merging traij1 top and left connectors to 'new' lake " << endl;
         jungles[ j1_left_connect_id ] = jungles[ j1_top_connect_id ];
     }
     if(j1_top_connect_id != j1_bot_connect_id && j1_top_connect_id != -1 && j1_bot_connect_id != -1 ) {
-        cout << "merging traij1 top and bot connectors to 'new' lake " << endl;
         jungles[ j1_bot_connect_id ] = jungles[ j1_top_connect_id ];
     }
     
     if(j1_left_connect_id != j1_bot_connect_id && j1_left_connect_id != -1 && j1_bot_connect_id != -1 ) {
-        cout << "merging traij1 left and bot connectors to 'new' lake " << endl;
         jungles[ j1_bot_connect_id ] = jungles[ j1_left_connect_id ];
     }
     if(j1_right_connect_id != j1_bot_connect_id && j1_right_connect_id != -1 && j1_bot_connect_id != -1 ) {
-        cout << "merging traij1 right and bot connectors to 'new' lake " << endl;
         jungles[ j1_bot_connect_id ] = jungles[ j1_right_connect_id ];
     }
     
     if(j1_left_connect_id != j1_right_connect_id && j1_left_connect_id != -1 && j1_right_connect_id != -1 ) {
-        cout << "merging traij1 left and right connectors to 'new' lake " << endl;
         jungles[ j1_left_connect_id ] = jungles[ j1_right_connect_id ];
     }
     
     
     // merge j2
     if(j2_top_connect_id != j2_right_connect_id && j2_top_connect_id != -1 && j2_right_connect_id != -1 ) {
-        cout << "merging traij1 top and right connectors to 'new' lake " << endl;
         jungles[ j2_right_connect_id ] = jungles[ j2_top_connect_id ];
     }
     if(j2_top_connect_id != j2_left_connect_id && j2_top_connect_id != -1 && j2_left_connect_id != -1 ) {
-        cout << "merging traij1 top and left connectors to 'new' lake " << endl;
         jungles[ j2_left_connect_id ] = jungles[ j2_top_connect_id ];
     }
     if(j2_top_connect_id != j2_bot_connect_id && j2_top_connect_id != -1 && j2_bot_connect_id != -1 ) {
-        cout << "merging traij1 top and bot connectors to 'new' lake " << endl;
         jungles[ j2_bot_connect_id ] = jungles[ j2_top_connect_id ];
     }
     
     if(j2_left_connect_id != j2_bot_connect_id && j2_left_connect_id != -1 && j2_bot_connect_id != -1 ) {
-        cout << "merging traij1 left and bot connectors to 'new' lake " << endl;
         jungles[ j2_bot_connect_id ] = jungles[ j2_left_connect_id ];
     }
     if(j2_right_connect_id != j2_bot_connect_id && j2_right_connect_id != -1 && j2_bot_connect_id != -1 ) {
-        cout << "merging traij1 right and bot connectors to 'new' lake " << endl;
         jungles[ j2_bot_connect_id ] = jungles[ j2_right_connect_id ];
     }
     
     if(j2_left_connect_id != j2_right_connect_id && j2_left_connect_id != -1 && j2_right_connect_id != -1 ) {
-        cout << "merging traij1 left and right connectors to 'new' lake " << endl;
         jungles[ j2_left_connect_id ] = jungles[ j2_right_connect_id ];
     }
     
     
     // merge j3
     if(j3_top_connect_id != j3_right_connect_id && j3_top_connect_id != -1 && j3_right_connect_id != -1 ) {
-        cout << "merging traij1 top and right connectors to 'new' lake " << endl;
         jungles[ j3_right_connect_id ] = jungles[ j3_top_connect_id ];
     }
     if(j3_top_connect_id != j3_left_connect_id && j3_top_connect_id != -1 && j3_left_connect_id != -1 ) {
-        cout << "merging traij1 top and left connectors to 'new' lake " << endl;
         jungles[ j3_left_connect_id ] = jungles[ j3_top_connect_id ];
     }
     if(j3_top_connect_id != j3_bot_connect_id && j3_top_connect_id != -1 && j3_bot_connect_id != -1 ) {
-        cout << "merging traij1 top and bot connectors to 'new' lake " << endl;
         jungles[ j3_bot_connect_id ] = jungles[ j3_top_connect_id ];
     }
     
     if(j3_left_connect_id != j3_bot_connect_id && j3_left_connect_id != -1 && j3_bot_connect_id != -1 ) {
-        cout << "merging traij1 left and bot connectors to 'new' lake " << endl;
         jungles[ j3_bot_connect_id ] = jungles[ j3_left_connect_id ];
     }
     if(j3_right_connect_id != j3_bot_connect_id && j3_right_connect_id != -1 && j3_bot_connect_id != -1 ) {
-        cout << "merging traij1 right and bot connectors to 'new' lake " << endl;
         jungles[ j3_bot_connect_id ] = jungles[ j3_right_connect_id ];
     }
     
     if(j3_left_connect_id != j3_right_connect_id && j3_left_connect_id != -1 && j3_right_connect_id != -1 ) {
-        cout << "merging traij1 left and right connectors to 'new' lake " << endl;
         jungles[ j3_left_connect_id ] = jungles[ j3_right_connect_id ];
     }
     
     
     // merge j4
     if(j4_top_connect_id != j4_right_connect_id && j4_top_connect_id != -1 && j4_right_connect_id != -1 ) {
-        cout << "merging traij1 top and right connectors to 'new' lake " << endl;
         jungles[ j4_right_connect_id ] = jungles[ j4_top_connect_id ];
     }
     if(j4_top_connect_id != j4_left_connect_id && j4_top_connect_id != -1 && j4_left_connect_id != -1 ) {
-        cout << "merging traij1 top and left connectors to 'new' lake " << endl;
         jungles[ j4_left_connect_id ] = jungles[ j4_top_connect_id ];
     }
     if(j4_top_connect_id != j4_bot_connect_id && j4_top_connect_id != -1 && j4_bot_connect_id != -1 ) {
-        cout << "merging traij1 top and bot connectors to 'new' lake " << endl;
         jungles[ j4_bot_connect_id ] = jungles[ j4_top_connect_id ];
     }
     
     if(j4_left_connect_id != j4_bot_connect_id && j4_left_connect_id != -1 && j4_bot_connect_id != -1 ) {
-        cout << "merging traij1 left and bot connectors to 'new' lake " << endl;
         jungles[ j4_bot_connect_id ] = jungles[ j4_left_connect_id ];
     }
     if(j4_right_connect_id != j4_bot_connect_id && j4_right_connect_id != -1 && j4_bot_connect_id != -1 ) {
-        cout << "merging traij1 right and bot connectors to 'new' lake " << endl;
         jungles[ j4_bot_connect_id ] = jungles[ j4_right_connect_id ];
     }
     if(j4_left_connect_id != j4_right_connect_id && j4_left_connect_id != -1 && j4_right_connect_id != -1 ) {
-        cout << "merging traij1 left and right connectors to 'new' lake " << endl;
         jungles[ j4_left_connect_id ] = jungles[ j4_right_connect_id ];
     }
     
@@ -989,41 +936,86 @@ bool Board::placeCard(int i, int j, Card * card) {
     
     if(jungleOne) {
         numJungles++;
-        cout << "new j1 at jungles[" << numJungles << "]" << endl;
         card->j1 = &jungles[ numJungles ];
         card->reConnect();
     }
     if(jungleTwo) {
         numJungles++;
-        cout << "new j2 at jungles[" << numJungles << "]" << endl;
         card->j2 = &jungles[ numJungles ];
         card->reConnect();
     }
     if(jungleThree) {
         numJungles++;
-        cout << "new j3 at jungles[" << numJungles << "]" << endl;
         card->j3 = &jungles[ numJungles ];
         card->reConnect();
     }
     if(jungleFour) {
         numJungles++;
-        cout << "new j4 at jungles[" << numJungles << "]" << endl;
         card->j4 = &jungles[ numJungles ];
         card->reConnect();
     }
     
     board[i][j] = *card;            // replace with new card
-
-    printRegions(i, j);
-    printRegions(i-1, j);
-    printRegions(i, j-1);
-    printRegions(i+1, j);
-    printRegions(i, j+1);
-
     
-    // rotate option
-    // place meeple()
-    //printBoard();
+    printFeatures();
+
+    // which cell each region is located in
+    int L1 = 10, L2 = 10, J1 = 10, J2 = 10, J3 = 10, J4 = 10, T1 = 10, T2 = 10, T3 = 10, T4 = 10;
+    if(zone > 0) {
+        cout << "PLACE TIGER ON THIS CARD AT ZONE " << zone << endl;
+        card->printCells(L1, L2, J1, J2, J3, J4, T1, T2, T3, T4);
+        if (zone == L1) {
+            if(card->l1 != NULL) {
+                lakes[  card->l1->getId() ].owner = playerID;
+            }
+        }
+        else if (zone == L2) {
+            if(card->l2 != NULL) {
+               lakes[  card->l2->getId() ].owner = playerID;
+            }
+        }
+        else if (zone == J1) {
+            if(card->j1 != NULL) {
+                jungles[  card->j1->getId() ].owner = playerID;
+            }
+        }
+        else if (zone == J2) {
+            if(card->j2 != NULL) {
+                jungles[  card->j2->getId() ].owner = playerID;
+            }
+        }
+        else if (zone == J3) {
+            if(card->j3 != NULL) {
+             jungles[  card->j3->getId() ].owner = playerID;   
+            }
+        }
+        else if (zone == J4) {
+            if(card->j4 != NULL) {
+             jungles[  card->j4->getId() ].owner = playerID;
+            }
+        }
+        else if (zone == T1) {
+            if(card->t1 != NULL) {
+              trails[  card->t1->getId() ].owner = playerID;
+            }
+        }
+        else if (zone == T2) {
+            if(card->t2 != NULL) {
+             trails[  card->t2->getId() ].owner = playerID;
+            }
+        }
+        else if (zone == T3) {
+            if(card->t3 != NULL) {
+                trails[  card->t3->getId() ].owner = playerID;
+            }
+        }
+        else if (zone == T4) {
+            if(card->t4 != NULL) {
+             trails[  card->t4->getId() ].owner = playerID;
+            }
+        }
+    }
+    
     return true;
 }
 
@@ -1166,12 +1158,10 @@ bool Board::isPossibleMove() {
     return false;
 }
 
-void Board::printRegions(int i, int j) {
-    
+void Board::printCardRegions(int i, int j) {
     if(i < 0 || j < 0 || i >= ROWS || j >= COLS) {  
         return;
     }
-    
     cout << "\n----------------------------------------------------" << endl;
     cout << "card [" << (j-5) << "][" << -(i-5) << "] :" << endl;
     if(board[i][j].l1 != NULL) {
@@ -1207,7 +1197,16 @@ void Board::printRegions(int i, int j) {
     cout << endl;
 }
 
-
+void Board::printFeatures() {
+   
+    cout << "LAKES:" << endl;
+    for(int i = 0; i < 10; i++) {
+        
+        cout << "lakes " << i << ":" << endl;
+        cout << "       numEdges = " << lakes[i].edgeConnects << endl;
+        cout << "          owner = " << lakes[i].owner << endl;
+    }
+}
 
 
 

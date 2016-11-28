@@ -10,7 +10,7 @@
 class Player {
     
 public:
-    Player(Board * b, Deck * d);
+    Player(Board * b, Deck * d, int playerID);
     void takeCard();
     bool takeTurn(int i, int j);        // draw tile from the deck, place it, maybe place a meeple
     void drawCard();
@@ -21,6 +21,7 @@ public:
     int getMeeples();
     Card * getCard();   // for GUI
     
+    int playerID;       // which player is this: player id
     
 private:
     int score;
