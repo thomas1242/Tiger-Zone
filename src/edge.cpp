@@ -3,12 +3,12 @@
 
 Edge::Edge() {
 	this->type = 'o';		// open edge
-    setEdgePointers(' ');
+    //setEdgePointers(' ');
 }
 
 Edge::Edge(char type) {
 	this->type = type;		// J or T or L
-    setEdgePointers(type);
+    //setEdgePointers(type);
 }
 
 Edge::~Edge() {
@@ -18,12 +18,12 @@ char Edge::getType() {
 	return type;			
 }
 
-void Edge::setEdgePointers(char type) {
-        j1 = NULL;
-        j2 = NULL;
-        t1 = NULL;
-        l1 = NULL;
-    
+/*void Edge::setEdgePointers(char type) {
+        j1 = ;
+        j2 = ;
+        t1 = ;
+        l1 = ;
+ */   
 //if(type == ' '){
 //    }
 //    else if( type == 'J'){
@@ -39,4 +39,3 @@ void Edge::setEdgePointers(char type) {
 //        j2 = new Jungle();
 //    }
     
-}

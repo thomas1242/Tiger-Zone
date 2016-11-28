@@ -20,14 +20,12 @@ Card::Card(int id) {
     
     orientation = 0;
 }
-
-void Card::edgeclone(Edge* output, Edge* input) {
-        cout << "Segfault yet?" << endl;
-        output->j1 = input->j1;
-        output->j2 = input->j2;
-        output->t1 = input->t1;
-        output->l1 = input->l1;
-        output->type = input->type;
+void Card::edgeclone(Edge* ae, Edge* be) {
+        ae->j1 = be->j1;
+        ae->j2 = be->j2;
+        ae->t1 = be->t1;
+        ae->l1 = be->l1;
+        ae->type = be->type;
 }
 
 void Card::rotate() {   // rotate card 90 degrees clockwise

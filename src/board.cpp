@@ -1031,21 +1031,29 @@ void Board::markavail(int i, int j, Card* card) {
         }
     }
 
-    Coords* temp2 = new Coords(i-1, j);
-    cout << "markavail i-1: " << temp2->icoord << ", " << temp2->jcoord << endl;
-    markedtiles.push_back(temp2);
+    if(board[i-1][j].getId() == -1) {
+        Coords* temp2 = new Coords(i-1, j);
+        cout << "markavail i-1: " << temp2->icoord << ", " << temp2->jcoord << endl;
+        markedtiles.push_back(temp2);
+    }
 
-    Coords* temp3 = new Coords(i+1, j);
-    cout << "markavail i+1: " << temp3->icoord << ", " << temp3->jcoord << endl;
-    markedtiles.push_back(temp3);
+    if(board[i+1][j].getId() == -1) {
+        Coords* temp3 = new Coords(i+1, j);
+        cout << "markavail i+1: " << temp3->icoord << ", " << temp3->jcoord << endl;
+        markedtiles.push_back(temp3);
+    }
 
-    Coords* temp4 = new Coords(i, j-1);
-    cout << "markavail j-1: " << temp4->icoord << ", " << temp4->jcoord << endl;
-    markedtiles.push_back(temp4);
+    if(board[i][j-1].getId() == -1) {
+        Coords* temp4 = new Coords(i, j-1);
+        cout << "markavail j-1: " << temp4->icoord << ", " << temp4->jcoord << endl;
+        markedtiles.push_back(temp4);
+    }
 
-    Coords* temp5 = new Coords(i, j+1);
-    cout << "markavail i+1: " << temp5->icoord << ", " << temp5->jcoord << endl;
-    markedtiles.push_back(temp5);
+    if(board[i][j+1].getId() == -1) {
+        Coords* temp5 = new Coords(i, j+1);
+        cout << "markavail i+1: " << temp5->icoord << ", " << temp5->jcoord << endl;
+        markedtiles.push_back(temp5);
+    }
     
     cout << endl << "Marked tile contents" << endl;
     int k = 0;
@@ -1065,15 +1073,12 @@ void Board::updatePossibleMoves(Card * card) { // possible moves based on board 
     
     bool works = false;
     for (list<Coords*>::const_iterator iter = markedtiles.begin(); iter != markedtiles.end(); ++iter) {
-        int i = (*iter)->icoord;
-        int j = (*iter)->jcoord;
-        Moves* temp = new Moves(i, j);
+        Moves* temp = new Moves((*iter)->icoord, (*iter)->jcoord);
 
-        for(i = 0; i < 4; i++) {
+        for(int i = 0; i < 4; i++) {
             cout << "iter coords: " << (*iter)->icoord << ", " << (*iter)->jcoord << endl;
             if(checkIfFits((*iter)->icoord, (*iter)->jcoord, card) == true) {
                 temp->possibleorientations[i] = 1;
-                cout << "FITS" << endl;
                 works = true;
             }
             //cout << endl << "before the rotate" << endl;

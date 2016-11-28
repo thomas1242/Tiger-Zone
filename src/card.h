@@ -30,7 +30,7 @@ private:
 public:
     Card();             // construct null card ( id = 0 ). need this constructor for our board constructor
     Card(int id);       // construct a Card a.k.a. an instance of a tile from the deck
-    void edgeclone(Edge* output, Edge* input);
+    void edgeclone(Edge* ae, Edge* be);
     void rotate();      // rotate card 90 degress clockwise
     void assignSides();
     void assignCardID();

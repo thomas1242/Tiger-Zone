@@ -12,6 +12,7 @@ class Player {
 public:
     Player(Board * b);
     void takeCard(Card* input);
+    bool underduress(int i, int j);
     bool takeTurn(int i, int j, int orientation);  // draw tile from the deck, place it, maybe place a meeple
     void drawCard();
     void rotateCard();

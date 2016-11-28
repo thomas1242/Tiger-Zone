@@ -14,7 +14,7 @@
 
 class Game {
     
-private:
+public:
     Board * board;
     Deck * deck;
     Player * player_one;
@@ -22,7 +22,6 @@ private:
     bool current_turn;          // true if one's turn, false if two's turn
     bool isActive;              // is game over
     
-public:
     Game();
     ~Game();
     void giveCard();

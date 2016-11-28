@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall
+CFLAGS = -Wall -ggdb
 OBJECTS = board.o card.o deck.o game.o player.o edge.o main.o trail.o lake.o jungle.o moves.o coords.o
 
 all: $(OBJECTS)

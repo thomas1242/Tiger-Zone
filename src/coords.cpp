@@ -11,8 +11,8 @@ bool Coords::operator == (const Coords &other) const{
 }
 
 bool Coords::operator == (const Coords* &other) const{
-    if(this->icoord == other->icoord &&
-        this->jcoord == other->jcoord) {
+    if(icoord == other->icoord &&
+        jcoord == other->jcoord) {
         return true;
     }
     else {
