@@ -30,10 +30,10 @@ public:
     Card * getCard();   // for GUI
     
     int playerID;       // which player is this: player id
+    int meeplesAvailable;
     
 private:
     int score;
-    int meeplesAvailable;
     Board * theBoard;
     Deck * theDeck;
     Card * currCard;

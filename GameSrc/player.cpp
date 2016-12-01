@@ -19,7 +19,7 @@ void Player::takeCard() {
     
     //currCard = new Card(convertID(strID));                  // draw new card id from the deck
     currCard = theDeck->drawCard();                  // draw new card id from the deck
-
+    theBoard->numTigersAvailable= meeplesAvailable;
     
     theBoard->updatePossibleMoves( currCard );
 

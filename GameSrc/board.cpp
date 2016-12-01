@@ -132,6 +132,8 @@ void Board::placeMeeple(int playerID, int zone, bool tiger, Card * card) {
 
 void Board::updatePossibleMoves(Card * card) { // possible moves based on board state and current card
     
+    currCard = card;
+    
     for(int i = 0; i < ROWS; i++) {
         for(int j = 0; j < COLS; j++) {
             if(board[i][j].getId() == -1) {                                  // if this spot is not taken (open space)
@@ -2272,9 +2274,258 @@ void Board::endGameScoring() {  // score uncompleted regions
     }
 }
 
-void Board::getBestMove() {
+
+
+int Board::makeDecision(Card* currCard, Lake * lakes, Trail * trails, numTigersAvailable ){
     
+    lakeNotOwnedAvailable = false;
+    trailNotOwnedAvailable = false;
+    trailClaimed = false;
+    lakeClaimed = false;
+    isCloseable = false;
+    indexToUse = -1;
+    indexMin = -1;
+    minEdge = 100;
     
+    if (isPossibleMove == false) {
+        return 4;
+    }
     
+    else{
+        if(currCard.extendID == 0){   //extending trail
+            if (size(trails) == 0) {
+                /*place card first available*/
+                if (numTigersAvailable > 1) {
+                    /*place tiger*/
+                    return 3;
+                }
+                else{
+                    return 1;
+                }
+                
+            }
+            else{
+                for(int i = 0; i<size(trails);i++){
+                    if (trails[i].owned==true) {
+                        trailClaimed = true;
+                        indexToUse = i;
+                        break;
+                    }
+                    else{
+                        indexToUse=0;
+                    }
+                }
+                
+                if (trailClaimed == true ){
+                    /*x*/==trails[indexToUse].loc[0].first;
+                    /*y*/==trails[indexToUse].loc[0].second;
+                    /*rot*/==trails[indexToUse].rot[0];
+                    return 1;
+                }
+                
+                else{ //no trails owned
+                    if (numTigersAvailable > 1) {
+                        /*x*/==trails[indexToUse].loc[0].first;
+                        /*y*/==trails[indexToUse].loc[0].second;
+                        /*rot*/==trails[indexToUse].rot[0];
+                        /*place tiger*/
+                        return 3;
+                    }
+                    else{
+                        /*place first available*/
+                        return 1;
+                    }
+                }
+            }
+            
+        }
+        
+        else if(currCard.extendID == 1){  //extending lake
+            if (size(lakes)==0) {
+                /*place card first available*/
+                if (numTigersAvailable > 1) {
+                    /*place tiger*/
+                    return 3;
+                }
+                else{
+                    return 1;
+                }
+                
+            }
+            else{
+                for(int i = 0; i<size(lakes);i++){
+                    if (lakes[i].owned == true) {
+                        lakeClaimed = true;
+                        indexToUse = i;
+                        break;
+                    }
+                    else{
+                        indexToUse=0;
+                    }
+                    
+                }
+                
+                if (lakeClaimed == true ){
+                    /*x*/==lakes[indexToUse].loc[0].first;
+                    /*y*/==lakes[indexToUse].loc[0].second;
+                    /*rot*/==lakes[indexToUse].rot[0];
+                    return 1;
+                }
+                
+                
+                else{ //no lake owned
+                    if (numTigersAvailable > 1) {
+                        /*x*/==lakes[indexToUse].loc[0].first;
+                        /*y*/==lakes[indexToUse].loc[0].second;
+                        /*rot*/==lakes[indexToUse].rot[0];
+                        /*place tiger*/
+                        return 3;
+                    }
+                    else{
+                        /*place first available*/
+                        return 1;
+                    }
+                }
+            }
+        }
+        
+        else if(currCard.extendID == 2){  //closing trail
+            if (size(trails)==0) {
+                /*place card first available*/
+                if (numTigersAvailable > 1) {
+                    /*place tiger*/
+                    return 3;
+                }
+                else{
+                    return 1;
+                }
+                
+            }
+            else{
+                for(int i = 0; i<size(trails);i++){
+                    if(trails[i].edges<minEdge){
+                        minEdge = trails[i].edges
+                        indexMin = i;
+                        if (minEdge == 1) {
+                            isCloseable = true;
+                            indexToUse = indexMin;
+                            if (trails[i].owned==false) {
+                                trailNotOwnedAvailable = true;
+                                break;
+                            }
+                        }
+                        else{
+                            indexToUse=0;
+                        }
+                    }
+                }
+                
+                if (trailNotOwnedAvailable == true && isCloseable == true ){
+                    /*x*/==trails[indexToUse].loc[0].first;
+                    /*y*/==trails[indexToUse].loc[0].second;
+                    /*rot*/==trails[indexToUse].rot[0];
+                    /*place tiger*/
+                    return 3;
+                }
+                else if(trailNotOwnedAvailable == false && isCloseable==true){
+                    /*x*/==trails[indexToUse].loc[0].first;
+                    /*y*/==trails[indexToUse].loc[0].second;
+                    /*rot*/==trails[indexToUse].rot[0];
+                    return 1;
+                }
+                else{ //trail is not owned but also not closeable
+                    if (numTigersAvailable > 1) {
+                        /*x*/==trails[indexToUse].loc[0].first;
+                        /*y*/==trails[indexToUse].loc[0].second;
+                        /*rot*/==trails[indexToUse].rot[0];
+                        /*place tiger*/
+                        return 3;
+                    }
+                    else{
+                        /*place first available loc*/
+                        return 1;
+                    }
+                }
+            }
+        }
+        
+        else if(currCard.extendID == 3){  //closing lake
+            if (size(lakes)==0) {
+                /*place card first available*/
+                if (numTigersAvailable > 1) {
+                    /*place tiger*/
+                    return 3;
+                }
+                else{
+                    return 1;
+                }
+                
+            }
+            else{
+                for(int i = 0; i<size(lakes);i++){
+                    if(lakes[i].edges<minEdge){
+                        minEdge = lakes[i].edges
+                        indexMin = i;
+                        if (minEdge == 1) {
+                            isCloseable = true;
+                            indexToUse = indexMin;
+                            if (lakes[i].owned==false) {
+                                trailNotOwnedAvailable = true;
+                                break;
+                            }
+                        }
+                        else{
+                            indexToUse=0;
+                        }
+                    }
+                }
+                
+                if (lakeNotOwnedAvailable == true && isCloseable==true){
+                    /*x*/==lakes[indexToUse].loc[0].first;
+                    /*y*/==lakes[indexToUse].loc[0].second;
+                    /*rot*/==lakes[indexToUse].rot[0];
+                    /*place tiger*/
+                    return 3;
+                }
+                else if(lakeNotOwnedAvailable == false){
+                    /*x*/==lakes[indexToUse].loc[0].first;
+                    /*y*/==lakes[indexToUse].loc[0].second;
+                    /*rot*/==lakes[indexToUse].rot[0];
+                    return 1;
+                }
+                else{ //lake is not owned but also not closeable
+                    if (numTigersAvailable > 1) {
+                        /*x*/==lakes[indexToUse].loc[0].first;
+                        /*y*/==lakes[indexToUse].loc[0].second;
+                        /*rot*/==lakes[indexToUse].rot[0];
+                        /*place tiger*/
+                        return 3;
+                    }
+                    else{
+                        /*place first available loc*/
+                        return 1;
+                    }
+                }
+            }
+        }
+        
+        else if(currCard.extendID == -1 && /*is den*/){
+            if (numTigersAvailable > 1) {
+                /*place in first available space*/
+                /*place tiger*/
+                return 3;
+            }
+            
+            else{
+                /*place in first available space*/
+                return 1;
+            }
+        }
+        
+        else{
+            /*place in first available space*/
+            return 1;
+        }
+    }
 }
     

@@ -56,6 +56,22 @@ public:
     void endGameScoring();
     
     void getBestMove();         // based on the current card & board
+    
+    bool lakeNotOwnedAvailable;
+    bool trailNotOwnedAvailable;
+    bool lakeClaimed;
+    bool trailClaimed;
+    bool isCloseable;
+    
+    int indexToUse;
+    int minEdge;
+    int indexMin;
+    
+    int makeDecision(Card* card, Lake * lakes, Trail * trail, int numTigersAvialable);
+    
+    int numTigersAvialable;
+    
+    Card * currCard = NULL;
 
         
 private:
