@@ -20,11 +20,6 @@ int Decision::makeDecision(int cardID){
         return 4;
     }
     
-    else if(/*move == 10 || move == 20*/){
-        /*place card first available*/
-        return 2;
-    }
-    
     else{
         if(cardID.extendID == 0){   //extending trail
             if (size(availTrails) == 0) {
@@ -62,7 +57,6 @@ int Decision::makeDecision(int cardID){
                         /*x*/==availTrails[indexToUse].loc[0].first;
                         /*y*/==availTrails[indexToUse].loc[0].second;
                         /*rot*/==availTrails[availTrails].rot[0];
-                        /*place tiger*/
                         /*place tiger*/
                     return 3;
                     }
@@ -219,7 +213,6 @@ int Decision::makeDecision(int cardID){
                     /*x*/==availTrails[indexToUse].loc[0].first;
                     /*y*/==availTrails[indexToUse].loc[0].second;
                     /*rot*/==availTrails[availTrails].rot[0];
-                    /*place tiger*/
                     /*place tiger*/
                     return 3;
                 }

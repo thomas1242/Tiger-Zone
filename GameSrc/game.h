@@ -6,7 +6,7 @@
 
 #include "board.h"
 #include "player.h"
-
+#include <string>
 
 #define OFF 0
 #define ON  1
@@ -25,7 +25,9 @@ private:
 public:
     Game();
     ~Game();
+   //void giveCard(string ID, Output *out);
     void giveCard();
+
     void giveTurn(int i, int j);
     void startGame();
     void endGame();
@@ -40,7 +42,7 @@ public:
     void printBoard();
     Card * getCurrCard();   // for GUI
     Deck * getDeck();
-    
+    void setStartingPlayer(bool us);
     
     
 };

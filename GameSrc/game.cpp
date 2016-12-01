@@ -4,14 +4,20 @@
 #include "board.h"
 #include "game.h"
 #include <iostream>
+#include <string>
 using namespace std;
 
 Game::Game() {
     isActive = OFF;
     deck = new Deck();
-    board = new Board( deck->drawCard() );       // the board
-    player_one = new Player( board, deck );      // player 1 knows the board and deck
-    player_two = new Player( board, deck );      // player 2 knows the board and deck
+    
+    Card * centerCard = deck->drawCard();
+    
+    // replace with card passed through Game() constructor
+    
+    board = new Board( centerCard );       // the board
+    player_one = new Player( board, deck, 1 );      // player 1 knows the board and deck
+    player_two = new Player( board, deck, 2 );      // player 2 knows the board and deck
     current_turn = true; // player 1's turn
 }
 
@@ -32,14 +38,18 @@ void Game::startGame() {
 
 void Game::endGame() {
     isActive = OFF;    // start the game
+    board->endGameScoring();
     // this->~Game();      // delete the game
 }
 
+//void Game::giveCard(string ID, Output *out) {
 void Game::giveCard() {
     
     if( current_turn && player_one->hasCard == false && player_two->hasCard == false) {             // player one makes a move
         //cout << "player_one to draw card:" << endl;
         player_one->takeCard();
+       // player_one->takeCard(ID, out);
+
     }
     else if ( !current_turn && player_one->hasCard == false && player_two->hasCard == false) {
         //cout << "player_two to draw card:" << endl;
@@ -107,10 +117,10 @@ bool Game::getCurrTurn() {
 
 int Game::getScore( bool player ) {
     if(player) {
-        return player_one->getScore();
+        return board->getScore(true);
     }
     else {
-        return player_two->getScore();
+        return board->getScore(false);
     }
 }
 
@@ -141,6 +151,14 @@ Deck * Game::getDeck() {
     return deck;
 }
 
+void Game::setStartingPlayer(bool us) {
+    if(us){
+        current_turn = true;
+    }
+    else {
+        current_turn = false;
+    }
+}
 
 
 
