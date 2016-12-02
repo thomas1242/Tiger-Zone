@@ -4,11 +4,11 @@
 #include <iostream>
 #include <unistd.h>
 
-Player::Player(Board * b, Deck * d, int pid) {
+Player::Player(Board * b, int pid) {
     theBoard = b;           // point this players to the game's board;
-    theDeck = d;            // point this players to the game's deck
+    //theDeck = d;            // point this players to the game's deck
     score = 0;
-    meeplesAvailable = 7;   // players start with 7 meeples
+    tigersAvailable = 7;   // players start with 7 tigers
     currCard = NULL;
     hasCard = false;
     playerID = pid;
@@ -33,24 +33,24 @@ void Player::takeCard(string strID, Input *in) {
         }
     }
 
-    
+    /*
     while(theBoard->isPossibleMove() == false ) {
         cout << "Cannot place card " << currCard->getId() << ". Discarded." << endl;
         delete currCard;                                // Card is discarded
         currCard = theDeck->drawCard();                 // draw new card id from the deck
         theBoard->updatePossibleMoves( currCard );
         // TELL SERVER CARD IS DISCARDED, NEW CARD IS DRAWN.
-    }
+    }*/
     
     hasCard = true;
     //theBoard->printBoard();
  //   currCard->printCard();
 }
 
-bool Player::takeTurn(int i, int j) {
+bool Player::takeTurn(int x, int y) {
     bool res = false;
-    if( theBoard->checkPossibleMove(i, j) ) {
-        res = theBoard->placeCard(i, j, currCard, playerID, 0);
+    if( theBoard->checkPossibleMove(x, y) ) {
+        res = theBoard->placeCard(x, y, currCard, playerID, 0);
         hasCard = false;
     }
     return res;
@@ -72,8 +72,8 @@ int Player::getScore() {
     return score;
 }
 
-int Player::getMeeples() {
-    return meeplesAvailable;
+int Player::getTigers() {
+    return tigersAvailable;
 }
 
 // for gui

@@ -16,17 +16,16 @@
 class Board {
     
 public:
-    Board(Card * card, int x, int y, int orientation);                            // board constructer
+    Board(Card * card, int x, int y, int orientation);                            // board constructor
+    int xy_to_ji(int input, char ji);
     void printBoard();                  // print the state of the board
     void updatePossibleMoves(Card * card);         // update valid moves array
     bool checkIfFits(int i, int j, Card * card );     // check if a given card fits at a given location
-    bool placeCard(int i, int j, Card * card, int playerID, int zone);        // place a card onto the board
-    Deck * getDeck();
+    bool placeCard(int x, int y, Card * card, int playerID, int zone);        // place a card onto the board
     bool * getPossibleMoves();
-    bool checkPossibleMove(int i, int j);
+    bool checkPossibleMove(int x, int y);
     bool isPossibleMove();
-    Card getCard(int i, int j);
-    int getOrient(int i, int j);
+    int getOrient(int x, int y);
 
 
     int numJungles, numTrails, numLakes;
@@ -41,6 +40,12 @@ public:
     int firstI;
     int firstJ;
     int firstROT;
+
+    int min_i = ROWS-1;
+    int min_j = COLS-1;
+
+    int max_i = 0;
+    int max_j = 0;
         
 private:
     Card ** board;                    // will point to 2D array of Cards a.k.a. the board

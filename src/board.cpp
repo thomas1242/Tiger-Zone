@@ -45,9 +45,22 @@ Board::Board(Card * card, int x, int y, int orientation) {              // board
     placeCard(mapped_i, mapped_j, card, 1, 0 );        // place center card on the board
 }
 
+int Board::xy_to_ji(int input, char ji) {
+    if(ji = 'j') {
+        return COLS/2 + input;
+    }
 
-bool Board::placeCard(int i, int j, Card * card, int playerID, int zone) {
+    if(ji = 'i') {
+        return ROWS/2 - input;
+    }
+}
+
+
+bool Board::placeCard(int x, int y, Card * card, int playerID, int zone) {
     
+    int i = xy_to_ji(y, 'i');
+    int j = xy_to_ji(x, 'j');
+
     if(i < 0 || j < 0 || i >= ROWS || j >= COLS) {  // for GUI, if user clicks out of bounds
         cout << "Cannot place card " << card->getId() << " at (" << i << ',' << j << ']' << endl;
         return false;
@@ -1021,6 +1034,22 @@ bool Board::placeCard(int i, int j, Card * card, int playerID, int zone) {
         }
     }
     
+    if(i <= min_i && i > 0) {
+        min_i = i - 1;
+    }
+
+    if(j <= min_j && j > 0) {
+        min_j = j - 1;
+    }
+
+    if(i >= max_i && i < ROWS - 1) {
+        max_i = i + 1;
+    }
+
+    if(j >= max_j && j < COLS - 1) {
+        max_j = j + 1;
+    }
+
     printCardRegions(i, j);
     
     return true;
@@ -1029,8 +1058,8 @@ bool Board::placeCard(int i, int j, Card * card, int playerID, int zone) {
 
 void Board::updatePossibleMoves(Card * card) { // possible moves based on board state and current card
     
-    for(int i = 0; i < ROWS; i++) {
-        for(int j = 0; j < COLS; j++) {
+    for(int i = min_i; i < max_i; i++) {
+        for(int j = min_j; j < max_j; j++) {
             if(board[i][j].getId() == -1) {                                  // if this spot is not taken (open space)
                 if(i - 1 > 0 && board[i - 1][j].getId() != -1) {             // and is adjacent to a taken spot
                     possibleMoves[i][j] = true;
@@ -1051,8 +1080,8 @@ void Board::updatePossibleMoves(Card * card) { // possible moves based on board 
         }
     }
     
-    for(int i = 0; i < ROWS; i++) {
-        for(int j = 0; j < COLS; j++) {
+    for(int i = min_i; i < max_i; i++) {
+        for(int j = min_j; j < max_j; j++) {
             if( possibleMoves[i][j] == true ) { // if this spot is potentially valid (it's adjacent to another tile)
                 int n = 1;
                 while(n <= 4) {                          // 0, 90, 180, 270
@@ -1106,9 +1135,9 @@ bool Board::checkIfFits(int i, int j, Card * card ) {   // i is row, j is col
  BL  BOT  BR   */
 void Board::printBoard() {
     cout << "\nTHE BOARD: " << endl;
-    for(int i = 0; i < ROWS; i++) {           // for each row
+    for(int i = min_i; i < max_i; i++) {           // for each row
         for(int n = 0; n < 3; n++) {        // 3 'rows' per row
-            for(int j = 0; j < COLS; j++) {   // for each col
+            for(int j = min_j; j < max_j; j++) {   // for each col
                 if(n == 0) {
                     cout << ' ' << ' ' << board[i][j].getTop() << ' ' << ' ' << ' ';
                 }
@@ -1132,19 +1161,17 @@ void Board::printBoard() {
     
     // print possibleMoves array underneath the board!
     cout << "\nPOSSIBLE MOVES: " << endl;
-    for(int i = 0; i < ROWS; i++) {
-        for(int j = 0; j < COLS; j++) {
+    for(int i = min_i; i < max_i; i++) {
+        for(int j = min_j; j < max_j; j++) {
             cout << ' ' << possibleMoves[i][j] << "  ";
         }
         cout << endl;
     }    
 }
 
-Card Board::getCard(int i, int j) {
-    return board[i][j];
-}
-
-bool Board::checkPossibleMove(int i, int j) {
+bool Board::checkPossibleMove(int x, int y) {
+    int i = xy_to_ji(y, 'i');
+    int j = xy_to_ji(x, 'j');
     return possibleMoves[i][j];
 }
 
@@ -1153,8 +1180,8 @@ bool * Board::getPossibleMoves() {
 }
 
 bool Board::isPossibleMove() {
-    for(int i = 0; i < ROWS; i++) {
-        for(int j = 0; j < COLS; j++) {
+    for(int i = min_i; i < max_i; i++) {
+        for(int j = min_j; j < max_j; j++) {
             if(possibleMoves[i][j] == true) {
                 return true;
             }
@@ -1163,7 +1190,9 @@ bool Board::isPossibleMove() {
     return false;
 }
 
-int Board::getOrient(int i, int j) {
+int Board::getOrient(int x, int y) {
+    int i = xy_to_ji(y, 'i');
+    int j = xy_to_ji(x, 'j');
     return board[i][j].getOrient();
 }
 
@@ -1174,7 +1203,7 @@ void Board::printCardRegions(int i, int j) {
     cout << endl;
     
 
-    cout << "card " << board[i][j].getCardID() << " with orientation " << board[i][j].getOrient() << " at [" << (j-5) << "][" << -(i-5) << "] :" << endl;
+    cout << "card " << board[i][j].getCardID() << " with orientation " << board[i][j].getOrient() << " at [" << (j-COLS/2) << "][" << (ROWS/2 - i) << "] :" << endl;
     if(board[i][j].l1 != NULL) {
         cout << "L1 part of lake:   " << (board[i][j]).l1->getId() << endl;
     }
@@ -1211,7 +1240,7 @@ void Board::printCardRegions(int i, int j) {
 void Board::printFeatures() {
    
     cout << "LAKES:" << endl;
-    for(int i = 0; i < 10; i++) {
+    for(int i = min_i; i < 10; i++) {
         
         cout << "lakes " << i << ":" << endl;
         cout << "       numEdges = " << lakes[i].edgeConnects << endl;

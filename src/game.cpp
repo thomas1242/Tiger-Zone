@@ -9,10 +9,10 @@ using namespace std;
 
 Game::Game(Card *tile, int x, int y, int orientation) {
     isActive = OFF;
-    deck = new Deck();
+    //deck = new Deck();
     board = new Board(tile, x, y, orientation );       // the board
-    player_one = new Player( board, deck, 1 );      // player 1 knows the board and deck
-    player_two = new Player( board, deck, 2 );      // player 2 knows the board and deck
+    player_one = new Player( board, 1 );      // player 1 knows the board and deck
+    player_two = new Player( board, 2 );      // player 2 knows the board and deck
     current_turn = true; // player 1's turn
 }
 
@@ -82,22 +82,22 @@ void Game::giveCard(string ID, Input *in) {
     
 }
 
-void Game::giveTurn(int i, int j) {
-    
+void Game::giveTurn(int x, int y) {
+   /* 
     if( deck->isEmpty() ) {    // if final card was played
         endGame();
         cout << "DECK EMPTY -> GAME OVER!";
         return;
-    }
-    else if( current_turn && player_one->hasCard == true)  {            // player one makes a move
-        if(player_one->takeTurn(i, j))
+    }*/
+    if ( current_turn && player_one->hasCard == true)  {            // player one makes a move
+        if(player_one->takeTurn(x, y))
             current_turn = !current_turn;        // toggle turn
         else{}
             //cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
         
     }
     else if ( !current_turn && player_two->hasCard == true ) {
-        if (player_two->takeTurn(i, j))
+        if (player_two->takeTurn(x, y))
             current_turn = !current_turn;        // toggle turn
         else{}
             //cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
@@ -148,12 +148,12 @@ int Game::getScore( bool player ) {
     }
 }
 
-int Game::getMeeples( bool player ) {
+int Game::getTigers( bool player ) {
     if(player) {
-        return player_one->getMeeples();
+        return player_one->getTigers();
     }
     else {
-        return player_two->getMeeples();
+        return player_two->getTigers();
     }
 }
 
@@ -170,10 +170,10 @@ Card * Game::getCurrCard() {
         return player_two->getCard();
     }
 }
-
+/*
 Deck * Game::getDeck() {
     return deck;
-}
+}*/
 
 void Game::setStartingPlayer(bool us) {
     if(us){
