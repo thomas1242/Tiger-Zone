@@ -16,8 +16,9 @@ Tiger-Zone - TEAM H Repository
 -Include UML
 -Activity Diagram Updated?
 
-#Source Code
+# Source Code
 - Code is in c++
+
 ## Class Descriptions
 - Main
 - Game
@@ -43,18 +44,18 @@ Tiger-Zone - TEAM H Repository
  5. Your user password
   
 
-##Extra Stuff
+## Extra Stuff
 - With GUI (no client)
     - SFML Dependencies: http://www.sfml-dev.org/tutorials/2.4/
     - use main_with_GUI.cpp instead of main.cpp
   
 - Test Server
 
-#Testing
+# Testing
 - Include Test folder showcasing tests
-  - Unit tested couts can be viewed in code
-  - GUI as test
-  - Server as test
+  ..* Unit tested couts can be viewed in code
+  ..* GUI as test
+  ..* Server as test
   
-#Current Bugs
+# Current Bugs
 - Server connection issue, c++ to Java difficulty
