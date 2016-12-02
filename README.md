@@ -106,7 +106,7 @@ Input/Output
 
 ### Acceptance Testing
 #### GUI plugin (Not compatible with server)
-..* SFML dependencies required. To compile, see Compilation and Run Instructions.
+..* SFML dependencies required. http://www.sfml-dev.org/tutorials/2.4/
   
 ## **Current Bugs**
-- Timeout/loop issue in input.cpp
+- Timeout issue in input.cpp
