@@ -17,7 +17,8 @@ Tiger-Zone - TEAM H Repository
 -Activity Diagram Updated?
 
 ## **Source Code**
-- Code is in c++
+- Code is in C++ and is cointained in 'src'.
+- An implementation with the testable GUI (and no client) is in the 'game_with_GUI' folder.
 
 ## **Class Descriptions**
 - Main
@@ -29,17 +30,11 @@ Tiger-Zone - TEAM H Repository
 - Card
 - Input/Output
   -Subclass
-
-## **Testing**
-###Unit Testing
-####Googletest
-![Google Test](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/googletest.png?raw=true)
-
-###Integration Testing
-####Testing client with a mock server
-![Server](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/client_mock_server%20communication.png)
-
 ## **Compilation and Run Instructions**
+- Client based code
+..* Compile in any C++ compiler with the -std=c++11 tag. I.e. 'g++ -o tiger -std=c++11'
+..* Run with 
+
 ### __Official Version__
 #### **Without GUI (client version)**
 1. Navigate to Tiger-Zone/src in a command line interface, or an IDE capable of compiling c++ code.
@@ -60,10 +55,19 @@ Tiger-Zone - TEAM H Repository
 - Test Server
 
 ## **Testing**
-- Include Test folder showcasing tests
-  ..* Unit tested couts can be viewed in code
-  ..* GUI as test
-  ..* Server as test
+### Unit Testing
+#### Googletest
+..* ![Google Test](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/googletest.png?raw=true)
+..* Additional print statements are output within code.
+
+### Integration Testing
+#### Testing client with a mock server
+![Server](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/client_mock_server%20communication.png)
+..* Included Test folder showcasing tests
+
+### Acceptptance Testing
+#### GUI plugin (Not compatible with server)
+..* SFML dependencies required. To compile, see Compilation and Run Instructions.
   
 ## **Current Bugs**
-- Server connection issue, c++ to Java difficulty
+- Timeout issue in input.cpp
