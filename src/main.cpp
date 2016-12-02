@@ -1,5 +1,4 @@
 #include "game.h"
-#include "board.h"
 #include <sstream>
 #include <stdio.h>
 #include <iostream>         //allows for basic input/output
@@ -25,16 +24,14 @@ int main(int argc, char *argv[])
 {
     struct sockaddr_in clientAddress;
     int dataLength = 1000;
-    char *data = new char[dataLength];
-    char *data_1 = new char[dataLength];
-    char *data_2 = new char[dataLength];
+    char data[dataLength];
+    struct hostent *server;
+    int rd, wr;
 
-
-    //char data[dataLength];
     string str = "";
     string temp = "";
-
     string space = " ";
+
     Input *in = new Input();
     Output *out = new Output();
     int portNumber = atoi(argv[2]);
@@ -46,10 +43,13 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    clientAddress.sin_addr.s_addr = inet_addr(argv[1]);
+    server = gethostbyname(argv[1]);
+    bzero((char *) &clientAddress, sizeof(clientAddress));
+    //clientAddress.sin_addr.s_addr = inet_addr(argv[1]);
     clientAddress.sin_family = AF_INET;
+    bcopy((char *)server->h_addr, (char *)&clientAddress.sin_addr.s_addr, server->h_length);
     clientAddress.sin_port = htons(portNumber);
-    //inet_pton(AF_INET, argv[1], &clientAddress.sin_addr);
+    
     
     int length, checkConnection;
     length = sizeof(clientAddress);
@@ -69,37 +69,54 @@ int main(int argc, char *argv[])
 
 
     //Tournament Setup Logging Junk
-
-    recv(sock, data, dataLength, 0);                         // RECEIVE: THIS IS SPARTA
+    bzero(data, dataLength);
+    rd = read(sock, data, dataLength-1);                         // RECEIVE: THIS IS SPARTA
+    if(rd < 0)
+    {
+        cout << "failed to read" << endl;
+    }
     cout << "server=> " << data << endl;
-    str = "JOIN TIGERZONE\n";
-
+    
+    bzero(data, dataLength);
+    str = "JOIN ";
+    str.append(argv[3]);
+    str.append("\r\n");
+    strcpy(data, str.c_str());
+    //str.copy(data, strlen(str), 0);
     cout << "client=> " << str << endl;
-    send(sock, str.c_str(), dataLength, 0);                  // SEND:     JOIN TIGERZONE
+    wr = write(sock, data, strlen(data));                  // SEND:     JOIN TIGERZONE
+    if(wr < 0)
+    {
+        cout << "failed to write" << endl;
+    }
 
-    recv(sock, data_1, dataLength, 0);                       // RECEIVE:   HELLO!
-    cout << "server=> " << data_1 << endl;
+    bzero(data, dataLength);
 
-    //temp = "I AM TEAMH IAMH\n";
-    temp = "I AM TEAMH IAMH\r";
-    //temp = "I AM TEAMH IAMH\r\n";
+    rd = read(sock, data, dataLength-1);                       // RECEIVE:   HELLO!
+    cout << "server=> " << data << endl;
+    if(rd < 0)
+    {
+        cout << "failed to read" << endl;
+    }
+    bzero(data, dataLength);
+    string str1 = "I AM ";
+    str1.append(argv[4]);
+    str1.append(" ");
+    str1.append(argv[5]);
+    str1.append("\r\n");
+    strcpy(data, str1.c_str());
 
-    //cout << "next message sent to server:"<< temp << endl;
-
-    cout << "client=> " << temp << endl;
-    send(sock, temp.c_str(), dataLength, 0);                 // SEND: I AM TEAMH IAMH
-
+    cout << "client=> " << str1 << endl;
+    wr = write(sock, data, strlen(data));                // SEND: I AM TEAMH IAMH
+    if(wr < 0)
+    {
+        cout << "failed to write" << endl;
+    }
    // while(!in->tournyOpen) {
-        recv(sock, data_2, dataLength, 0);          
-        cout << "server=> " << data_2 << endl;               //RECIEVE: PLEASE WAIT FOR NEXT CHALLNEGE..
-        str = string(data_2);
-        in->takeInput(str);
-
-        if (str.find("NOPE") != -1 ) {
-            cout << "FAILED TO CONNECT TO SERVER" << endl;
-            close(sock);
-            exit(1);
-        }
+    recv(sock, data, dataLength, 0);          
+    cout << "server=> " << data << endl;               //RECIEVE: PLEASE WAIT FOR NEXT CHALLNEGE..
+    str = string(data);
+    in->takeInput(str);
 
    // }
     cout << "----------------------------------------------------" << endl;
@@ -281,7 +298,7 @@ cout << "instantiate 2 new games\n";
                 {
                     cout << "entering the in->gid == startGame loop" << endl;
                     game1->giveCard(in->tile, in);
-                    
+                    /*AI IMPLEMENTATION MAKING A MOVE*/
                     game1->giveTurn(in->coord.first, in->coord.second);
 
                     out->outputFunc(in->coord.second - ROWS/2, -1*(in->coord.first - COLS/2), in->orientation, in->gid, in->tile);
