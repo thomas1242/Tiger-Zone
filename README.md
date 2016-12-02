@@ -7,9 +7,9 @@
 |:-----------:	|----------	    |
 | Evan Amstutz  | EvanMAmstutz	|
 | Bronson Davis | drace128 	    |
-| Sarah Garcia  |          	    |
+| Sarah Garcia  | **REMEMBER**  |
 | Thomas Palmer | thomas1242    |
-| Zachary Taylor|               |
+| Zachary Taylor| **REMEMBER**  |
 | Kurt Yilmaz   | KurtYilmaz    |
 
 ##Architecture/Design Documentation
@@ -39,7 +39,7 @@
   - SFML Dependencies: http://www.sfml-dev.org/tutorials/2.4/
   - use main_with_GUI.cpp instead of main.cpp
   
-- Server
+- Test Server
 
 ##Testing
 - Include Test folder showcasing tests
