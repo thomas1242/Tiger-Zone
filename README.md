@@ -63,7 +63,7 @@ Input/Output
 ## **Compilation and Run Instructions**
 - Client based code
 1. Navigate to Tiger-Zone/src
-2. Compile in any C++ compiler with the -std=c++11 tag. I.e. 'g++ -o tiger -std=c++11'
+2. Compile in any C++ compiler with the -std=c++11 tag. I.e. 'g++ -o tiger *.cpp -std=c++11'
 3. Run on a TigerZone Server with the following arguments i.e. './tiger 100.32.100.961 4444 TIGERZONE TEAMH IAMH'
 
   1. The IP address of the server
