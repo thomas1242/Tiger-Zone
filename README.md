@@ -1,5 +1,9 @@
 Tiger-Zone - TEAM H Repository
 ==================
+# Table of Contents
+1. [Member List](#Member List)
+2. [Architecture/Design Documentation](#Architecture/Design Documentation)
+3. [Source Code](#Source Code)
 
 # Member List:
 
@@ -19,7 +23,7 @@ Tiger-Zone - TEAM H Repository
 # Source Code
 - Code is in c++
 
-## Class Descriptions
+# Class Descriptions
 - Main
 - Game
 - Player
