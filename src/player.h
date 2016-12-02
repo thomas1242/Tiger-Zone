@@ -4,36 +4,36 @@
 #define player_h
 
 
-#include "board.h"
 #include "inout.h"
-#include <utility>
-
+#include "board.h"
+#include <string>
 
 
 class Player {
     
 public:
-    Player(Board * b, int playerID);
-    int ji_to_xy(int input, char id);
-    bool underduress();
-    void takeCard(Card* input, bool DURESS);
-    bool takeTurn(int i, int j, int orientation);        // draw tile from the deck, place it, maybe place a meeple
+    Player(Board * b, Deck * d, int playerID);
+
+
+    int convertID(string ID);
+    void takeCard(string strID, Input *in);
+    bool takeTurn(int i, int j);        // draw tile from the deck, place it, maybe place a meeple
     void drawCard();
     void rotateCard();
     bool hasCard;
     int getCardId();    // for GUI
     int getScore();
-    int getTigers();
+    int getMeeples();
     Card * getCard();   // for GUI
-
     
     int playerID;       // which player is this: player id
     
+private:
     int score;
-    int tigersAvailable;
+    int meeplesAvailable;
     Board * theBoard;
+    Deck * theDeck;
     Card * currCard;
-    Output  out;
 };
 
 

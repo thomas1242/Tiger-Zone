@@ -2,6 +2,7 @@
 #include <string>
 #include <utility>
 #include "inout.h"
+#include <sstream>
 using namespace std;
 
 Output::Output()
@@ -9,7 +10,7 @@ Output::Output()
   //empty constructor
 }
 
-string Output::choosePlacement(int choice)
+void Output::choosePlacement(int choice)
 {
     Input in;
     string ret = "";
@@ -23,9 +24,9 @@ string Output::choosePlacement(int choice)
             ret.append(" PLACE ");
             ret.append(in.tile);
             ret.append(" AT ");
-            ret.append(to_string(xcoord));
+            ret.append(to_string(coord.first));
             ret.append(" ");
-            ret.append(to_string(ycoord));
+            ret.append(to_string(coord.second));
             ret.append(" ");
             ret.append(to_string(orientation)); 
             ret.append(" NONE");
@@ -38,9 +39,9 @@ string Output::choosePlacement(int choice)
             ret.append(" PLACE ");
             ret.append(in.tile);
             ret.append(" AT ");
-            ret.append(to_string(xcoord));
+            ret.append(to_string(coord.first));
             ret.append(" ");
-            ret.append(to_string(ycoord));
+            ret.append(to_string(coord.second));
             ret.append(" ");
             ret.append(to_string(orientation)); 
             ret.append(" CROCODILE");
@@ -53,9 +54,9 @@ string Output::choosePlacement(int choice)
             ret.append(" PLACE ");
             ret.append(in.tile);
             ret.append(" AT ");
-            ret.append(to_string(xcoord));
+            ret.append(to_string(coord.first));
             ret.append(" ");
-            ret.append(to_string(ycoord));
+            ret.append(to_string(coord.second));
             ret.append(" ");
             ret.append(to_string(orientation)); 
             ret.append(" TIGER ");
@@ -78,9 +79,9 @@ string Output::choosePlacement(int choice)
             ret.append(" TILE ");
             ret.append(in.tile);
             ret.append(" UNPLACEABLE RETRIEVE TIGER AT ");
-            ret.append(to_string(xcoord));
+            ret.append(to_string(coord.first));
             ret.append(" ");
-            ret.append(to_string(ycoord));
+            ret.append(to_string(coord.second));
 
         case 6 :
             ret = "GAME ";
@@ -90,30 +91,36 @@ string Output::choosePlacement(int choice)
             ret.append(" TILE ");
             ret.append(in.tile);
             ret.append(" UNPLACEABLE ADD ANOTHER TIGER TO ");
-            ret.append(to_string(xcoord));
+            ret.append(to_string(coord.first));
             ret.append(" ");
-            ret.append(to_string(ycoord));
+            ret.append(to_string(coord.second));
     }
-    
-    return 0;  
 }
 
-string Output::outputFunc(int x, int y, int orient){
+void Output::outputFunc(int x, int y, int orient, string game, string tile){
     string ret="";
-    xcoord = x;
-    ycoord = y; 
+    coord = make_pair(x, y);
     orientation = orient;
     zone = 0;
-    ret.append("GAME ");
-    ret.push_back(game);
+    ret.append("GAME");
+    ret.append(game);
     ret.append(" MOVE ");
+    cout << "Inside Output, moveCount: " << ++moveCount << endl;
     ret.append(to_string(moveCount));
-    ret.append(" PLACE ");
+    if(moveCount > 2)
+    {
+        ret.append(" PLACE");
+    }
+    else
+    {
+        ret.append(" PLACE ");
+    }
+    
     ret.append(tile);
     ret.append(" AT ");
-    ret.append(to_string(xcoord));
+    ret.append(to_string(coord.first));
     ret.append(" ");
-    ret.append(to_string(ycoord));
+    ret.append(to_string(coord.second));
     ret.append(" ");
     ret.append(to_string(orientation));
 
@@ -123,16 +130,5 @@ string Output::outputFunc(int x, int y, int orient){
     else { 
       ret.append(" NONE");
     }
-
-
-      /*cout << "GAME " << game << " MOVE " << moveCount << " PLACE "
-      << tile << " AT " << xcoord << " " << ycoord << " " << orientation;
-      if(zone >= 0){  //Assuming zone < 0 is considered no tiger placement.
-        cout << " TIGER " << zone<< "\n";  //NEED SOMETHING HERE FOR CROCODILES
-      } else { cout << " NONE\n";}
-      makeMove = false;
-      cout << ret <<endl;
-      
-      return ret;
-      */
+    outMessage = ret;
 }

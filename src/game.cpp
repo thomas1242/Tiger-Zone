@@ -4,19 +4,15 @@
 #include "board.h"
 #include "game.h"
 #include <iostream>
+#include <string>
 using namespace std;
 
-#define UNIQUECARDS 27              // number of unique cards in the deck
-#define MAXCARDS    76      // cards randomly put in deck, doesn't include center card
-#define ROWS 153
-#define COLS 153
-
-Game::Game() {
+Game::Game(Card *tile, int x, int y, int orientation) {
     isActive = OFF;
     deck = new Deck();
-    board = new Board( deck->drawCard() );       // the board
-    player_one = new Player( board, 1 );      // player 1 knows the board and deck
-    player_two = new Player( board, 2 );      // player 2 knows the board and deck
+    board = new Board(tile, x, y, orientation );       // the board
+    player_one = new Player( board, deck, 1 );      // player 1 knows the board and deck
+    player_two = new Player( board, deck, 2 );      // player 2 knows the board and deck
     current_turn = true; // player 1's turn
 }
 
@@ -25,6 +21,39 @@ Game::~Game() {
     delete board;
     delete player_one;
     delete player_two;
+}
+
+int Game::convertID(string ID)
+{
+    if(ID == "JJJJ-"){return 0;}
+    if(ID == "JJJJX"){return 1;}
+    if(ID == "JJTJX"){return 2;}
+    if(ID == "TTTT-"){return 3;}
+    if(ID == "TJTJ-"){return 4;}
+    if(ID == "TJJT-"){return 5;}
+    if(ID == "TJTT-"){return 6;}
+    if(ID == "LLLL-"){return 7;}
+    if(ID == "JLLL-"){return 8;}
+    if(ID == "LLJJ-"){return 9;}
+    if(ID == "JLJL-"){return 10;}
+    if(ID == "LJLJ-"){return 11;}
+    if(ID == "LJJJ-"){return 12;}
+    if(ID == "JLLJ-"){return 13;}
+    if(ID == "TLJT-"){return 14;}
+    if(ID == "TLJTP"){return 15;}
+    if(ID == "JLTT-"){return 16;}
+    if(ID == "JLTTB"){return 17;}
+    if(ID == "TLTJ-"){return 18;}
+    if(ID == "TLTJD"){return 19;}
+    if(ID == "TLLL-"){return 20;}
+    if(ID == "TLTT-"){return 21;}     
+    if(ID == "TLTTP"){return 22;}
+    if(ID == "TLTT-"){return 23;}
+    if(ID == "TLLTB"){return 24;}
+    if(ID == "LJTJ-"){return 25;}
+    if(ID == "LJTJD"){return 26;}
+    if(ID == "TLLLC"){return 27;}
+    else return -1;
 }
 
 bool Game::status() {
@@ -40,27 +69,20 @@ void Game::endGame() {
     // this->~Game();      // delete the game
 }
 
-void Game::giveCard() {
-    Card* currCard;
-    if( !(deck->isEmpty()) ) {    // if final card was played
-        currCard = deck->drawCard();
-    }
-    else {
-        cout <<"DECK EMPTY" << endl;
-        giveTurn(0,0,0);
-    }
+void Game::giveCard(string ID, Input *in) {
+    
     if( current_turn && player_one->hasCard == false && player_two->hasCard == false) {             // player one makes a move
         //cout << "player_one to draw card:" << endl;
-        player_one->takeCard(currCard, true);
+        player_one->takeCard(ID, in);
     }
     else if ( !current_turn && player_one->hasCard == false && player_two->hasCard == false) {
         //cout << "player_two to draw card:" << endl;
-        player_two->takeCard(currCard, true);          // player two makes a move
+        player_two->takeCard(ID, in);          // player two makes a move
     }
     
 }
 
-void Game::giveTurn(int i, int j, int orientation) {
+void Game::giveTurn(int i, int j) {
     
     if( deck->isEmpty() ) {    // if final card was played
         endGame();
@@ -68,14 +90,14 @@ void Game::giveTurn(int i, int j, int orientation) {
         return;
     }
     else if( current_turn && player_one->hasCard == true)  {            // player one makes a move
-        if(player_one->takeTurn(i, j, orientation))
+        if(player_one->takeTurn(i, j))
             current_turn = !current_turn;        // toggle turn
         else{}
             //cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
         
     }
     else if ( !current_turn && player_two->hasCard == true ) {
-        if (player_two->takeTurn(i, j, orientation))
+        if (player_two->takeTurn(i, j))
             current_turn = !current_turn;        // toggle turn
         else{}
             //cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
@@ -126,12 +148,12 @@ int Game::getScore( bool player ) {
     }
 }
 
-int Game::getTigers( bool player ) {
+int Game::getMeeples( bool player ) {
     if(player) {
-        return player_one->getTigers();
+        return player_one->getMeeples();
     }
     else {
-        return player_two->getTigers();
+        return player_two->getMeeples();
     }
 }
 
@@ -153,6 +175,14 @@ Deck * Game::getDeck() {
     return deck;
 }
 
+void Game::setStartingPlayer(bool us) {
+    if(us){
+        current_turn = true;
+    }
+    else {
+        current_turn = false;
+    }
+}
 
 
 

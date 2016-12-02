@@ -6,8 +6,7 @@
 
 #include "board.h"
 #include "player.h"
-//#include "inout.h"
-
+#include <string>
 
 #define OFF 0
 #define ON  1
@@ -15,7 +14,7 @@
 
 class Game {
     
-public:
+private:
     Board * board;
     Deck * deck;
     Player * player_one;
@@ -23,10 +22,12 @@ public:
     bool current_turn;          // true if one's turn, false if two's turn
     bool isActive;              // is game over
     
-    Game();
+public:
+    Game(Card *tile, int x, int y, int orientation);
     ~Game();
-    void giveCard();
-    void giveTurn(int i, int j, int orientation);
+    int convertID(string str);
+    void giveCard(string ID, Input *in);
+    void giveTurn(int i, int j);
     void startGame();
     void endGame();
     bool status();
@@ -36,11 +37,11 @@ public:
     Player * getCurrPlayer();
     bool getCurrTurn();
     int getScore( bool player );
-    int getTigers( bool player );
+    int getMeeples( bool player );
     void printBoard();
     Card * getCurrCard();   // for GUI
     Deck * getDeck();
-    
+    void setStartingPlayer(bool us);
     
     
 };

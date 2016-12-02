@@ -20,29 +20,25 @@ Card::Card(int id) {
     
     orientation = 0;
 }
-
-void Card::edgeclone(Edge* ae, Edge* be) {
-        ae->j1 = be->j1;
-        ae->j2 = be->j2;
-        ae->t1 = be->t1;
-        ae->l1 = be->l1;
-        ae->type = be->type;
-}
-
 void Card::rotate() {   // rotate card 90 degrees clockwise
-    cout << "Before edge* creation" << endl;
-    Edge * temp = new Edge();
-    cout << "After edge* creation" << endl;
-    edgeclone(temp, rightEdge);
-    edgeclone(rightEdge, topEdge);
-    edgeclone(topEdge, leftEdge);
-    edgeclone(leftEdge, botEdge);
-    edgeclone(botEdge, temp);
+    Edge * temp;
+    
+    
+    temp = leftEdge;
+    leftEdge = botEdge;
+    botEdge = rightEdge;
+    rightEdge = topEdge;
+    topEdge = temp;
+    
+//    temp = rightEdge;
+//    rightEdge = topEdge;
+//    topEdge = leftEdge;
+//    leftEdge = botEdge;
+//    botEdge = temp;
     
     orientation = (orientation + 90) % 360;
-    printCard();
+    //printCard();
 }
-   
 
 void Card::printCard() {
     cout << "Card " << cardID << " with id = " << id << " rotated " << orientation << " degrees." << endl;
@@ -977,34 +973,34 @@ void Card::printCells(int & L1, int & L2, int & J1, int & J2, int & J3, int & J4
     
     cout << "Card " << getCardID() << " with orientation " << getOrient() << endl;
     if(L1 != 10) {
-        cout << "lake 1 region in zone " << L1 << endl;
+        cout << "L1 in zone: " << L1 << endl;
     }
     if(L2 != 10) {
-        cout << "lake 2 region in zone " << L2 << endl;
+        cout << "L2 in zone: " << L2 << endl;
     }
     if(J1 != 10) {
-        cout << "jungle 1 region in zone " << J1 << endl;
+        cout << "J1 in zone: " << J1 << endl;
     }
     if(J2 != 10) {
-        cout << "jungle 2 region in zone " << J2 << endl;
+        cout << "J2 in zone: " << J2 << endl;
     }
     if(J3 != 10) {
-        cout << "jungle 3 region in zone " << J3 << endl;
+        cout << "J3 in zone: " << J3 << endl;
     }
     if(J4 != 10) {
-        cout << "jungle 4 region in zone " << J4 << endl;
+        cout << "J4 in zone: " << J4 << endl;
     }
     if(T1 != 10) {
-        cout << "trail 1 region in zone " << T1 << endl;
+        cout << "T1 in zone: " << T1 << endl;
     }
     if(T2 != 10) {
-        cout << "trail 2 region in zone " << T2 << endl;
+        cout << "T2 in zone: " << T2 << endl;
     }
     if(T3 != 10) {
-        cout << "trail 3 region in zone " << T3 << endl;
+        cout << "T3 in zone: " << T3 << endl;
     }
     if(T4 != 10) {
-        cout << "trail 4 region in zone " << T4 << endl;
+        cout << "T4 in zone: " << T4 << endl;
     }
     
     

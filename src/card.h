@@ -20,19 +20,22 @@ private:
     
     string cardID;
     int id;             // card identifier: what type of tile is this
-    int orientation;    // degreees rotated clockwise, initally 0
+    
+
+    
+
+    
+    char mid; // might not need this
     
     
 public:
     Card();             // construct null card ( id = 0 ). need this constructor for our board constructor
     Card(int id);       // construct a Card a.k.a. an instance of a tile from the deck
-    void edgeclone(Edge* ae, Edge* be);
     void rotate();      // rotate card 90 degress clockwise
     void assignSides();
     void assignCardID();
     void printCard();
     
-    char mid;       // Do we need this?
     char getTop();  // functions so other classes can have controlled access to private variables
     char getBot();
     char getRight();
@@ -47,7 +50,8 @@ public:
     void assignCloseID();
     void printCells(int & L1, int & L2, int & J1, int & J2, int & J3, int & J4, int & T1, int & T2, int & T3, int & T4);
     void setValue( int & oldVal, int newVal );
-    
+        int orientation;    // degreees rotated clockwise, initally 0
+
     // a card can have...
     Jungle * j1, * j2, * j3, * j4;          // up to 4 jungles
     Trail  * t1, * t2, * t3, * t4;          // up to 4 trails

@@ -4,120 +4,54 @@
 #include <iostream>
 #include <unistd.h>
 
-Player::Player(Board * b, int pid) {
+Player::Player(Board * b, Deck * d, int pid) {
     theBoard = b;           // point this players to the game's board;
+    theDeck = d;            // point this players to the game's deck
     score = 0;
-    tigersAvailable = 7;   // players start with 7 meeples
+    meeplesAvailable = 7;   // players start with 7 meeples
     currCard = NULL;
     hasCard = false;
     playerID = pid;
 }
 
-int Player::ji_to_xy(int input, char id) {
-    int output;
-    if(id == 'i') {
-        output = -input + ROWS;    //ROWS/2
-    }
-    if(id == 'j') {
-        output = input - COLS;     //COLS/2
-    }    
-    return output;
-}
+void Player::takeCard(string strID, Input *in) {
+    
+    currCard = new Card(convertID(strID));                  // draw new card id from the deck
+    theBoard->updatePossibleMoves( currCard );
 
-bool Player::underduress() {
-    bool res = false;
-    // If AI gets stresssed
-    // it makes a quick decision.
-
-    int i = theBoard->possibleMoves.front()->icoord;
-    int j = theBoard->possibleMoves.front()->jcoord;
-
-    int x = ji_to_xy(j, 'j');
-    int y = ji_to_xy(i, 'i');
-
-    cout << "xy: " << x << ' ' << y << endl;
-    out.xcoord = x;
-    out.ycoord = y;
-
-    if( theBoard->possibleMoves.front()->possibleorientations[0] == 1) {
-        theBoard->placeCard(i, j, currCard, 0, playerID, 0);
-        out.orientation = 0;
-        res = true;
-        hasCard = false;
-    }
-    else if( theBoard->possibleMoves.front()->possibleorientations[1] == 1) {
-        theBoard->placeCard(i, j, currCard, 1, playerID, 0);
-        out.orientation = 90;
-        res = true;
-        hasCard = false;
-    }
-    else if( theBoard->possibleMoves.front()->possibleorientations[2] == 1) {
-        theBoard->placeCard(i, j, currCard, 2, playerID, 0);
-        out.orientation = 180;
-        res = true;
-        hasCard = false;
-    }
-    else if( theBoard->possibleMoves.front()->possibleorientations[3] == 1) {
-        theBoard->placeCard(i, j, currCard, 3, playerID, 0);
-        out.orientation = 270;
-        res = true;
-        hasCard = false;
-    }
-    return res;
-}
-
-void Player::takeCard(Card* input, bool DURESS) {
-    currCard = input;
-    cout << "pass1" << endl;
-    currCard->printCard();
-    cout << "pass2" << endl;
-    theBoard->refreshPossibleMoves();
-    cout << "pass3" << endl;
-    theBoard->updatePossibleMoves(currCard);
-    cout << "pass4" << endl;
-
-    if(!(theBoard->possibleMoves.empty())) {
-        hasCard = true;
-        if(DURESS == true) {
-            underduress();
+    for(int i = 0; i < ROWS; i++) {
+        for(int j = 0; j < COLS; j++){
+            if(theBoard->checkPossibleMove(i, j) == true) {
+                in->coord = make_pair(i, j);
+                in->orientation = theBoard->getOrient(i, j);
+                
+                cout << " i = " << i << endl;
+                cout << " j = " << j << endl;
+                i = ROWS;
+                j = COLS;
+            }
         }
     }
-    else {
-        cout << "error1" << endl;
-        delete currCard;  
-        hasCard = false;
+
+    
+    while(theBoard->isPossibleMove() == false ) {
+        cout << "Cannot place card " << currCard->getId() << ". Discarded." << endl;
+        delete currCard;                                // Card is discarded
+        currCard = theDeck->drawCard();                 // draw new card id from the deck
+        theBoard->updatePossibleMoves( currCard );
+        // TELL SERVER CARD IS DISCARDED, NEW CARD IS DRAWN.
     }
-                                  // Card is discarded
-    // TELL SERVER CARD IS DISCARDED, NEW THING IS DONE.
+    
+    hasCard = true;
     //theBoard->printBoard();
-    // currCard->printCard();
+ //   currCard->printCard();
 }
 
-bool Player::takeTurn(int i, int j, int orientation) {
+bool Player::takeTurn(int i, int j) {
     bool res = false;
-    for (list<Moves*>::iterator iter = theBoard->possibleMoves.begin(); iter != theBoard->possibleMoves.end(); ++iter) {
-        if((*iter)->icoord == i && (*iter)->jcoord == j) {
-            if( orientation == 0 && (*iter)->possibleorientations[0] == 1) {
-                theBoard->placeCard(i, j, currCard, 0, playerID, 0);
-                res = true;
-                hasCard = false;
-            }
-            else if( orientation == 90 && (*iter)->possibleorientations[1] == 1) {
-                theBoard->placeCard(i, j, currCard, 1, playerID, 0);
-                res = true;
-                hasCard = false;
-            }
-            else if( orientation == 180 && (*iter)->possibleorientations[2] == 1) {
-                theBoard->placeCard(i, j, currCard, 2, playerID, 0);
-                res = true;
-                hasCard = false;
-            }
-            else if( orientation == 270 && (*iter)->possibleorientations[3] == 1) {
-                theBoard->placeCard(i, j, currCard, 3, playerID, 0);
-                res = true;
-                hasCard = false;
-            }
-        }
+    if( theBoard->checkPossibleMove(i, j) ) {
+        res = theBoard->placeCard(i, j, currCard, playerID, 0);
+        hasCard = false;
     }
     return res;
 }
@@ -138,11 +72,44 @@ int Player::getScore() {
     return score;
 }
 
-int Player::getTigers() {
-    return tigersAvailable;
+int Player::getMeeples() {
+    return meeplesAvailable;
 }
 
 // for gui
 Card * Player::getCard() {
     return currCard;
+}
+
+int Player::convertID(string ID)
+{
+    if(ID == "JJJJ-"){return 0;}
+    if(ID == "JJJJX"){return 1;}
+    if(ID == "JJTJX"){return 2;}
+    if(ID == "TTTT-"){return 3;}
+    if(ID == "TJTJ-"){return 4;}
+    if(ID == "TJJT-"){return 5;}
+    if(ID == "TJTT-"){return 6;}
+    if(ID == "LLLL-"){return 7;}
+    if(ID == "JLLL-"){return 8;}
+    if(ID == "LLJJ-"){return 9;}
+    if(ID == "JLJL-"){return 10;}
+    if(ID == "LJLJ-"){return 11;}
+    if(ID == "LJJJ-"){return 12;}
+    if(ID == "JLLJ-"){return 13;}
+    if(ID == "TLJT-"){return 14;}
+    if(ID == "TLJTP"){return 15;}
+    if(ID == "JLTT-"){return 16;}
+    if(ID == "JLTTB"){return 17;}
+    if(ID == "TLTJ-"){return 18;}
+    if(ID == "TLTJD"){return 19;}
+    if(ID == "TLLL-"){return 20;}
+    if(ID == "TLTT-"){return 21;}     
+    if(ID == "TLTTP"){return 22;}
+    if(ID == "TLTT-"){return 23;}
+    if(ID == "TLLTB"){return 24;}
+    if(ID == "LJTJ-"){return 25;}
+    if(ID == "LJTJD"){return 26;}
+    if(ID == "TLLLC"){return 27;}
+    else return 0;
 }

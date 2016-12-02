@@ -1,23 +1,22 @@
-CC = g++ 
-CFLAGS = -g -std-c++11 -Wall -ggdb
-OBJECTS = board.o card.o deck.o game.o player.o edge.o main.o trail.o lake.o jungle.o moves.o coords.o
+CC = g++
+CFLAGS = -std=c++11
+OBJECTS = board.o card.o deck.o game.o player.o jungle.o edge.o input.o output.o trail.o lake.o main.o
 
 all: $(OBJECTS)
-	$(CC) $(CFLAGS) -o tiger $(OBJECTS)
+	$(CC) $(CFLAGS) -o client $(OBJECTS)
 
 board.o: board.cpp
 card.o: card.cpp
 deck.o: deck.cpp
-gamo.o: game.cpp
+game.o: game.cpp
 player.o: player.cpp
+edge.o: edge.cpp
+input.o: input.cpp
 trail.o: trail.cpp
 jungle.o: jungle.cpp
 lake.o: lake.cpp
-edge.o: edge.cpp
-moves.o: moves.cpp
-coords.o: coords.cpp
-
+output.o: output.cpp
 main.o: main.cpp
 
 clean:
-	rm tiger $(OBJECTS) 
+	rm client $(OBJECTS) 
