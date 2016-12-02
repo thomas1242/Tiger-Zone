@@ -4,7 +4,7 @@ Tiger-Zone - TEAM H Repository
 ## **Member List**
 
 |     Name    	| Username 	    |
-|:-----------:	|:----------:	  |
+|:-----------:	|:----------:	|
 | Evan Amstutz  | EvanMAmstutz	|
 | Bronson Davis | drace128 	    |
 | Sarah Garcia  | SarahmGarcia  |
@@ -13,7 +13,9 @@ Tiger-Zone - TEAM H Repository
 | Kurt Yilmaz   | KurtYilmaz    |
 
 ## **Architecture/Design Documentation**
--Include UML
+![UML with Client](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/Client%20UML.png?raw=true)
+                                            UML with Client
+
 
 ## **Source Code**
 - Code is in C++ and is cointained in 'src'.
@@ -21,20 +23,43 @@ Tiger-Zone - TEAM H Repository
 
 ## **Class Descriptions**
 Main
+
 - Highest level.
 - Controls two games, and and Input/Output class.
 - Manages connection with server via TCP socket.
+
 Game
+
+- Second highest level architecturally.
+- Gives abilitity for players to make moves.
+- Contains Board (and Deck in non-client versions).
+
 Player
+
+- Changes both the board and card objects.
+- Makes decisions based on the Board's possible moves.
+
 Board
-Subclass
+
+- Contains matrix of cards.
+- Keeps track of terrain and tiger locations.
+- Stores a 2D array of possible moves.
+..* AI players can use this array to make decisions.
+
 Deck (only for non-client version)
+
+- Stack of cards to be drawn by the game and given to the Player.
+
 Card
+
 - Contains edges with terrain types.
 - Is passed from Server->Main->Game->Player->Board.
--
+- A unique ID can be passed through the server.
+
 Input/Output
-- Utilized by server to store or queue relevant data for server connection
+
+- Utilized by server to store or queue relevant data for server connection.
+
 ## **Compilation and Run Instructions**
 - Client based code
 1. Navigate to Tiger-Zone/src
