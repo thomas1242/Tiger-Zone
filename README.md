@@ -132,4 +132,5 @@ Input/Output
    ![Move 3a](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_3.png)
   
 ## **Current Bugs**
-- Timeout issue in input.cpp
+- Timeout/loop issue in input.cpp.
+- Currently no error checking if user too few command line arguments.
