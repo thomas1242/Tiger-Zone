@@ -33,7 +33,7 @@ Tiger-Zone - TEAM H Repository
 ## **Testing**
 ###Unit Testing
 ####Googletest
-![Google Test](googletest.png)
+![Google Test](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/googletest.png?raw=true)
 
 ###Integration Testing
 ####Testing client with a mock server
