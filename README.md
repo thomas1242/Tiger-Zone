@@ -9,7 +9,7 @@ Tiger-Zone - TEAM H Repository
 | Bronson Davis | drace128 	    |
 | Sarah Garcia  | SarahmGarcia  |
 | Thomas Palmer | thomas1242    |
-| Zachary Taylor| **REMEMBER**  |
+| Zachary Taylor|               |
 | Kurt Yilmaz   | KurtYilmaz    |
 
 ## **Architecture/Design Documentation**
