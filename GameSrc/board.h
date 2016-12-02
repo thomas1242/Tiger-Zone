@@ -67,7 +67,7 @@ public:
     int minEdge;
     int indexMin;
     
-    int makeDecision(Card* card, Lake * lakes, Trail * trail, int numTigersAvialable);
+    int aiDecision(Card* card, Lake * lakes, Trail * trail, int numTigersAvialable);
     
     int numTigersAvialable;
     

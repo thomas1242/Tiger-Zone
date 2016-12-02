@@ -2276,7 +2276,7 @@ void Board::endGameScoring() {  // score uncompleted regions
 
 
 
-int Board::makeDecision(Card* currCard, Lake * lakes, Trail * trails, numTigersAvailable ){
+int Board::aiDecision(Card* currCard, Lake * lakes, Trail * trails, numTigersAvailable ){
     
     lakeNotOwnedAvailable = false;
     trailNotOwnedAvailable = false;
@@ -2317,17 +2317,17 @@ int Board::makeDecision(Card* currCard, Lake * lakes, Trail * trails, numTigersA
                 }
                 
                 if (trailClaimed == true ){
-                    /*x*/==trails[indexToUse].loc[0].first;
-                    /*y*/==trails[indexToUse].loc[0].second;
-                    /*rot*/==trails[indexToUse].rot[0];
+                    in->coord.first==trails[indexToUse].loc[0].first;
+                    in->coord.second==trails[indexToUse].loc[0].second;
+                    in->orientation==trails[indexToUse].rot[0];
                     return 1;
                 }
                 
                 else{ //no trails owned
                     if (numTigersAvailable > 1) {
-                        /*x*/==trails[indexToUse].loc[0].first;
-                        /*y*/==trails[indexToUse].loc[0].second;
-                        /*rot*/==trails[indexToUse].rot[0];
+                        in->coord.first==trails[indexToUse].loc[0].first;
+                        in->coord.second==trails[indexToUse].loc[0].second;
+                        in->orientation==trails[indexToUse].rot[0];
                         /*place tiger*/
                         return 3;
                     }
@@ -2366,18 +2366,18 @@ int Board::makeDecision(Card* currCard, Lake * lakes, Trail * trails, numTigersA
                 }
                 
                 if (lakeClaimed == true ){
-                    /*x*/==lakes[indexToUse].loc[0].first;
-                    /*y*/==lakes[indexToUse].loc[0].second;
-                    /*rot*/==lakes[indexToUse].rot[0];
+                    in->coord.first==lakes[indexToUse].loc[0].first;
+                    in->coord.second==lakes[indexToUse].loc[0].second;
+                    in->orientation==lakes[indexToUse].rot[0];
                     return 1;
                 }
                 
                 
                 else{ //no lake owned
                     if (numTigersAvailable > 1) {
-                        /*x*/==lakes[indexToUse].loc[0].first;
-                        /*y*/==lakes[indexToUse].loc[0].second;
-                        /*rot*/==lakes[indexToUse].rot[0];
+                        in->coord.first==lakes[indexToUse].loc[0].first;
+                        in->coord.second==lakes[indexToUse].loc[0].second;
+                        in->orientation==lakes[indexToUse].rot[0];
                         /*place tiger*/
                         return 3;
                     }
@@ -2421,23 +2421,23 @@ int Board::makeDecision(Card* currCard, Lake * lakes, Trail * trails, numTigersA
                 }
                 
                 if (trailNotOwnedAvailable == true && isCloseable == true ){
-                    /*x*/==trails[indexToUse].loc[0].first;
-                    /*y*/==trails[indexToUse].loc[0].second;
-                    /*rot*/==trails[indexToUse].rot[0];
+                    in->coord.first==trails[indexToUse].loc[0].first;
+                    in->coord.second==trails[indexToUse].loc[0].second;
+                    in->orientation==trails[indexToUse].rot[0];
                     /*place tiger*/
                     return 3;
                 }
                 else if(trailNotOwnedAvailable == false && isCloseable==true){
-                    /*x*/==trails[indexToUse].loc[0].first;
-                    /*y*/==trails[indexToUse].loc[0].second;
-                    /*rot*/==trails[indexToUse].rot[0];
+                    in->coord.first==trails[indexToUse].loc[0].first;
+                    in->coord.second==trails[indexToUse].loc[0].second;
+                    in->orientation==trails[indexToUse].rot[0];
                     return 1;
                 }
                 else{ //trail is not owned but also not closeable
                     if (numTigersAvailable > 1) {
-                        /*x*/==trails[indexToUse].loc[0].first;
-                        /*y*/==trails[indexToUse].loc[0].second;
-                        /*rot*/==trails[indexToUse].rot[0];
+                        in->coord.first==trails[indexToUse].loc[0].first;
+                        in->coord.second==trails[indexToUse].loc[0].second;
+                        in->orientation==trails[indexToUse].rot[0];
                         /*place tiger*/
                         return 3;
                     }
@@ -2481,23 +2481,23 @@ int Board::makeDecision(Card* currCard, Lake * lakes, Trail * trails, numTigersA
                 }
                 
                 if (lakeNotOwnedAvailable == true && isCloseable==true){
-                    /*x*/==lakes[indexToUse].loc[0].first;
-                    /*y*/==lakes[indexToUse].loc[0].second;
-                    /*rot*/==lakes[indexToUse].rot[0];
+                    in->coord.first==lakes[indexToUse].loc[0].first;
+                    in->coord.second==lakes[indexToUse].loc[0].second;
+                    in->orientation==lakes[indexToUse].rot[0];
                     /*place tiger*/
                     return 3;
                 }
                 else if(lakeNotOwnedAvailable == false){
-                    /*x*/==lakes[indexToUse].loc[0].first;
-                    /*y*/==lakes[indexToUse].loc[0].second;
-                    /*rot*/==lakes[indexToUse].rot[0];
+                    in->coord.first==lakes[indexToUse].loc[0].first;
+                    in->coord.second==lakes[indexToUse].loc[0].second;
+                    in->orientation==lakes[indexToUse].rot[0];
                     return 1;
                 }
                 else{ //lake is not owned but also not closeable
                     if (numTigersAvailable > 1) {
-                        /*x*/==lakes[indexToUse].loc[0].first;
-                        /*y*/==lakes[indexToUse].loc[0].second;
-                        /*rot*/==lakes[indexToUse].rot[0];
+                        in->coord.first==lakes[indexToUse].loc[0].first;
+                        in->coord.second==lakes[indexToUse].loc[0].second;
+                        in->orientation==lakes[indexToUse].rot[0];
                         /*place tiger*/
                         return 3;
                     }

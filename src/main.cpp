@@ -1,4 +1,5 @@
 #include "game.h"
+#include "board.h"
 #include <sstream>
 #include <stdio.h>
 #include <iostream>         //allows for basic input/output
@@ -280,7 +281,7 @@ cout << "instantiate 2 new games\n";
                 {
                     cout << "entering the in->gid == startGame loop" << endl;
                     game1->giveCard(in->tile, in);
-                    /*AI IMPLEMENTATION MAKING A MOVE*/
+                    
                     game1->giveTurn(in->coord.first, in->coord.second);
 
                     out->outputFunc(in->coord.second - ROWS/2, -1*(in->coord.first - COLS/2), in->orientation, in->gid, in->tile);

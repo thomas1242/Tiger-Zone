@@ -51,8 +51,4 @@ public:
     void choosePlacement(int choice);      //switch statement for client messages
     string outMessage;     //saves input to a string
 
-private:
-    string tournamentPass = "cats suck";  //password to get in tournament
-    string username = "groupH";        //AI's username
-    string passwordUser = "c++ sucks";    //AI's password
 };
