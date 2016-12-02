@@ -32,7 +32,7 @@ Tiger-Zone - TEAM H Repository
 
 ## **Unit Testing**
 ###Googletest
-![alt tag](/relative/path/to/images/googletest.png?raw=true)
+![alt tag](/relative/path/to/googletest.png?raw=true)
 
 ## **Compilation and Run Instructions**
 ### __Official Version__
