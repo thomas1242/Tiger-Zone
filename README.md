@@ -108,7 +108,7 @@ Input/Output
 #### GUI plugin (Not compatible with server)
 ..* SFML dependencies required. http://www.sfml-dev.org/tutorials/2.4/
   
-   ![Google Test](https://github.com/thomas1242/Tiger-Zone/Images/move_0_a.png)
+   ![Google Test](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_0_a.png)
   
 ## **Current Bugs**
 - Timeout issue in input.cpp
