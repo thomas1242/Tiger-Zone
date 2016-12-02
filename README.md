@@ -14,26 +14,37 @@ Tiger-Zone - TEAM H Repository
 
 ## **Architecture/Design Documentation**
 -Include UML
--Activity Diagram Updated?
 
 ## **Source Code**
 - Code is in C++ and is cointained in 'src'.
 - An implementation with the testable GUI (and no client) is in the 'game_with_GUI' folder.
 
 ## **Class Descriptions**
-- Main
-- Game
-- Player
-- Board
-  -Subclass
-- Deck (only for non-client version)
-- Card
-- Input/Output
-  -Subclass
+Main
+- Highest level.
+- Controls two games, and and Input/Output class.
+- Manages connection with server via TCP socket.
+Game
+Player
+Board
+Subclass
+Deck (only for non-client version)
+Card
+- Contains edges with terrain types.
+- Is passed from Server->Main->Game->Player->Board.
+-
+Input/Output
+- Utilized by server to store or queue relevant data for server connection
 ## **Compilation and Run Instructions**
 - Client based code
-..* Compile in any C++ compiler with the -std=c++11 tag. I.e. 'g++ -o tiger -std=c++11'
-..* Run with 
+1. Navigate to Tiger-Zone/src
+2. Compile in any C++ compiler with the -std=c++11 tag. I.e. 'g++ -o tiger -std=c++11'
+3. Run on a TigerZone Server with the following arguments i.e. './tiger 100.32.100.961 4444 TIGERZONE TEAMH IAMH'
+1. The IP address of the server
+2. The port number of the server
+3. The tournament password
+4. Your username
+5. Your user password
 
 ### __Official Version__
 #### **Without GUI (client version)**
@@ -49,11 +60,14 @@ Tiger-Zone - TEAM H Repository
 
 ### __Extra Stuff__
 - With GUI (no client)
-    - SFML Dependencies: http://www.sfml-dev.org/tutorials/2.4/
-    - use main_with_GUI.cpp instead of main.cpp
+    ..* SFML Dependencies: http://www.sfml-dev.org/tutorials/2.4/
+    ..* use main_with_GUI.cpp instead of main.cpp
   
 - Test Server
-
+  ..* Compile with 'g++ -o server server.cpp'
+  ..* Run with ./server
+  ..* Press any key to iterate through messages once connected by TCP socket.
+  
 ## **Testing**
 ### Unit Testing
 #### Googletest
