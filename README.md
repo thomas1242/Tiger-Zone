@@ -33,11 +33,11 @@ Tiger-Zone - TEAM H Repository
 ## **Testing**
 ###Unit Testing
 ####Googletest
-![alt tag](/relative/path/to/googletest.png?raw=true)
+![alt tag](Images/googletest.png)
 
 ###Integration Testing
 ####Testing client with a mock server
-![alt tag](/relative/path/to/client_mock_server_communication.png?raw=true)
+![alt tag](Images/client_mock_server_communication.png)
 
 ## **Compilation and Run Instructions**
 ### __Official Version__
