@@ -62,7 +62,15 @@ Input/Output
 
 ## **Compilation and Run Instructions**
 - Client based code
-1. Navigate to Tiger-Zone/src
+
+>> git clone https://github.com/thomas1242/Tiger-Zone/
+
+>> cd Tiger-Zone/src
+
+>> make
+
+>> ./client 100.32.100.961 4444 TIGERZONE TEAMH IAMH
+
 2. Compile in any C++ compiler with the -std=c++11 tag. I.e. 'g++ -o tiger *.cpp -std=c++11'
 3. Run on a TigerZone Server with the following arguments i.e. './tiger 100.32.100.961 4444 TIGERZONE TEAMH IAMH'
 
@@ -132,5 +140,4 @@ Input/Output
    ![Move 3a](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_3.png)
   
 ## **Current Bugs**
-- Timeout/loop issue in input.cpp.
-- Currently no error checking if user too few command line arguments.
+- Timeout issue in input.cpp
