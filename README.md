@@ -13,7 +13,7 @@ Tiger-Zone - TEAM H Repository
 | Kurt Yilmaz   | KurtYilmaz    |
 
 ## **Architecture/Design Documentation**
-![UML with Client](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/Client%20UML.png?raw=true)
+![UML with Client])
                                             UML with Client
 
 
