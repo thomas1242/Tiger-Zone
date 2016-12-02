@@ -61,15 +61,15 @@ Input/Output
 - Utilized by server to store or queue relevant data for server connection.
 
 ## **Compilation and Run Instructions**
-- Client based code
+- Client based code example
 
->> git clone https://github.com/thomas1242/Tiger-Zone/
+> git clone https://github.com/thomas1242/Tiger-Zone/
 
->> cd Tiger-Zone/src
+> cd Tiger-Zone/src
 
->> make
+> make
 
->> ./client 100.32.100.961 4444 TIGERZONE TEAMH IAMH
+> ./client 100.32.100.961 4444 TIGERZONE TEAMH IAMH
 
 2. Compile in any C++ compiler with the -std=c++11 tag. I.e. 'g++ -o tiger *.cpp -std=c++11'
 3. Run on a TigerZone Server with the following arguments i.e. './tiger 100.32.100.961 4444 TIGERZONE TEAMH IAMH'
