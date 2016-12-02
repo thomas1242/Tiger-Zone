@@ -65,11 +65,12 @@ Input/Output
 1. Navigate to Tiger-Zone/src
 2. Compile in any C++ compiler with the -std=c++11 tag. I.e. 'g++ -o tiger -std=c++11'
 3. Run on a TigerZone Server with the following arguments i.e. './tiger 100.32.100.961 4444 TIGERZONE TEAMH IAMH'
-1. The IP address of the server
-2. The port number of the server
-3. The tournament password
-4. Your username
-5. Your user password
+
+  1. The IP address of the server
+  2. The port number of the server
+  3. The tournament password
+  4. Your username
+  5. Your user password
 
 ### __Official Version__
 #### **Without GUI (client version)**
