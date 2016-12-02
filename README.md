@@ -104,7 +104,7 @@ Input/Output
 ![Server](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/client_mock_server%20communication.png)
 ..* Included Test folder showcasing tests
 
-### Acceptptance Testing
+### Acceptance Testing
 #### GUI plugin (Not compatible with server)
 ..* SFML dependencies required. To compile, see Compilation and Run Instructions.
   
