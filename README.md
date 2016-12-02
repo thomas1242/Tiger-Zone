@@ -109,4 +109,4 @@ Input/Output
 ..* SFML dependencies required. To compile, see Compilation and Run Instructions.
   
 ## **Current Bugs**
-- Timeout issue in input.cpp
+- Timeout/loop issue in input.cpp
