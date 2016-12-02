@@ -117,7 +117,7 @@ Input/Output
 #### GUI plugin (Not compatible with server)
 ..* SFML dependencies required. http://www.sfml-dev.org/tutorials/2.4/
   
-  ### __showing valid meeple locations__
+  ### __showing valid meeple locations. note: GUI rotates clockwise__
   
    ![Move 0](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_0_a.png)
    
