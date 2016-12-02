@@ -106,7 +106,29 @@ Input/Output
 
 ### Acceptance Testing
 #### GUI plugin (Not compatible with server)
-..* SFML dependencies required. To compile, see Compilation and Run Instructions.
+..* SFML dependencies required. http://www.sfml-dev.org/tutorials/2.4/
+  
+  ### __showing valid meeple locations__
+  
+   ![Move 0](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_0_a.png)
+   
+   ![Move 1](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_1_a.png)
+      
+   ![Move 2](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_2_a.png)
+         
+   ![Move 3](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_3_a.png)
+  
+  
+   ### __showing region tracking__
+  
+  
+   ![Move 0a](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_0.png)
+   
+   ![Move 1a](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_1.png)
+      
+   ![Move 2a](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_2.png)
+       
+   ![Move 3a](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_3.png)
   
 ## **Current Bugs**
-- Timeout/loop issue in input.cpp
+- Timeout issue in input.cpp
