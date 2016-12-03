@@ -61,36 +61,15 @@ Input/Output
 - Utilized by server to store or queue relevant data for server connection.
 
 ## **Compilation and Run Instructions**
-- Client based code example
+- TigerZoneClient
 
 > git clone https://github.com/thomas1242/Tiger-Zone/
 
-> cd Tiger-Zone/src
+> cd Tiger-Zone/TigerZoneClient
 
 > make
 
-> ./client 100.32.100.961 4444 TIGERZONE TEAMH IAMH
-
-2. Compile in any C++ compiler with the -std=c++11 tag. I.e. 'g++ -o tiger *.cpp -std=c++11'
-3. Run on a TigerZone Server with the following arguments i.e. './tiger 100.32.100.961 4444 TIGERZONE TEAMH IAMH'
-
-  1. The IP address of the server
-  2. The port number of the server
-  3. The tournament password
-  4. Your username
-  5. Your user password
-
-### __Official Version__
-#### **Without GUI (client version)**
-1. Navigate to Tiger-Zone/src in a command line interface, or an IDE capable of compiling c++ code.
-2. Compile with the following tags: '-o tiger -std=c++11' i.e. 'g++ -o tiger -std=c++11'
-3. Run on a TigerZone Server with the following arguments i.e. './tiger 100.32.100.961 4444 TIGERZONE TEAMH IAMH'
- 1. The IP address of the server
- 2. The port number of the server
- 3. The tournament password
- 4. Your username
- 5. Your user password
-  
+> ./TigerClient 127.0.0.1 4444 TIGERZONE TEAMH IAMH
 
 ### __Extra Stuff__
 - With GUI (no client)
