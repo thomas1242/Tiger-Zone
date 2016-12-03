@@ -12,6 +12,19 @@ Tiger-Zone - TEAM H Repository
 | Zachary Taylor| taylorz0917   |
 | Kurt Yilmaz   | KurtYilmaz    |
 
+
+## **Compilation and Run Instructions**
+- TigerZoneClient
+
+> git clone https://github.com/thomas1242/Tiger-Zone/
+
+> cd Tiger-Zone/TigerZoneClient
+
+> make
+
+> ./TigerClient 127.0.0.1 4444 TIGERZONE TEAMH IAMH
+
+
 ## **Architecture/Design Documentation**
 ![UML with Client](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/UML%20(Client).png?raw=true)
                                             UML with Client
@@ -59,17 +72,6 @@ Card
 Input/Output
 
 - Utilized by server to store or queue relevant data for server connection.
-
-## **Compilation and Run Instructions**
-- TigerZoneClient
-
-> git clone https://github.com/thomas1242/Tiger-Zone/
-
-> cd Tiger-Zone/TigerZoneClient
-
-> make
-
-> ./TigerClient 127.0.0.1 4444 TIGERZONE TEAMH IAMH
 
 ### __Extra Stuff__
 - With GUI (no client)
