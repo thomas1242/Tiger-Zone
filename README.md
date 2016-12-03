@@ -120,12 +120,12 @@ Input/Output
   ### __showing valid meeple locations__
   
    ![Move 0](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_0_a.png)
-   
-   ![Move 1](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_1_a.png)
       
    ![Move 2](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_2_a.png)
          
    ![Move 3](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_3_a.png)
+   
+   ![Move 6](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_6.png)
   
   
    ### __showing region tracking__
