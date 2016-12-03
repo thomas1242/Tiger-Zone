@@ -13,8 +13,8 @@ Tiger-Zone - TEAM H Repository
 | Kurt Yilmaz   | KurtYilmaz    |
 
 
-## **Compilation and Run Instructions**
-- TigerZoneClient
+# **Compilation and Run Instructions**
+## TigerZoneClient
 
 > git clone https://github.com/thomas1242/Tiger-Zone/
 
