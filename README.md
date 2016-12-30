@@ -20,9 +20,7 @@ Tiger-Zone - TEAM H Repository
 
 > cd Tiger-Zone/TigerZoneClient
 
-> ~~make~~
-
-> g++ -o TigerClient *.cpp -std=c++11
+> make
 
 > ./TigerClient 127.0.0.1 4444 TIGERZONE TEAMH IAMH
 
