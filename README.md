@@ -7,10 +7,6 @@ and
  ![alt tag](Images/newdemo.gif)
 
 
- ![alt tag](Images/tdemo1.gif)
-
- ![alt tag](Images/tz2.gif)
-
 <!--- ![alt tag](Images/tz33.gif) -->
 
 
