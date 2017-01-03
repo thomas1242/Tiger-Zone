@@ -17,10 +17,8 @@ public:
     bool isComplete();
     int preyCount;
     int numTiles;
-    
     void clearState();
     bool hasCroc;
-    
     
     // lake may have tiger(s) on it
     int num_tigers_p1;                  // increment this num when meeple played
@@ -47,9 +45,6 @@ public:
     int numTiles;
     bool hasCroc;
     void clearState();
-
-    
-
     bool hasDeer;
     bool hasBoar;
     bool hasBuffalo;
