@@ -43,9 +43,12 @@ void Game::endGame() {
 }
 
 //void Game::giveCard(string ID, Output *out) {
-void Game::giveCard() {
+void Game::giveCard(bool pm) {
     
-    if( current_turn && player_one->hasCard == false && player_two->hasCard == false) {             // player one makes a move
+    if(pm) {
+        return;
+    }
+    else if( current_turn && player_one->hasCard == false && player_two->hasCard == false) {             // player one makes a move
         //cout << "player_one to draw card:" << endl;
         player_one->takeCard();
        // player_one->takeCard(ID, out);
@@ -66,19 +69,30 @@ void Game::giveTurn(int i, int j) {
         return;
     }
     else if( current_turn && player_one->hasCard == true)  {            // player one makes a move
-        if(player_one->takeTurn(i, j))
+        player_one->takeTurn(i, j);
+    }
+    else if ( !current_turn && player_two->hasCard == true ) {
+        player_two->takeTurn(i, j);
+    }
+}
+
+void Game::giveTurn(int zone) {
+
+    if( current_turn && player_one->hasCard == true)  {            // player one makes a move
+        if(player_one->takeTurn(zone))
             current_turn = !current_turn;        // toggle turn
         else{}
-            //cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
+        //cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
         
     }
     else if ( !current_turn && player_two->hasCard == true ) {
-        if (player_two->takeTurn(i, j))
+        if (player_two->takeTurn(zone))
             current_turn = !current_turn;        // toggle turn
         else{}
-            //cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
+        //cout << "Cannot place card " << getCurrCardID() << " at (" << i << ',' << j << ']' << endl;
     }
 }
+
 
 Board * Game::getBoard() {
     return board;

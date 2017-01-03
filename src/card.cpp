@@ -9,6 +9,7 @@ Card::Card() {
     orientation = 0;
     assignSides();        // add edges to this card
     assignCardID();
+    tigerVector = 0;
 }
 
 Card::Card(int id) {
@@ -17,7 +18,7 @@ Card::Card(int id) {
     assignCardID();
     connectEdgestoCard();
     assignCloseID();
-    
+    tigerVector = 0;
     orientation = 0;
 }
 void Card::rotate() {   // rotate card 90 degrees clockwise
@@ -134,7 +135,7 @@ void Card::assignSides() {    // completable features: lakes (l), game-trails (t
     if(id == -1) {
         rightEdge = new Edge();
     }
-    else if(id == 3) {          // card with city right
+    else if(id == 3 || id == 28) {          // card with city right
         rightEdge = new Edge('T');
     }
     else if (id == 0 || id == 1 || id == 2 || id == 4 || id == 5 || id == 6 || id == 12 || id == 25 || id == 26 || id == 11) {                          // card with road right
@@ -148,7 +149,7 @@ void Card::assignSides() {    // completable features: lakes (l), game-trails (t
     if(id == -1) {
         botEdge = new Edge();
     }
-    else if(id == 7 || id == 8 || id == 11 || id == 13 || id == 20 || id == 23 || id == 24 || id == 27 ) {                                                           // card with city bot
+    else if(id == 7 || id == 8 || id == 11 || id == 13 || id == 20 || id == 23 || id == 24 || id == 27 || id == 28) {                                                           // card with city bot
         botEdge = new Edge('L');
     }
     else if (id == 2 || id == 3 || id == 4 || id == 6 || id == 16 || id == 17 || id == 18 || id == 19 || id == 21 || id == 22 || id == 25 || id == 26) {                            // card with field bot
@@ -162,7 +163,7 @@ void Card::assignSides() {    // completable features: lakes (l), game-trails (t
     if(id == -1) {
         leftEdge = new Edge();
     }
-    else if(id == 3 || id == 5 || id == 6 || id == 14 || id == 15 || id == 16 || id == 17 || id == 21 || id == 22 || id == 23 || id == 24) {          // card with city left
+    else if(id == 3 || id == 5 || id == 6 || id == 14 || id == 15 || id == 16 || id == 17 || id == 21 || id == 22 || id == 23 || id == 24 || id == 28) {          // card with city left
         leftEdge = new Edge('T');
     }
     else if (id == 7 || id == 8 || id == 10 || id == 20 || id == 27) {    // card with road left
@@ -178,7 +179,7 @@ void Card::assignSides() {    // completable features: lakes (l), game-trails (t
         mid = 'L';
     }
     else if (id == 3 || id == 4 || id == 5 || id == 6 || id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19
-             || id == 21 || id == 22 || id == 25 || id == 26 || id == 23 || id == 24) {     // card with trail top13
+             || id == 21 || id == 22 || id == 25 || id == 26 || id == 23 || id == 24 || id == 28) {     // card with trail top13
         mid = 'T';
     }
     else if (id == 0 || id == 10 || id == 11 || id == 12 || id == 13) {     // card with trail top13
@@ -228,10 +229,10 @@ void Card::connectEdgestoCard() {
     //======== add jungle/lake/trail region to this card
     
     // add jungle region to this card
-    if( id == 0 || id == 1 || id == 2 || id == 3 || id == 4 || id == 5 || id == 6 || id == 8 || id == 9 || id == 10 || id == 11 || id == 12 || id == 13 || id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24 || id == 25 || id == 26 || id == 27) {
+    if( id == 0 || id == 1 || id == 2 || id == 3 || id == 4 || id == 5 || id == 6 || id == 8 || id == 9 || id == 10 || id == 11 || id == 12 || id == 13 || id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24 || id == 25 || id == 26 || id == 27 || id == 28) {
         j1 = new Jungle();
     }
-    if(id == 3 || id == 4 || id == 5 || id == 6 || id == 10 || id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24 || id == 25 || id == 26 || id == 27) {
+    if(id == 3 || id == 4 || id == 5 || id == 6 || id == 10 || id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24 || id == 25 || id == 26 || id == 27 || id == 28) {
         j2 = new Jungle();
     }
     if(id == 3 || id == 6 || id == 21 || id == 22) {
@@ -241,14 +242,14 @@ void Card::connectEdgestoCard() {
         j4 = new Jungle();
     }
     // add lake region to this card
-    if(id == 7 || id == 8 || id == 9 || id == 10 || id == 11 || id == 12 || id == 13 || id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24 || id == 25 || id == 26 || id == 27) {
+    if(id == 7 || id == 8 || id == 9 || id == 10 || id == 11 || id == 12 || id == 13 || id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24 || id == 25 || id == 26 || id == 27 || id == 28) {
         l1 = new Lake();
     }
-    if(id == 11 || id == 13) {
+    if(id == 11 || id == 13 || id == 28) {
         l2 = new Lake();
     }
     // add trail region to this card
-    if(id == 2 || id == 3 || id == 4 || id == 5 || id == 6 || id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24 || id == 25 || id == 26 || id == 27) {
+    if(id == 2 || id == 3 || id == 4 || id == 5 || id == 6 || id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24 || id == 25 || id == 26 || id == 27 || id == 28) {
         t1 = new Trail();
     }
     if(id == 3 || id == 6 || id == 21 || id == 22) {
@@ -599,6 +600,19 @@ void Card::reConnect() {
         curr_botEdge->l1 = l1;
         curr_leftEdge->l1 = l1;
     }
+    else if(id == 28) {
+        curr_topEdge->l1 = l1;          // connect top lake edge's l1 pointer to lake 1 region
+        
+        curr_rightEdge->j1 = j1;        // connect right trail edge's j1 pointer to jungle 1 region
+        curr_rightEdge->t1 = t1;        // connect right trail edge's t1 pointer to trail  1 region
+        curr_rightEdge->j2 = j2;        // connect right trail edge's j2 pointer to jungle 2 region
+        
+        curr_botEdge->l1 = l2;          // connect bot lake edge's l1 pointer to lake 2 region in card
+        
+        curr_leftEdge->j1 = j2;         // connect left trail edge's j1 pointer to jungle 2 region
+        curr_leftEdge->t1 = t1;         // connect left trail edge's t1 pointer to trail  1 region
+        curr_leftEdge->j2 = j1;         // connect left trail edge's j2 pointer to jungle 1 region
+    }
     
 }
 
@@ -616,7 +630,7 @@ void Card::assignCloseID() {
     else if( id == 7 || id == 8 || id == 9 || id == 10 || id == 20 || id == 23 || id == 24 || id == 27  ) {        // extending lake
         extendID = 1;
     }
-    else if( id == 11 || id == 12 || id == 13 || id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 21 || id == 22 || id == 25 || id == 26  ) {        // closing lake
+    else if( id == 11 || id == 12 || id == 13 || id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 21 || id == 22 || id == 25 || id == 26 || id == 28) {        // card that closes a lake off
         extendID = 3;
     }
     else {
@@ -1032,39 +1046,37 @@ void Card::assignZones(int & L1, int & L2, int & J1, int & J2, int & J3, int & J
     /* when specifying where a tiger is to be placed on a tile, specify the smallest
        zone number that describes the feature into which it is being added.       */
     
-    //cout << "Card " << getCardID() << " with orientation " << getOrient() << endl;
-    if(L1 != 10) {
-        cout << "L1 in zone: " << L1 << endl;
-    }
-    if(L2 != 10) {
-        cout << "L2 in zone: " << L2 << endl;
-    }
-    if(J1 != 10) {
-        cout << "J1 in zone: " << J1 << endl;
-    }
-    if(J2 != 10) {
-        cout << "J2 in zone: " << J2 << endl;
-    }
-    if(J3 != 10) {
-        cout << "J3 in zone: " << J3 << endl;
-    }
-    if(J4 != 10) {
-        cout << "J4 in zone: " << J4 << endl;
-    }
-    if(T1 != 10) {
-        cout << "T1 in zone: " << T1 << endl;
-    }
-    if(T2 != 10) {
-        cout << "T2 in zone: " << T2 << endl;
-    }
-    if(T3 != 10) {
-        cout << "T3 in zone: " << T3 << endl;
-    }
-    if(T4 != 10) {
-        cout << "T4 in zone: " << T4 << endl;
-    }
-    
-    
+//    cout << "Card " << getCardID() << " with orientation " << getOrient() << endl;
+//    if(L1 != 10) {
+//        cout << "L1 in zone: " << L1 << endl;
+//    }
+//    if(L2 != 10) {
+//        cout << "L2 in zone: " << L2 << endl;
+//    }
+//    if(J1 != 10) {
+//        cout << "J1 in zone: " << J1 << endl;
+//    }
+//    if(J2 != 10) {
+//        cout << "J2 in zone: " << J2 << endl;
+//    }
+//    if(J3 != 10) {
+//        cout << "J3 in zone: " << J3 << endl;
+//    }
+//    if(J4 != 10) {
+//        cout << "J4 in zone: " << J4 << endl;
+//    }
+//    if(T1 != 10) {
+//        cout << "T1 in zone: " << T1 << endl;
+//    }
+//    if(T2 != 10) {
+//        cout << "T2 in zone: " << T2 << endl;
+//    }
+//    if(T3 != 10) {
+//        cout << "T3 in zone: " << T3 << endl;
+//    }
+//    if(T4 != 10) {
+//        cout << "T4 in zone: " << T4 << endl;
+//    }
 }
 
 void Card::setValue( int & oldVal, int newVal  ) {
@@ -1075,5 +1087,13 @@ void Card::setValue( int & oldVal, int newVal  ) {
 
 void Card::hardSet(  int & oldVal, int newVal  ) {
      oldVal = newVal;
+}
+
+int Card::getTigerLocs() {
+    return tigerVector;
+}
+
+void Card::addTiger(int zone) {
+    tigerVector = tigerVector | (1 << zone);
 }
 

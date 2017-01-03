@@ -12,6 +12,7 @@ Player::Player(Board * b, Deck * d, int pid) {
     currCard = NULL;
     hasCard = false;
     playerID = pid;
+    goatsAvailable = 3;         // Players start the game with 3 (three) goat meeples
 }
 
 //string strID, Output *out)
@@ -40,9 +41,16 @@ bool Player::takeTurn(int i, int j) {
     bool res = false;
     if( theBoard->checkPossibleMove(i, j) ) {
         res = theBoard->placeCard(i, j, currCard, playerID, 0, true);
-        hasCard = false;
     }
     return res;
+}
+
+bool Player::takeTurn(int zone) {
+    if(theBoard->placeMeeple(playerID, zone, true, currCard) ) {
+        meeplesAvailable--;
+    }
+    hasCard = false;
+    return true;
 }
 
 int Player::getCardId() {

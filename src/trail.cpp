@@ -1,33 +1,30 @@
-#include "lake.h"
+#include "trail.h"
 #include "regs.h"
 
-Lake::Lake() {
-	id = 0;				 // not part of any jungle
+Trail::Trail() {
+    id = 0;				 // not part of any jungle
     edgeConnects = 0;
     preyCount = 0;
     num_tigers_p1 = 0;
     num_tigers_p2 = 0;
     numTiles = 0;
-
-    
-    hasDeer = false;
-    hasBoar = false;
-    hasBuffalo = false;
     hasCroc = false;
+    hasGoat = false;
+    isCompleted = false;
 }
 
-Lake::~Lake() {
+Trail::~Trail() {
 }
 
-void Lake::setId(int id) {
-	this->id = id;			
+void Trail::setId(int id) {
+	this->id = id;
 }
 
-int Lake::getId() {
+int Trail::getId() {
 	return id;			
 }
 
-void Lake::addMeeple( int playerID ) {
+void Trail::addMeeple( int playerID ) {
     if( playerID == 1) {
         num_tigers_p1++;
     }
@@ -36,7 +33,11 @@ void Lake::addMeeple( int playerID ) {
     }
 }
 
-int Lake::getOwner() {
+bool Trail::hasMeeple() {
+    return (num_tigers_p1 + num_tigers_p2) > 0;
+}
+
+int Trail::getOwner() {
     
     if(num_tigers_p1 == 0 && num_tigers_p2 == 0) {  // no owner
         return -1;
@@ -53,18 +54,15 @@ int Lake::getOwner() {
     
 }
 
-bool Lake::isComplete() {
+bool Trail::isComplete() {
     return (edgeConnects == 0);
 }
 
-void Lake::clearState() {
+void Trail::clearState() {
     id = 0;				 // not part of any jungle
     edgeConnects = 0;
     preyCount = 0;
     num_tigers_p1 = 0;
     num_tigers_p2 = 0;
     numTiles = 0;
-    hasDeer = false;
-    hasBoar = false;
-    hasBuffalo = false;
 }

@@ -17,14 +17,16 @@ public:
     bool isComplete();
     int preyCount;
     int numTiles;
-    
+    bool hasMeeple();
+
     void clearState();
     bool hasCroc;
-    
+    bool isCompleted = false;
     
     // lake may have tiger(s) on it
     int num_tigers_p1;                  // increment this num when meeple played
     int num_tigers_p2;
+    bool hasGoat;
     
 private:
     int id;
@@ -47,16 +49,19 @@ public:
     int numTiles;
     bool hasCroc;
     void clearState();
+    bool hasMeeple();
+    bool isCompleted = false;
 
-    
 
     bool hasDeer;
     bool hasBoar;
     bool hasBuffalo;
+    bool hasGoat;
 
     // lake may have tiger(s) on it
     int num_tigers_p1;                  // increment this num when meeple played
     int num_tigers_p2;
+    bool hasMeep;
 
 private:
     int id;			// which jungle is this

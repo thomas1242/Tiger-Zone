@@ -26,9 +26,10 @@ public:
     Game();
     ~Game();
    //void giveCard(string ID, Output *out);
-    void giveCard();
+    void giveCard( bool pm);
 
     void giveTurn(int i, int j);
+    void giveTurn(int zone);
     void startGame();
     void endGame();
     bool status();

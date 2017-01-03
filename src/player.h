@@ -21,6 +21,8 @@ public:
 
     
     bool takeTurn(int i, int j);        // draw tile from the deck, place it, maybe place a meeple
+    bool takeTurn(int zone);        // draw tile from the deck, place it, maybe place a meeple
+
     void drawCard();
     void rotateCard();
     bool hasCard;
@@ -34,6 +36,7 @@ public:
 private:
     int score;
     int meeplesAvailable;
+    int goatsAvailable;
     Board * theBoard;
     Deck * theDeck;
     Card * currCard;

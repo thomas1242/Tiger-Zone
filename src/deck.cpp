@@ -10,28 +10,26 @@ using namespace std;
 Deck::Deck() {
     
     numCardsInDeck = 0;
-    for(int i = 0; i < UNIQUECARDS; i++) {      // initally 0 cards in the deck
+    for(int i = 0; i < UNIQUECARDS; i++) {                  // initally 0 cards in the deck
         counts[i] = 0;
     }
-    //int maxCounts[] = { 0, 0, 0, 0, 0, 0, 0, 27, 27, 27, 27, 7, 7, 7, 1, 2, 1, 2, 2, 2, 3, 7, 7, 7, 2, 1, 2, 1};
 
-    int maxCounts[] = { 10, 4, 2, 1, 8, 9, 4, 1, 4, 5, 3, 3, 5, 20, 1, 2, 1, 2, 2, 2, 3, 1, 2, 3, 2, 1, 2, 1};
-    //    indices       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+    int maxCounts[] = { 10, 4, 2, 1, 8, 9, 4, 1, 4, 5, 3, 3, 5, 20, 1, 2, 1, 2, 2, 2, 3, 1, 2, 3, 2, 1, 2, 1,   2};
+    //    indices       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 12,13, 14,15,16,17,18,19,20,21,22,23,24,25,26,27,  28
     srand (time(NULL));
     int id;
     
-    for(int i = 0; i < MAXCARDS; i++) {   // put 71 cards into the deck
+    for(int i = 0; i < MAXCARDS; i++) {                      // put 76 playable cards in deck
         do{
             id = rand() % 28;                                // generate random card
-        } while ( counts[id] >= maxCounts[id] );       // only use cards we need
+        } while ( counts[id] >= maxCounts[id] );             // only use cards we need
         
-        deck.push( new Card(id) );  // put the card in the deck
+        deck.push( new Card(id) );                           // put the card in the deck
         counts[id]++;
         numCardsInDeck++;
     }
     deck.push( new Card(18) );         // push center card on top of the deck
     numCardsInDeck++;
-    // printDeck();
 }
 
 // pop old top card off the deck, return new top card's id to the player who drew the card

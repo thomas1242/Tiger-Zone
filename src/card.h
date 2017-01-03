@@ -48,6 +48,9 @@ public:
     void assignZones(int & L1, int & L2, int & J1, int & J2, int & J3, int & J4, int & T1, int & T2, int & T3, int & T4);
     void setValue( int & oldVal, int newVal );
     void hardSet( int & oldVal, int newVal );
+    void addTiger(int zone);
+    int getTigerLocs();
+    int tigerVector; // which zones tigers are on current card
 
     // a card can have...
     Jungle * j1, * j2, * j3, * j4;          // up to 4 jungles

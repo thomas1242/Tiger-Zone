@@ -31,6 +31,36 @@ Board::Board(Card * card) {                            // board constructor
         jungles[i].setId(i);
     }
     
+    meepleBitVector = 0;    // initially 0 meeple locs on curr card
+    crocBitVector = 0;
+    tigerVec = 0;
+    x = 0;
+    y = 0;
+    p1_score = 0;
+    p2_score = 0;
+    
+    meepArr = new int * [ROWS];              // board is initially all open space ( cards with id = -1 )
+    for(int i = 0; i < ROWS; ++i) {
+        meepArr[i] = new int[COLS];
+        for(int j = 0; j < COLS; j++) {
+            meepArr[i][j] = 0;
+        }
+    }
+    crocArr = new int * [ROWS];              // board is initially all open space ( cards with id = -1 )
+    for(int i = 0; i < ROWS; ++i) {
+        crocArr[i] = new int[COLS];
+        for(int j = 0; j < COLS; j++) {
+            crocArr[i][j] = 0;
+        }
+    }
+    owner = new int * [ROWS];              // board is initially all open space ( cards with id = -1 )
+    for(int i = 0; i < ROWS; ++i) {
+        owner[i] = new int[COLS];
+        for(int j = 0; j < COLS; j++) {
+            owner[i][j] = 0;
+        }
+    }
+    
     cout << "Put center card on new board";
     possibleMoves[ROWS/2][COLS/2] = true;                        // mark center location available
     placeCard(ROWS/2, COLS/2, card, 1, 0, true);        // place center card on the board
@@ -58,31 +88,118 @@ bool Board::placeCard(int i, int j, Card * card, int playerID, int zone, bool ty
     
     board[i][j] = *card;                // put on board
     
-    cout << board[i][j].getCardID() << " with orientation " << board[i][j].getOrient() << " placed at [" << (j-5) << "][" << -(i-5) << "] by player " << playerID << endl;
+    scoreMove( card, playerID );  // score card placed
+
+    x = i;
+    y = j;
+    meepleBitVector = 0;
+    crocBitVector = 0;
+    setMeepleLocs(card);
     
-    int L1 = 10, L2 = 10, J1 = 10, J2 = 10, J3 = 10, J4 = 10, T1 = 10, T2 = 10, T3 = 10, T4 = 10;
-    card->assignZones(L1, L2, J1, J2, J3, J4, T1, T2, T3, T4);  // print meeple locations on current card
-    
-    if( zone != 0) { //place follower
+    if( zone == 999) { //place follower
         placeMeeple(playerID, zone, typeFollower, card);
     }
-    cout << endl;
- 
-    
     
      //printCardRegions(i, j);
     
-     scoreMove( card, playerID );  // score card placed
-    
-     printFeatures();    // === increment features edges
+     //printFeatures();    // === increment features edges
     
     // printBoard();
     
     return true;
 }
 
-void Board::placeMeeple(int playerID, int zone, bool tiger, Card * card) {
+void Board::addTiger(int zone) {
+    owner[ getX() ][ getY() ] = currPlayer;
+    meepArr[ getX() ][ getY() ] = meepArr[ getX() ][ getY() ] | (1 << zone);
+}
+
+void Board::addCroc(int zone) {
+    crocArr[ getX() ][ getY() ] = crocArr[ getX() ][ getY() ] | (1 << zone);
+}
+
+int Board::getTigerLocs(int x, int y) {
+    return meepArr[ x ][ y ] ;
+}
+
+int Board::getCrocoLocs(int x, int y) {
+    return crocArr[ x ][ y ] ;
+}
+
+int Board::getOwner(int x, int y) {
+    return owner[ x ][ y ] ;
+}
+
+void Board::setMeepleLocs(Card * card) {
     
+    int L1 = 10, L2 = 10, J1 = 10, J2 = 10, J3 = 10, J4 = 10, T1 = 10, T2 = 10, T3 = 10, T4 = 10;
+    card->assignZones(L1, L2, J1, J2, J3, J4, T1, T2, T3, T4);
+    
+    if(card->getId() == 0 || card->getId() == 1 || card->getId() == 2) {
+        meepleBitVector = meepleBitVector | (1 << 5); // zone 5 open for den
+    }
+    
+    if (card->l1 != NULL && !card->l1->isCompleted && card->l1->getOwner() == -1) {      // if valid meeple location
+        meepleBitVector =  meepleBitVector | (1 << L1);                                   // place meeple in region
+    }
+//    if (card->l1 != NULL && !card->l1->hasCroc) {
+//        crocBitVector =  crocBitVector | (1 << L1);                                   // place meeple in region
+//    }
+    
+    
+    if (card->l2 != NULL && !card->l2->isCompleted && card->l2->getOwner() == -1) {
+        meepleBitVector =  meepleBitVector | (1 << L2);                                   // place meeple in region
+    }
+//    if (card->l2 != NULL && !card->l2->hasCroc) {
+//        crocBitVector =  crocBitVector | (1 << L2);                                   // place meeple in region
+//    }
+    
+    if (card->j1 != NULL && !card->j1->isComplete() && card->j1->getOwner() == -1) {
+        meepleBitVector =  meepleBitVector | (1 << J1);                                   // place meeple in region
+    }
+    if (card->j2 != NULL && !card->j2->isComplete() && card->j2->getOwner() == -1) {
+        meepleBitVector =  meepleBitVector | (1 << J2);                                   // place meeple in region
+    }
+    if (card->j3 != NULL && !card->j3->isComplete() && card->j3->getOwner() == -1) {
+        meepleBitVector =  meepleBitVector | (1 << J3);                                   // place meeple in region
+    }
+    if (card->j4 != NULL && !card->j4->isComplete() && card->j4->getOwner() == -1) {
+        meepleBitVector =  meepleBitVector | (1 << J4);                                   // place meeple in region
+    }
+    
+    if (card->t1 != NULL && !card->t1->isCompleted && card->t1->getOwner() == -1) {
+        meepleBitVector =  meepleBitVector | (1 << T1);                                   // place meeple in region
+    }
+//    if (card->t1 != NULL && !card->t1->hasCroc) {
+//        crocBitVector =  crocBitVector | (1 << T1);                                   // place meeple in region
+//    }
+    
+    if (card->t2 != NULL && !card->t2->isCompleted && card->t2->getOwner() == -1) {
+        meepleBitVector =  meepleBitVector | (1 << T2);                                   // place meeple in region
+    }
+//    if (card->t2 != NULL && !card->t2->hasCroc) {
+//        crocBitVector =  crocBitVector | (1 << T2);                                   // place meeple in region
+//    }
+    
+    if (card->t3 != NULL && !card->t3->isCompleted && card->t3->getOwner() == -1) {
+        meepleBitVector =  meepleBitVector | (1 << T3);                                   // place meeple in region
+    }
+//    if (card->t3 != NULL && !card->t3->hasCroc) {
+//        crocBitVector =  crocBitVector | (1 << T3);                                   // place meeple in region
+//    }
+    
+    if (card->t4 != NULL && !card->t4->isCompleted && card->t4->getOwner() == -1) {
+        meepleBitVector =  meepleBitVector | (1 << T4);                                   // place meeple in region
+    }
+//    if (card->t4 != NULL && !card->t4->hasCroc) {
+//        crocBitVector =  crocBitVector | (1 << T4);                                   // place meeple in region
+//    }
+   
+}
+
+bool Board::placeMeeple(int playerID, int zone, bool tiger, Card * card) {
+    
+    currPlayer = playerID;
     // which cell each region is located in
     int L1 = 10, L2 = 10, J1 = 10, J2 = 10, J3 = 10, J4 = 10, T1 = 10, T2 = 10, T3 = 10, T4 = 10;
     card->assignZones(L1, L2, J1, J2, J3, J4, T1, T2, T3, T4);
@@ -93,37 +210,95 @@ void Board::placeMeeple(int playerID, int zone, bool tiger, Card * card) {
         else
             cout << "\nplacing crocodile in " << zone << endl;
         
+        if((card->getId() == 0 || card->getId() == 1 || card->getId() == 2) && zone == 5) {
+            addTiger(5);
+            scoreDen(playerID, card);
+            return true;
+        }
+        
         // make sure that this zone is not owned before placing a meeple here
         if (zone == L1 && card->l1 != NULL &&  lakes[  card->l1->getId() ].getOwner() == -1) {      // if valid meeple location
                 lakes[  card->l1->getId() ].addMeeple(playerID);                                    // place meeple in region
+                addTiger( L1 );
+                return true;
         }
+//        else if (zone == L1 && card->l1 != NULL &&  !lakes[  card->l1->getId() ].hasCroc) {
+//            lakes[  card->l1->getId() ].hasCroc = true;
+//            addCroc( L1 );
+//            return true;
+//        }
         else if (zone == L2 && card->l2 != NULL &&  lakes[  card->l2->getId() ].getOwner() == -1) {
                 lakes[  card->l2->getId() ].addMeeple(playerID);
+                addTiger( L2 );
+            return true;
         }
+//        else if (zone == L2 && card->l2 != NULL &&  !lakes[  card->l2->getId() ].hasCroc) {
+//            lakes[  card->l2->getId() ].hasCroc = true;
+//            addCroc( L2 );
+//            return true;
+//        }
         else if (zone == J1 && card->j1 != NULL && jungles[  card->j1->getId() ].getOwner() == -1) {
                 jungles[  card->j1->getId() ].addMeeple(playerID);
+                addTiger( J1 );
+            return true;
         }
         else if (zone == J2 && card->j2 != NULL && jungles[  card->j2->getId() ].getOwner() == -1) {
                 jungles[  card->j2->getId() ].addMeeple(playerID);
+                addTiger( J2 );
+            return true;
         }
         else if (zone == J3 && card->j3 != NULL && jungles[  card->j3->getId() ].getOwner() == -1) {
                 jungles[  card->j3->getId() ].addMeeple(playerID);
+                addTiger( J3 );
+            return true;
         }
         else if (zone == J4 && card->j4 != NULL && jungles[  card->j4->getId() ].getOwner() == -1) {
                 jungles[  card->j4->getId() ].addMeeple(playerID);
+                addTiger( J4 );
+            return true;
         }
         else if (zone == T1 && card->t1 != NULL && trails[  card->t1->getId() ].getOwner() == -1) {
                 trails[  card->t1->getId() ].addMeeple(playerID);
+                addTiger( T1 );
+            return true;
         }
+//        else if (zone == T1 && card->t1 != NULL &&  !trails[  card->t1->getId() ].hasCroc) {
+//            trails[  card->t1->getId() ].hasCroc = true;
+//            addCroc( T1 );
+//            return true;
+//        }
         else if (zone == T2 && card->t2 != NULL && trails[  card->t2->getId() ].getOwner() == -1) {
                 trails[  card->t2->getId() ].addMeeple(playerID);
+                addTiger( T2 );
+            return true;
         }
+//        else if (zone == T2 && card->t2 != NULL &&  !trails[  card->t2->getId() ].hasCroc) {
+//            trails[  card->t2->getId() ].hasCroc = true;
+//            addCroc( T2 );
+//            return true;
+//        }
         else if (zone == T3 && card->t3 != NULL && trails[  card->t3->getId() ].getOwner() == -1) {
                 trails[  card->t3->getId() ].addMeeple(playerID);
+                addTiger( T3 );
+            return true;
         }
+//        else if (zone == T3 && card->t3 != NULL &&  !trails[  card->t3->getId() ].hasCroc) {
+//            trails[  card->t3->getId() ].hasCroc = true;
+//            addCroc( T3 );
+//            return true;
+//        }
         else if (zone == T4 && card->t4 != NULL && trails[  card->t4->getId() ].getOwner() == -1) {
                 trails[  card->t4->getId() ].addMeeple(playerID);
+                addTiger( T4 );
+            return true;
         }
+//        else if (zone == T4 && card->t4 != NULL &&  !trails[  card->t4->getId() ].hasCroc) {
+//            trails[  card->t4->getId() ].hasCroc = true;
+//            addCroc( T4 );
+//            return true;
+//        }
+
+        return false;
     }
 }
 
@@ -217,11 +392,6 @@ void Board::printBoard() {
                 }
                 cout << ' ';
             }
-           // if( n == 1 ) {
-           //     for(int k = 0; k < COLS; k++) {
-           //         cout << "  " << board[i][k].getId() << "  ";
-           //    }
-           // }
             cout << endl;
         }
         cout << endl;
@@ -240,6 +410,15 @@ void Board::printBoard() {
 Card Board::getCard(int i, int j) {
     return board[i][j];
 }
+
+int Board::getMeepleLocs() {
+    return meepleBitVector;
+}
+
+int Board::getCrocLocs() {
+    return crocBitVector;
+}
+
 
 bool Board::checkPossibleMove(int i, int j) {
     return possibleMoves[i][j];
@@ -2065,6 +2244,10 @@ void Board::mergeLakes(int l1_id, int l2_id) {
         uniquePrey++;
     }
     
+    if(  lakes[ l1_id ].hasGoat  ) {   // if first region had Goat, new region now has Goat too
+        lakes[ l2_id ].hasGoat = true;
+    }
+    
     lakes[ l2_id ].num_tigers_p1 = p1_region1_tigerCount + p1_region2_tigerCount;
     lakes[ l2_id ].num_tigers_p2 = p2_region1_tigerCount + p2_region2_tigerCount;
     lakes[ l2_id ].preyCount = uniquePrey;
@@ -2090,6 +2273,10 @@ void Board::mergeTrails(int t1_id, int t2_id) {
     
     int region1_preyCount = trails[ t1_id ].preyCount;
     int region2_preyCount = trails[ t2_id ].preyCount;
+    
+    if(  trails[ t1_id ].hasGoat  ) {   // if first region had Goat, new region now has Goat too
+        trails[ t2_id ].hasGoat = true;
+    }
     
     trails[ t2_id ].num_tigers_p1 = p1_region1_tigerCount + p1_region2_tigerCount;
     trails[ t2_id ].num_tigers_p2 = p2_region1_tigerCount + p2_region2_tigerCount;
@@ -2167,10 +2354,11 @@ void Board::scoreMove(Card * card, int playerID) {
 
 
 void Board::scoreLake(Lake * l, int playerID) {
+    l->isCompleted = true;
     int numPreyInLake = (l->preyCount < 0)?0:l->preyCount;
     int points = (l->numTiles * 2) * ( 1 + numPreyInLake );
     cout << "Player " << l->getOwner() << " gets " << points << "points for completing lake # " << l->getId() << endl;
-    if( l->getOwner() == 0) {  // shared region
+    if( l->getOwner() == 0 ||  l->getOwner() == -1) {  // shared region
         p1_score += points;
         p2_score += points;
     }
@@ -2186,11 +2374,30 @@ void Board::scoreJungle(Jungle * j, int playerID) {
     
 }
 
+void Board::scoreDen(int playerID, Card * card) {
+    int p1 = 0;
+    cout << "Player " << playerID << " gets points for den " << endl;
+    for(int i = -1; i <= 1; i++) {
+        for(int j = -1; j <= 1; j++) {
+            if(board[getX() + i][getY() + j].getId() >= 0) {
+                p1++;
+            }
+        }
+    }
+    if(playerID == 1) {
+        p1_score += p1;
+    }
+    else {
+        p2_score += p1;
+    }
+}
+
 void Board::scoreTrail( Trail * t, int playerID) {
+    t->isCompleted = true;
     int numPreyInJungle = (t->preyCount < 0)?0:t->preyCount;
     int points = t->numTiles + numPreyInJungle;
     cout << "Player " << t->getOwner() << " gets " << points << "points for completing trail # " << t->getId() << endl;
-    if( t->getOwner() == 0) {  // shared region
+    if( t->getOwner() == 0 ||  t->getOwner() == -1) {  // shared region
         p1_score += points;
         p2_score += points;
     }
@@ -2269,6 +2476,13 @@ void Board::endGameScoring() {  // score uncompleted regions
             }
         }
     }
+}
+
+int Board::getX() {
+    return x;
+}
+int Board::getY() {
+    return y;
 }
 
 void Board::getBestMove() {

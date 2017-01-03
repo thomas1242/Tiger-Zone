@@ -20,7 +20,7 @@ public:
     void printBoard();                  // print the state of the board
     void updatePossibleMoves(Card * card);         // update valid moves array
     bool checkIfFits(int i, int j, Card * card );     // check if a given card fits at a given location
-    bool placeCard(int i, int j, Card * card, int playerID, int zone, bool typeFollower);        // place a card onto the board
+    bool placeCard(int i, int j, Card * card, int playerID, int zone, bool who);        // place a card onto the board
     Deck * getDeck();
     bool * getPossibleMoves();
     bool checkPossibleMove(int i, int j);
@@ -30,7 +30,7 @@ public:
 
     void connectCardtoBoard( int i, int j, Card * card );
     
-    void placeMeeple(int playerID, int zone, bool tiger, Card * card);
+    bool placeMeeple(int playerID, int zone, bool tiger, Card * card);
     void mergeLakes(int l1_id, int l2_id);
     void mergeTrails(int t1_id, int t2_id);
     void mergeJungles(int j1_id, int j2_id);
@@ -41,6 +41,7 @@ public:
     void scoreTrail(  Trail *  t , int playerID );
     void scoreLake(   Lake  *  l , int playerID );
     void scoreJungle( Jungle * j , int playerID );
+    void scoreDen(int playerID, Card * card);
     
     int numJungles, numTrails, numLakes;
   
@@ -54,12 +55,28 @@ public:
     int getScore( bool player );
     void markAdjacentLakes(Card * card);
     void endGameScoring();
+    int getMeepleLocs();
+    int getCrocLocs();
+    void setMeepleLocs(Card * card);
+    int getX();
+    int getY();
+    int getTigerLocs(int x, int y);
+    int getCrocoLocs(int x, int y);
+    int getOwner(int x, int y);
     
+    void addTiger(int zone);
+    void addCroc(int zone);
     void getBestMove();         // based on the current card & board
     
+    int tigerVec;
+    int meepleBitVector;
+    int crocBitVector;
+    int x, y;
+    int ** meepArr;
+    int ** crocArr;
+    int ** owner;
+    int currPlayer;
     
-    
-        
 private:
     Card ** board;                    // will point to 2D array of Cards a.k.a. the board
     bool possibleMoves[ROWS][COLS];   // 2D array which holds valid moves
