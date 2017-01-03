@@ -27,7 +27,7 @@ Tiger-Zone - TEAM H Repository
 
 
 ## **Architecture/Design Documentation**
-![UML with Client](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/UML%20(Client).png?raw=true)
+![UML with Client](https://github.com/thomas1242/Tiger-Zone/blob/master/Testing/Images/UML%20(Client).png?raw=true)
                                             UML with Client
 
 
@@ -87,12 +87,12 @@ Input/Output
 ## **Testing**
 ### Unit Testing
 #### Googletest
-..* ![Google Test](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/googletest.png?raw=true)
+..* ![Google Test](https://github.com/thomas1242/Tiger-Zone/blob/master/Testing/Images/googletest.png?raw=true)
 ..* Additional print statements are output within code.
 
 ### Integration Testing
 #### Testing client with a mock server
-![Server](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/client_mock_server%20communication.png)
+![Server](https://github.com/thomas1242/Tiger-Zone/blob/master/Testing/Images/client_mock_server%20communication.png)
 ..* Included Test folder showcasing tests
 
 ### Acceptance Testing
@@ -101,25 +101,20 @@ Input/Output
   
   ### __showing valid meeple locations__
   
-   ![Move 0](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_0_a.png)
-      
-   ![Move 2](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_2_a.png)
-         
-   ![Move 3](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_3_a.png)
    
-   ![Move 6](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_6.png)
+   ![Move 6](https://github.com/thomas1242/Tiger-Zone/blob/master/Testing/Images/move_6.png)
   
   
    ### __showing region tracking__
   
   
-   ![Move 0a](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_0.png)
+   ![Move 0a](https://github.com/thomas1242/Tiger-Zone/blob/master/Testing/Images/move_0.png)
    
-   ![Move 1a](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_1.png)
+   ![Move 1a](https://github.com/thomas1242/Tiger-Zone/blob/master/Testing/Images/move_1.png)
       
-   ![Move 2a](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_2.png)
+   ![Move 2a](https://github.com/thomas1242/Tiger-Zone/blob/master/Testing/Images/move_2.png)
        
-   ![Move 3a](https://github.com/thomas1242/Tiger-Zone/blob/master/Images/move_3.png)
+   ![Move 3a](https://github.com/thomas1242/Tiger-Zone/blob/master/Testing/Images/move_3.png)
   
 ## **Current Bugs**
 - Timeout/loop issue in input.cpp
