@@ -6,7 +6,7 @@
 <!--- and
 [How To Play](https://github.com/thomas1242/Tiger-Zone/blob/master/Game Rules/TigerZone - Tournament Rules v2.2.pdf)
 -->
- ![alt tag](Testing/Images/tzonedemo.gif)
+ ![alt tag](Testing/Images/demoWithCroc.gif)
 
 
 <!--- ![alt tag](Images/tz33.gif) -->
