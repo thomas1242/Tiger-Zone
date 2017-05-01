@@ -1,4 +1,4 @@
-# CEN3031 - Tiger Zone
+# CEN3031 Project - Tiger Zone
 
  ![alt tag](images/descrip.png)
 
